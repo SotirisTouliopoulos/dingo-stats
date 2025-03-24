@@ -5,7 +5,19 @@ from scipy.io import savemat
 import numpy as np
 
 
-data = loadmat("../data/Reconstructions_data/Roseburia_intestinalis_L1_82.mat")
+data = loadmat("data/Reconstructions_data/Roseburia_intestinalis_L1_82.mat")
+#print(data)
+
+model = data["model"]
+print(model.dtype.names)
+
+rxnKEGGID = model["rxnKEGGID"][0, 0]
+rxnKEGGID = model["rxnNames"][0, 0]
+
+
+print(rxnKEGGID.shape)
+print(rxnKEGGID)
+
 
 
 reactions = data['model'][0][0]['rxns']
@@ -22,6 +34,7 @@ print("Duplicate metabolites in model:" , duplicates)
 
 genes = data['model'][0][0]['genes']
 genes_ids = [r[0].strip("[]'") if isinstance(r[0], str) else str(r[0]).strip("[]'") for r in genes]
+print(genes_ids)
 duplicates = [r for r in set(genes_ids) if genes_ids.count(r) > 1]
 print("Duplicate genes in model:" , duplicates)
 
