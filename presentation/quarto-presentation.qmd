@@ -1,0 +1,34 @@
+---
+title: "met-mod"
+---
+
+```{r}
+
+
+bt_wc_df = read.csv(
+  "BTRI_mucin_study_data/Bacteroides_thetaiotaomicron/BT_WC_counts.csv")
+
+
+bt_mucin_df = read.csv(
+  "BTRI_mucin_study_data/Bacteroides_thetaiotaomicron/BT_mucin_counts.csv")
+
+
+any(is.na(bt_wc_df))
+any(is.na(bt_mucin_df))
+
+
+bt_wc_corr <- cor(t(bt_wc_df[,-1]))
+bt_mucin_corr <- cor(t(bt_mucin_df[,-1]))
+
+
+library(reshape2)
+
+bt_wc_corr_melt = melt(bt_wc_corr)
+bt_mucin_corr_melt = melt(bt_mucin_corr)
+merged <- merge(bt_wc_corr_melt, bt_mucin_corr_melt, by = c("Var1", "Var2"))
+
+cor(merged$value.x, merged$value.y)
+
+
+
+```
