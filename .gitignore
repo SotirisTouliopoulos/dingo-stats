@@ -2,3 +2,4 @@ data/
 plots/
 ext_data/dingo_samples/
 ext_data/optgp_samples/
+code/loopless/__pycache__/
