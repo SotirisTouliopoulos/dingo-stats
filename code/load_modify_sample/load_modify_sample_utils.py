@@ -6,7 +6,9 @@ from cobra.util.solver import linear_reaction_coefficients
 from dingo import set_default_solver
 from gapsplit import gapsplit
 from cobra.flux_analysis.loopless import add_loopless
-
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def load_model(filepath):
     cobra_model = read_sbml_model(filepath)
@@ -103,7 +105,7 @@ def sample_dingo(dingo_model, reaction_in_rows = True, ess=1000, psrf = False):
     return samples_dingo_default
 
 
-def sample_gapsplit(cobra_model, n_samples = 3000, reaction_in_rows = True, add_loopless_cobrapy = False):
+def sample_gapsplit(cobra_model, n_samples = 3000, reaction_in_rows = True, add_loopless_cobrapy = False, fraction_of_optimum=0):
     
     ec_cobra_model = cobra_model.copy()
     
@@ -114,7 +116,7 @@ def sample_gapsplit(cobra_model, n_samples = 3000, reaction_in_rows = True, add_
         ec_cobra_model, 
         n=n_samples, 
         gurobi_direct=False,
-        fraction_of_optimum=0.5
+        fraction_of_optimum=fraction_of_optimum
     )
     
     gapsplit_samples = gapsplit_samples.to_numpy()
@@ -123,3 +125,37 @@ def sample_gapsplit(cobra_model, n_samples = 3000, reaction_in_rows = True, add_
         gapsplit_samples = gapsplit_samples.T
         
     return gapsplit_samples
+
+
+def plot_grid_95_reactions(samples, cobra_model, nrows=20, ncols=5):
+    _cobra_reactions_str = [str(reaction.id) for reaction in cobra_model.reactions]
+    _samples = samples.copy()
+    
+    if nrows * ncols < len(_cobra_reactions_str):
+        raise Exception("Change dimensions of the plot (nrows, ncols) to store all distributions")
+    
+    # if provided sampling dataset has reactions as rows ==> transpose
+    if _samples.shape[0] == len(_cobra_reactions_str):
+        _samples = _samples.T
+
+    _df = pd.DataFrame(_samples)
+    _df.columns = _cobra_reactions_str
+
+    _nrows = nrows
+    _ncols = ncols
+    _fig, _axes = plt.subplots(nrows=_nrows, ncols=_ncols, figsize=(4*_ncols, 3*_nrows))
+    _axes = np.array(_axes).flatten()
+
+    # Plot each column in its subplot
+    for i, col in enumerate(_df.columns):
+        ax = _axes[i]
+        ax.hist(_df[col], bins=20, color='skyblue', edgecolor='black')
+        ax.set_title(col)
+        ax.grid(True)
+
+    # If there are unused axes (e.g., more grid spots than columns), hide them
+    for j in range(len(_df.columns), len(_axes)):
+        _fig.delaxes(_axes[j])  # or: axes[j].axis('off')
+
+    plt.tight_layout()
+    plt.show()
