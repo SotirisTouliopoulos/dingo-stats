@@ -1,5 +1,11 @@
 data/
 plots/
+code/__pycache__
 ext_data/dingo_samples/
 ext_data/optgp_samples/
+ext_data/models/model.lp
 code/loopless/__pycache__/
+code/load_modify_sample/__pycache__/
+code/correlations/__pycache__
+code/graphs/__pycache__
+.vscode

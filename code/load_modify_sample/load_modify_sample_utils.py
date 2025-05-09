@@ -9,6 +9,9 @@ from cobra.flux_analysis.loopless import add_loopless
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy import stats
+import pickle
+
 
 def load_model(filepath):
     cobra_model = read_sbml_model(filepath)
@@ -80,8 +83,8 @@ def modify_model(cobra_model, objective_function="", optimal_percentage=100, rea
     return modified_cobra_model, modified_dingo_model
     
 
-def sample_optgp(cobra_model, n_samples = 3000, reaction_in_rows = True):
-    sampler_optgp = OptGPSampler(cobra_model)
+def sample_optgp(cobra_model, n_samples = 3000, thinning = 100, reaction_in_rows = True):
+    sampler_optgp = OptGPSampler(cobra_model, thinning=thinning)
     samples_optgp = sampler_optgp.sample(n=n_samples)
     samples_optgp = samples_optgp.to_numpy()
     
@@ -127,35 +130,60 @@ def sample_gapsplit(cobra_model, n_samples = 3000, reaction_in_rows = True, add_
     return gapsplit_samples
 
 
+def export_to_pickle(samples, filename):
+    with open(filename, "wb") as hopsy_samples_file: 
+        pickle.dump(samples, hopsy_samples_file)
+
+
 def plot_grid_95_reactions(samples, cobra_model, nrows=20, ncols=5):
-    _cobra_reactions_str = [str(reaction.id) for reaction in cobra_model.reactions]
-    _samples = samples.copy()
+    cobra_reactions_str = [str(reaction.id) for reaction in cobra_model.reactions]
+    samples = samples.copy()
     
-    if nrows * ncols < len(_cobra_reactions_str):
+    if nrows * ncols < len(cobra_reactions_str):
         raise Exception("Change dimensions of the plot (nrows, ncols) to store all distributions")
     
     # if provided sampling dataset has reactions as rows ==> transpose
-    if _samples.shape[0] == len(_cobra_reactions_str):
-        _samples = _samples.T
+    if samples.shape[0] == len(cobra_reactions_str):
+        samples = samples.T
 
-    _df = pd.DataFrame(_samples)
-    _df.columns = _cobra_reactions_str
+    df = pd.DataFrame(samples)
+    df.columns = cobra_reactions_str
 
-    _nrows = nrows
-    _ncols = ncols
-    _fig, _axes = plt.subplots(nrows=_nrows, ncols=_ncols, figsize=(4*_ncols, 3*_nrows))
-    _axes = np.array(_axes).flatten()
+    nrows = nrows
+    ncols = ncols
+    fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(4*ncols, 3*nrows))
+    axes = np.array(axes).flatten()
 
     # Plot each column in its subplot
-    for i, col in enumerate(_df.columns):
-        ax = _axes[i]
-        ax.hist(_df[col], bins=20, color='skyblue', edgecolor='black')
+    for i, col in enumerate(df.columns):
+        ax = axes[i]
+        ax.hist(df[col], bins=20, color='skyblue', edgecolor='black')
         ax.set_title(col)
         ax.grid(True)
 
     # If there are unused axes (e.g., more grid spots than columns), hide them
-    for j in range(len(_df.columns), len(_axes)):
-        _fig.delaxes(_axes[j])  # or: axes[j].axis('off')
+    for j in range(len(df.columns), len(axes)):
+        fig.delaxes(axes[j])  # or: axes[j].axis('off')
 
     plt.tight_layout()
     plt.show()
+    
+
+def sampling_statistics(samples, reactions_ids_list=None, reaction_id=""):
+    if reactions_ids_list != None:
+        raise Exception("List with Reactions IDs not provided")
+        
+    if reaction_id in reactions_ids_list:
+        reaction_index = reactions_ids_list.index(reaction_id)
+    
+        mean = np.mean(samples[reaction_index])
+        min = np.min(samples[reaction_index]) 
+        max = np.max(samples[reaction_index])
+        std = np.std(samples[reaction_index])
+        skewness = stats.skew(samples[reaction_index])
+        kurtosis = stats.kurtosis(samples[reaction_index])
+    
+        return mean, min, max, std, skewness, kurtosis
+    
+    else:
+        print("Reaction ID provided not in the list of Reactions IDs")
