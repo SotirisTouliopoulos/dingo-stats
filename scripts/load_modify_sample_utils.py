@@ -131,8 +131,15 @@ def sample_gapsplit(cobra_model, n_samples = 3000, reaction_in_rows = True, add_
 
 
 def export_to_pickle(samples, filename):
-    with open(filename, "wb") as hopsy_samples_file: 
-        pickle.dump(samples, hopsy_samples_file)
+    with open(filename, "wb") as samples_file: 
+        pickle.dump(samples, samples_file)
+        
+        
+def load_from_pickle(filename):
+    with open(filename, "rb") as samples_file:
+        samples_file = pickle.load(samples_file)
+        
+    return samples_file
 
 
 def plot_grid_95_reactions(samples, cobra_model, nrows=20, ncols=5):

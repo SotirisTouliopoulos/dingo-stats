@@ -50,6 +50,11 @@ def construct_graph(linear_correlation_matrix = None, non_linear_correlation_mat
             G_combined.remove_nodes_from(unconnected_nodes)
     
         return G_combined, pos
+    
+    
+    G = nx.relabel_nodes(G, lambda x: reactions[x] if reactions else x)
+    pos = nx.spring_layout(G)
+    return G, pos
 
 
 def plot_graph(G, pos):
