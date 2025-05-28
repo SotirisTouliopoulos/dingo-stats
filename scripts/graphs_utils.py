@@ -43,17 +43,25 @@ def construct_graph(linear_correlation_matrix = None, non_linear_correlation_mat
             G_combined.add_edge(u, v, weight=d['weight'], source='matrix2')
             
         G_combined = nx.relabel_nodes(G_combined, lambda x: reactions[x] if reactions else x)
-        pos = nx.spring_layout(G_combined)
         
+        #pos = nx.spring_layout(G_combined)
         unconnected_nodes = list(nx.isolates(G_combined))
         if remove_unconnected_nodes == True:
             G_combined.remove_nodes_from(unconnected_nodes)
+        
+        pos = nx.spring_layout(G_combined)
     
         return G_combined, pos
     
     
     G = nx.relabel_nodes(G, lambda x: reactions[x] if reactions else x)
+    
+    unconnected_nodes = list(nx.isolates(G))
+    if remove_unconnected_nodes == True:
+        G.remove_nodes_from(unconnected_nodes)
+    
     pos = nx.spring_layout(G)
+    
     return G, pos
 
 
@@ -116,5 +124,6 @@ def compare_betweenness_centralities(Graph_1, Graph_2):
     centrality_diff = {node: centrality_G2.get(node, 0) - centrality_G1.get(node, 0) for node in set(Graph_1.nodes()).union(Graph_2.nodes())}
     sorted_nodes = sorted(centrality_diff.items(), key=lambda x: x[1], reverse=True)
 
-    for node, change in sorted_nodes:
-            print(f"Node {node}: ΔCentrality = {change:.4f}")
+    return sorted_nodes
+    #for node, change in sorted_nodes:
+    #        print(f"Node {node}: ΔCentrality = {change:.4f}")

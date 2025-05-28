@@ -6,43 +6,110 @@ import math
 from scipy.spatial.distance import jensenshannon
 
 
+BIGG_COFACTORS = ['atp_c0', 'atp_c', 'adp_c', 'adp_c0',
+                  'atp_c0', 'atp_c', 'adp_c', 'adp_c0',
+                  'udp_c0', 'udp_c', 'ump_c0', 'ump_c',
+                  'amp_c', 'amp_c0',
+                  'gdp_c0', 'gdp_c', 'gtp_c0', 'gtp_c',
+                  'accoa_c', 'accoa_c0', 'coa_c', 'coa_c0',  # acetyl-CoA
+                  'q8_c0', 'q8_c', 'q8h2_c', 'q8h2_c0', 'mqn8_c', 'mqn8_c0', 'mql8_c', 'mql8_c0', 'q8h2_c', 'q8h2_c0',
+                  'actp_c0', 'actp_c',
+                  'h2o_c', 'h2o_c0', 'h2o_e', 'h2o[e]',
+                  'pi_e', 'pi[e]', 'pi_c', 'pi_c0', 'ppi_c0', 'ppi_c',
+                  'pep_c', 'pep_c0',
+                  'h_c', 'h_c0', 'h_e', 'h[e]',
+                  'o2_c', 'o2_c0', 'o2_e', 'o2[e]',
+                  'co2_c', 'co2_c0', 'co2_e', 'co2[e]',
+                  'nadp_c', 'nadp_c0', 'nadph_c', 'nadph_c0', 'nad_c', 'nad_c0', 'nadh_c', 'nadh_c0',
+                  'nadp_e', 'nadp[e]', 'nadph_e', 'nadph_c0', 'nad_e', 'nad[e]', 'nadh_e', 'nadh[e]',
+                  'fadh2_c', 'fadh2_c0', 'fad_c', 'fad_c0',
+                  'nh4_c', 'nh4_c0', 'nh4_e', 'nh4[e]',
+                  'pyr_c0', 'pyr_c'
+                ]
+
+
+BIGG_BUILDING_BLOCKS = ['ala_L_c0', 'asp_L_c0', ' gln_L_c0', 'glu_L_c0', 
+                        'glu_L_c0', 'ser_L_c0', 'trp_L_c0', 'met_L_c0', 
+                        'lys_L_c0', 'cyst_L_c0']
+
+
+MODELSEED_COFACTORS = [
+    "cpd00001_c0",  # h2o
+    "cpd00002_c0",  # atp
+    "cpd00003_c0",  # nad
+    "cpd00004_c0",
+    "cpd00005_c0",
+    "cpd00006_c0",  # nadp
+    "cpd00007_c0",
+    "cpd00008_c0",  # adp
+    "cpd00009_c0",  # HZ added
+    "cpd00010_c0",  # CoA
+    "cpd00011_c0",  # co2
+    "cpd00012_c0",  # ppi
+    "cpd00013_c0",  # NH3
+    "cpd00014_c0",
+    "cpd00015_c0",  # fad
+    "cpd00018_c0",  # amp-like
+    "cpd00020_c0",  # pyruvate
+    "cpd00022_c0",
+    "cpd00031_c0",  # gdp-like
+    "cpd00038_c0",  # gtp
+    "cpd00056_c0",  # ttp
+    "cpd00061_c0",  # pep
+    "cpd00067_c0",  # H+
+    "cpd15353_c0",
+    "cpd15499_c0",
+    "cpd15561_c0",
+    "cpd00097_c0",
+    "cpd00982_c0",
+    "cpd01270_c0",
+    "cpd00052_c0",
+    "cpd00062_c0",
+    "cpd00068_c0",
+    "cpd00115_c0",
+    "cpd00241_c0",
+    "cpd00356_c0",
+    "cpd00357_c0",
+    "cpd00358_c0",
+    "cpd00530_c0",
+    "cpd00977_c0",
+    "cpd01775_c0"
+]
+
+
 def correlated_reactions(steady_states, reactions=[],
-                         split_bidirectional_reactions=False, include_non_linear=False, boolean_sharing_metabolites_matrix=None, 
-                         pearson_cutoff = 0.30, indicator_cutoff = 1.0, jensenshannon_cutoff = 0.1, std_cutoff = 1e-6,
-                         cells = 10, cop_coeff = 0.3, 
+                         include_non_linear=False, boolean_sharing_metabolites_matrix=None, 
+                         linear_corr_cutoff = 0.30, indicator_cutoff = 1.2, jensenshannon_cutoff = 0.1, std_cutoff = 1e-3,
+                         cells = 4, cop_coeff = 0.2, 
                          lower_triangle = True, verbose = False):
     """A Python function to calculate the correlation matrix from a steady states array
 
     Keyword arguments:
     steady_states -- A numpy array of the generated steady states fluxes
-    split_bidirectional_reactions -- A boolean variable that if True, splits flux from reversible reactions into forward and reverse flux
-    include_non_linear -- A boolean variable that if True, takes into account and calculates non-linear correlations
     reactions -- A list with the reactions IDs (must be in accordance with the rows of the steady states)
-    pearson_cutoff -- A cutoff to filter (remove) linear correlations based on the pearson coefficient
-    jensenshannon_cutoff -- A cutoff to filter (remove) non-linear correlations based on the Jensen-Shannon metric
-    std_cutoff -- A cutoff to avoid computing the copula between 2 fluxes with almost fixed values
+    include_non_linear -- A boolean variable that if True, takes into account and calculates non-linear correlations
+    boolean_sharing_metabolites_matrix -- A boolean symmetric numpy 2D array with True/False based on the presense of shared metabolites between reactions
+    linear_corr_cutoff -- A cutoff to filter (remove) linear correlations (not greater than the cutoff) based on the pearson or spearmanr coefficient
     indicator_cutoff -- A cutoff to classify non-linear correlations as positive, negative or non-significant
+    jensenshannon_cutoff -- A cutoff to filter (remove) non-linear correlations (not greater than the cutoff) based on the Jensen-Shannon metric
+    std_cutoff -- A cutoff to avoid computing the copula between 2 fluxes with almost fixed values
     cells -- Number of cells to compute the copula
     cop_coeff -- A value that narrows or widens the width of the copula's diagonal (use lower values to capture extreme tail dependences)
     lower_triangle -- A boolean variable that if True returns only the lower triangular matrix
     verbose -- A boolean variable that if True additional information is printed as an output.
     
-    Returns:
-    linear_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes only linear correlations
-    mixed_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes both linear and non-linear correlations
-    non_linear_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes only non-linear correlations
-    correlations_dictionary -- A dictionary containing unique reaction pairs and their corresponding correlation values
+    if include_non_linear is set to False this function returns:
+        linear_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes only linear correlations
+        correlations_dictionary -- A dictionary containing unique reaction pairs and their corresponding correlation values
+
+    if include_non_linear is set to True this function additionally returns:
+        mixed_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes both linear and non-linear correlations
+        non_linear_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes only non-linear correlations
     """
     
     if indicator_cutoff < 1:
         raise Exception("Indicator cutoff must be at least equal to 1")
-    
-    if split_bidirectional_reactions == False:
-        steady_states = np.absolute(steady_states)
-    else:
-        steady_states, reactions = split_forward_reverse(steady_states, reactions)
-        
-    
+
     if cop_coeff > 0.4 or cop_coeff < 0.2:
         raise Exception("Input value to cop_coeff parameter must be between 0.2 and 0.4")
     
@@ -64,9 +131,9 @@ def correlated_reactions(steady_states, reactions=[],
     linear_correlation_matrix = corr_matrix.copy()    
     
     # find indices of correlation matrix where correlation does not occur
-    no_corr_indices = np.argwhere((linear_correlation_matrix < pearson_cutoff) & (linear_correlation_matrix > -pearson_cutoff))
+    no_corr_indices = np.argwhere((linear_correlation_matrix < linear_corr_cutoff) & (linear_correlation_matrix > -linear_corr_cutoff))
     # find indices of correlation matrix where correlation does occur
-    corr_indices = np.argwhere((linear_correlation_matrix > pearson_cutoff) | (linear_correlation_matrix < -pearson_cutoff))
+    corr_indices = np.argwhere((linear_correlation_matrix > linear_corr_cutoff) | (linear_correlation_matrix < -linear_corr_cutoff))
         
     # replace values from the correlation matrix that do not overcome the pearson cutoff with 0
     for i in range(0, no_corr_indices.shape[0]):       
@@ -137,7 +204,6 @@ def correlated_reactions(steady_states, reactions=[],
             if index1 == index2:
                 continue
             
-            
             reaction1 = reactions[index1]
             reaction2 = reactions[index2]
                         
@@ -199,7 +265,6 @@ def correlated_reactions(steady_states, reactions=[],
             non_linear_correlation_matrix[~boolean_sharing_metabolites_matrix] = 0
             linear_correlation_matrix[~boolean_sharing_metabolites_matrix] = 0
             mixed_correlation_matrix[~boolean_sharing_metabolites_matrix] = 0
-            
 
         if lower_triangle == True:
             return linear_correlation_matrix, non_linear_correlation_matrix, mixed_correlation_matrix, correlations_dictionary
@@ -211,7 +276,7 @@ def correlated_reactions(steady_states, reactions=[],
             mixed_correlation_matrix = np.tril(mixed_correlation_matrix) + np.tril(mixed_correlation_matrix, -1).T
             
             return linear_correlation_matrix, non_linear_correlation_matrix, mixed_correlation_matrix, correlations_dictionary
-
+        
 
 def plot_correlation_matrix(correlation_matrix, reactions=[]):
     # Ensure data is clipped between -1 and +1
@@ -309,12 +374,12 @@ def copula_tail_dependence(copula, cop_coeff_1, cop_coeff_2, cop_coeff_3, indica
                 # values near the top right and bottom left corner
                 if (row+col >= cop_coeff_2*rows -1) & (row+col <= cop_coeff_3*rows -1):                    
                     # values near the top right
-                    if row <= rows / 2:
+                    if row < rows / 2:
                         blue_mass = blue_mass + copula[row][col]
                         top_right = top_right + copula[row][col]
                     
                     # values near the bottom left
-                    elif row > rows / 2:
+                    elif row >= rows / 2:
                         blue_mass = blue_mass + copula[row][col]
                         bottom_left = bottom_left + copula[row][col]
     
@@ -391,7 +456,6 @@ def plot_copula(data_flux1, data_flux2, n = 5, width = 900 , height = 600, expor
     fig.to_image(format = export_format, engine="kaleido")
     
     
-
 def split_forward_reverse(steady_states, reactions=[]):
     extended_reactions = []
     extended_steady_states = []
@@ -411,17 +475,16 @@ def split_forward_reverse(steady_states, reactions=[]):
 
 def find_reactants_products(cobra_model, reactions_ids=[]):
     
-    #reactions_ids =  [ reaction.id for reaction in cobra_model.reactions ]
-    
     reactants_list_all_reactions = []
     products_list_all_reactions = []
     reversibility_list_all_reactions = []
     
     for reaction in reactions_ids:
-        reaction_id = reaction.id
-        if reaction_id.endswith("_rev"):
+        if reaction.endswith("_rev"):
             reaction_id = reaction[:-4]
-        
+        else:
+            reaction_id = reaction
+
         reactants_list_single_reaction = []
         products_list_single_reaction = []
 
@@ -435,11 +498,13 @@ def find_reactants_products(cobra_model, reactions_ids=[]):
         
         for reactant in reactants:
             reactant = str(reactant)
-            reactants_list_single_reaction.append(reactant)
+            if (reactant not in BIGG_COFACTORS) and (reactant not in MODELSEED_COFACTORS):
+                reactants_list_single_reaction.append(reactant)
                 
         for product in products:
             product = str(product)
-            products_list_single_reaction.append(product)         
+            if (product not in BIGG_COFACTORS) and (product not in MODELSEED_COFACTORS):
+                products_list_single_reaction.append(product)         
                 
         reactants_list_all_reactions.append(reactants_list_single_reaction)
         products_list_all_reactions.append(products_list_single_reaction)
@@ -461,7 +526,7 @@ def sharing_metabolites(reactions_ids=[], reversibility_list_all_reactions=[], r
     products_b = products_list_all_reactions[reaction_b_index]
     
     if reaction_a_index == reaction_b_index:
-            return True
+        return True
         
     if (reversibility_list_all_reactions[reaction_a_index] == True) or (reversibility_list_all_reactions[reaction_b_index] == True):
 
@@ -492,15 +557,15 @@ def sharing_metabolites_square_matrix(reactions_ids=[], reversibility_list_all_r
 
     for reaction_a in reactions_ids:
         for reaction_b in reactions_ids:
-            reaction_a_id = reaction_a.id
-            reaction_b_id = reaction_b.id
+            #reaction_a_id = reaction_a.id
+            #reaction_b_id = reaction_b.id
             
-            reaction_a_id_index = reactions_ids.index(reaction_a_id)
-            reaction_b_id_index = reactions_ids.index(reaction_b_id)
+            reaction_a_id_index = reactions_ids.index(reaction_a)
+            reaction_b_id_index = reactions_ids.index(reaction_b)
         
             sharing = sharing_metabolites(reactions_ids, reversibility_list_all_reactions, 
                                 reactants_list_all_reactions, products_list_all_reactions,
-                                reaction_a_id, reaction_b_id)
+                                reaction_a, reaction_b)
             
             boolean_sharing_metabolites_matrix[reaction_a_id_index, reaction_b_id_index] = sharing
             boolean_sharing_metabolites_matrix[reaction_b_id_index, reaction_a_id_index] = sharing
