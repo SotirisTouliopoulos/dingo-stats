@@ -279,6 +279,10 @@ def correlated_reactions(steady_states, reactions=[],
         
 
 def plot_correlation_matrix(correlation_matrix, reactions=[]):
+    """
+    Function that plots a correlation matrix
+    """
+    
     # Ensure data is clipped between -1 and +1
     correlation_matrix = np.clip(correlation_matrix, -1, 1)
 
@@ -342,6 +346,12 @@ def compute_copula(flux1, flux2, n):
 
 
 def copula_tail_dependence(copula, cop_coeff_1, cop_coeff_2, cop_coeff_3, indicator_cutoff):
+    """
+    Function that given a copula and parameters, aims to reveal whether 2 reactions have a positive or negative tail-dependence.
+    
+    cop_coeff parameters deal with the width of the diagonal of the copula.
+    indicator_cutoff is a cutoff to filter and reveal the sign (positive/negative) between a dependence 
+    """
 
     rows, cols = copula.shape
         
@@ -457,6 +467,12 @@ def plot_copula(data_flux1, data_flux2, n = 5, width = 900 , height = 600, expor
     
     
 def split_forward_reverse(steady_states, reactions=[]):
+    """
+    Function that given a sampling (steady states) dataset with reactions as rows, splits 
+    all reactions having at least 1 positive and at least 1 negative flux value into separate 
+    forward and reverse reactions
+    """
+    
     extended_reactions = []
     extended_steady_states = []
     for index, r in enumerate(steady_states):
@@ -474,6 +490,9 @@ def split_forward_reverse(steady_states, reactions=[]):
 
 
 def find_reactants_products(cobra_model, reactions_ids=[]):
+    """
+    Function that identifies identifies the reactantsand products of each reaction in given model
+    """
     
     reactants_list_all_reactions = []
     products_list_all_reactions = []
@@ -513,7 +532,10 @@ def find_reactants_products(cobra_model, reactions_ids=[]):
 
 
 def sharing_metabolites(reactions_ids=[], reversibility_list_all_reactions=[], reactants_list_all_reactions=[], products_list_all_reactions=[], reaction_a="", reaction_b=""):
-        
+    """
+    Function that compares the reactants and products of 2 reactions and returns True when finding a common metabolite
+    """    
+    
     #reactions_ids =  [ reaction.id for reaction in cobra_model.reactions ]
 
     reaction_a_index = reactions_ids.index(reaction_a)
@@ -552,6 +574,11 @@ def sharing_metabolites(reactions_ids=[], reversibility_list_all_reactions=[], r
             
 
 def sharing_metabolites_square_matrix(reactions_ids=[], reversibility_list_all_reactions=[], reactants_list_all_reactions=[], products_list_all_reactions=[]):
+    """
+    Function that given the list wth reaction reactants/products and reversibility information calculated with a function above,
+    creates a square boolean matrix with True values representing reactions sharing the same metabolite.
+    """
+    
     reactions_count = len(reactions_ids)
     boolean_sharing_metabolites_matrix = np.full((reactions_count, reactions_count), None, dtype=bool)
 

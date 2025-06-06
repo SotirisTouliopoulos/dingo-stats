@@ -2,10 +2,17 @@
 import networkx as nx
 import numpy as np
 import plotly.graph_objects as go
+from networkx.algorithms.community import modularity, greedy_modularity_communities
+import plotly.express as px
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
 
 
 def construct_graph(linear_correlation_matrix = None, non_linear_correlation_matrix = None, reactions=[], remove_unconnected_nodes=False, correction=True):
-           
+    """
+    Function used to create a graph either from a linear correlation matrix, or from both a linear and non-linear correlation matrix 
+    """      
+    
     graph_matrix_1 = linear_correlation_matrix.copy()
     np.fill_diagonal(graph_matrix_1, 0)
     graph_matrix_1 = np.nan_to_num(graph_matrix_1, nan=0.0)
@@ -65,8 +72,28 @@ def construct_graph(linear_correlation_matrix = None, non_linear_correlation_mat
     return G, pos
 
 
-def plot_graph(G, pos):
+def plot_graph(G, pos, clusters, showlegend=False):
+    """
+    Function that given a graph created from the function above, plots its layout in an interaxtive plot.
+    
+    clusters is a nested list showing the structure of the clusters created from the "cluster_corr_reactions" of dingo.
+    When showlegend is True, nodes appear on the right of the panel and user can turn off nodes of no interest
+    """
+    
     fig = go.Figure()
+    
+    # Define color palette
+    def get_continuous_colors(n):
+        cmap = cm.get_cmap("viridis", n)
+        return [mcolors.to_hex(cmap(i)) for i in range(n)]
+
+    cluster_colors = get_continuous_colors(len(clusters))
+
+    # Assign cluster index to each node
+    node_cluster_map = {}
+    for idx, cluster in enumerate(clusters):
+        for node in cluster:
+            node_cluster_map[node] = idx
 
     # Edges
     for u, v, data in G.edges(data=True):
@@ -76,7 +103,7 @@ def plot_graph(G, pos):
         weight = data.get('weight', 1.0)
 
         if weight is None or np.isnan(weight):
-            weight = 0  # fallback to small value
+            weight = 0
 
         # Fixed color by source
         if source == 'matrix1':
@@ -101,29 +128,127 @@ def plot_graph(G, pos):
     # Nodes
     for node in G.nodes():
         x, y = pos[node]
+        cluster_idx = node_cluster_map.get(node, -1)
+        node_color = cluster_colors[cluster_idx % len(cluster_colors)] if cluster_idx >= 0 else 'black'
         node_name = G.nodes[node].get('name', str(node))
 
         fig.add_trace(go.Scatter(
             x=[x], y=[y],
             mode='markers+text',
-            marker=dict(size=10, color='black'),
+            marker=dict(size=10, color=node_color),
             text=[node_name],
             textposition='top center',
             name=node_name,
-            showlegend=False
+            showlegend=showlegend
         ))
 
-    fig.update_layout(width=800, height=800, title='')
+    fig.update_layout(width=1000, height=1000, title='')
     fig.show()
     
     
-def compare_betweenness_centralities(Graph_1, Graph_2):
+def compare_network_modularities(Graph_1, Graph_2, tol=1e-3):
+    """
+    Function that compares the modularity between 2 different graphs
+    """
     
-    centrality_G1 = nx.betweenness_centrality(Graph_1, weight='weight', normalized=True)
-    centrality_G2 = nx.betweenness_centrality(Graph_2, weight='weight', normalized=True)
-    centrality_diff = {node: centrality_G2.get(node, 0) - centrality_G1.get(node, 0) for node in set(Graph_1.nodes()).union(Graph_2.nodes())}
+    for u, v, d in Graph_1.edges(data=True):
+        d['weight'] = abs(d['weight'])
+        
+    for u, v, d in Graph_2.edges(data=True):
+        d['weight'] = abs(d['weight'])
+    
+    communities_graph_1 = greedy_modularity_communities(Graph_1, weight="weight")
+    mod_score_graph_1 = modularity(Graph_1, communities_graph_1, weight="weight")
+    
+    communities_graph_2 = greedy_modularity_communities(Graph_2, weight="weight")
+    mod_score_graph_2 = modularity(Graph_2, communities_graph_2, weight="weight")
+    
+    print(mod_score_graph_1, mod_score_graph_2)
+    
+    mod_diff = mod_score_graph_2 - mod_score_graph_1
+    
+    if mod_diff > tol:
+        print("Increased Modularity: Graph_2")
+    elif mod_diff < tol:
+        print("Increased Modularity: Graph_1")
+    else:
+        print("Graphs with similar Modularity")
+    
+    return mod_diff
+
+
+def compare_betweenness_centralities(Graph_1, Graph_2):
+    """
+    Function that compares the betweenness centralities across all nodes between 2 different graphs
+    
+    Correlations must be converted, as this function uses higher values as distances
+    """
+    
+    for u, v, d in Graph_1.edges(data=True):
+        d['distance'] = 1 - abs(d['weight'])
+        
+    for u, v, d in Graph_2.edges(data=True):
+        d['distance'] = 1 - abs(d['weight'])
+    
+    centrality_G1 = nx.betweenness_centrality(Graph_1, weight='distance', normalized=True)
+    centrality_G2 = nx.betweenness_centrality(Graph_2, weight='distance', normalized=True)
+    
+    all_nodes = set(Graph_1.nodes()).union(Graph_2.nodes())
+
+    centrality_diff = {
+        node: (centrality_G2.get(node, 0) - centrality_G1.get(node, 0))
+        for node in all_nodes
+    }
+    
     sorted_nodes = sorted(centrality_diff.items(), key=lambda x: x[1], reverse=True)
 
     return sorted_nodes
-    #for node, change in sorted_nodes:
-    #        print(f"Node {node}: ΔCentrality = {change:.4f}")
+
+
+def compare_closeness_centralities(Graph_1, Graph_2):
+    """
+    Function that compares the closeness centralities across all nodes between 2 different graphs
+    
+    Correlations must be converted, as this function uses higher values as distances
+    """
+    
+    for u, v, d in Graph_1.edges(data=True):
+        d['distance'] = 1 - abs(d['weight'])
+        
+    for u, v, d in Graph_2.edges(data=True):
+        d['distance'] = 1 - abs(d['weight'])
+        
+    centrality_G1 = nx.closeness_centrality(Graph_1, distance='distance')
+    centrality_G2 = nx.closeness_centrality(Graph_2, distance='distance')
+    
+    all_nodes = set(Graph_1.nodes()).union(Graph_2.nodes())
+    centrality_diff = {
+        node: centrality_G2.get(node, 0) - centrality_G1.get(node, 0)
+        for node in all_nodes
+    }
+    
+    sorted_nodes = sorted(centrality_diff.items(), key=lambda x: x[1], reverse=True)
+    return sorted_nodes
+
+
+def weighted_node_centrality(Graph_1, Graph_2):
+    """
+    Function that creates the difference between node centralities (sum of values of weights) between 2 different graphs
+    """
+    
+    for u, v, d in Graph_1.edges(data=True):
+        d['weight'] = abs(d['weight'])
+        
+    for u, v, d in Graph_2.edges(data=True):
+        d['weight'] = abs(d['weight'])
+        
+    all_nodes = set(Graph_1.nodes()).union(Graph_2.nodes())
+
+    centrality_diff = {}
+    for node in all_nodes:
+        deg1 = Graph_1.degree(node, weight='weight') if node in Graph_1 else 0
+        deg2 = Graph_2.degree(node, weight='weight') if node in Graph_2 else 0
+        centrality_diff[node] = deg2 - deg1
+
+    sorted_nodes = sorted(centrality_diff.items(), key=lambda x: x[1], reverse=True)
+    return sorted_nodes

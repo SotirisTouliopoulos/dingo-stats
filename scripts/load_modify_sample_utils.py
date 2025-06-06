@@ -14,6 +14,12 @@ import pickle
 
 
 def load_model(filepath):
+    """
+    Function to load and return a model in both cobra and dingo formats from given path.
+    It additionally returns 2 lists, one with the corresponding model reactions (cobra_reactions) 
+    and one with their IDs (dingo_reactions)
+    """
+    
     cobra_model = read_sbml_model(filepath)
     cobra_reactions = cobra_model.reactions
     
@@ -24,6 +30,10 @@ def load_model(filepath):
 
 
 def get_objective_functions(cobra_model):
+    """
+    Function to find and return the objective functions of a cobra model
+    """
+    
     objectives_dict = linear_reaction_coefficients(cobra_model)
     objective_functions = list(objectives_dict.keys())
     objective_functions_ids = [rxn.id for rxn in objective_functions]
@@ -32,6 +42,11 @@ def get_objective_functions(cobra_model):
 
 
 def get_reaction_bounds(cobra_model):
+    """
+    Function to create and return a dictionary of a cobra's model reaction IDs as keys and 
+    their corresponding bounds as values
+    """
+    
     reaction_bounds_dict = { }
     reaction_ids = [ reaction.id for reaction in cobra_model.reactions ]
                 
@@ -45,45 +60,54 @@ def get_reaction_bounds(cobra_model):
     return reaction_bounds_dict
 
 
-def modify_model(cobra_model, objective_function="", optimal_percentage=100, reaction_bounds={}):
+def modify_model(cobra_model, objective_function="", optimal_percentage=100, reaction_bounds={}, objective_direction="max"):
+    """
+    Function that modifies a given cobra model. Users can change objective function, optimal percentage,
+    define custom reaction bounds and change objective direction
+    """
     modified_cobra_model = cobra_model.copy()
     
-    # first define reaction bounds from dictionary
+    # is user wants to define reaction bounds from a dictionary with key are reaction id and values the min/max flux bounds
     if len(reaction_bounds) >= 1:
         for reaction, rbounds in reaction_bounds.items():
             rxn = modified_cobra_model.reactions.get_by_id(reaction)
             rxn.lower_bound, rxn.upper_bound = rbounds
         
     # then modify object function and optimal percentage (this may overwrite bounds for objective function from previous dictionary)
-    modified_cobra_model.objective = objective_function
+    modified_cobra_model.objective = {
+    modified_cobra_model.reactions.get_by_id(objective_function): 1.0
+    }
     modified_cobra_model.reactions.get_by_id(objective_function).upper_bound = 1000
     
     fba_solution = modified_cobra_model.optimize()
     objective = fba_solution.objective_value
     
     fraction_of_optimum = float(optimal_percentage / 100)
-    # in case due to numeric errors it gets a higher value
+    # in case numeric errors lead to a higher value
     if fraction_of_optimum > 1:
         fraction_of_optimum = 1
     
-    # in case due to numeric errors it gets a higher value
+    # in case numeric errors lead to a higher value
     minimum_objective_value = round( (objective * fraction_of_optimum), 6)
     if minimum_objective_value > objective:
-        minimum_objective_value = minimum_objective_value
-        
-    # to avoid errors
-    if optimal_percentage == 100:
-        minimum_objective_value = minimum_objective_value - 1e-3
+        minimum_objective_value = objective - 1e-3
     
     modified_cobra_model.reactions.get_by_id(objective_function).lower_bound = minimum_objective_value
+    modified_cobra_model.objective_direction = objective_direction
     
     modified_dingo_model = MetabolicNetwork.from_cobra_model(modified_cobra_model)
-    modified_dingo_model.set_opt_percentage(optimal_percentage)
+    #modified_dingo_model.set_opt_percentage(optimal_percentage)
     
     return modified_cobra_model, modified_dingo_model
     
 
 def sample_optgp(cobra_model, n_samples = 3000, thinning = 100, reaction_in_rows = True):
+    """
+    Function that performs sampling with the OptGP sampler of cobrapy. Users can define number of samples,
+    thinning parameter. Resulting samples dataset is returned in a numpy array with 
+    reactions as rows or columns specified by user
+    """
+    
     sampler_optgp = OptGPSampler(cobra_model, thinning=thinning)
     samples_optgp = sampler_optgp.sample(n=n_samples)
     samples_optgp = samples_optgp.to_numpy()
@@ -94,21 +118,65 @@ def sample_optgp(cobra_model, n_samples = 3000, thinning = 100, reaction_in_rows
     return samples_optgp
     
     
-def sample_dingo(dingo_model, reaction_in_rows = True, ess=1000, psrf = False):
-    set_default_solver("gurobi")
-
-    sampler_dingo_default = PolytopeSampler(dingo_model)
-    samples_dingo_default = sampler_dingo_default.generate_steady_states(ess=ess, psrf=psrf)
+def sample_dingo(dingo_model, reaction_in_rows = True, ess=1000, psrf = False, solver="gurobi", final_n_samples = None):
+    """
+    Function that performs sampling with dingo. Users can define the ess and psrf parameters.
+    Resulting samples dataset is returned in a numpy array with reactions as rows or columns specified by user.
+    User can call the "reduce_samples_dimensions" function to reduce the samples to a specified number
+    """
     
+    set_default_solver(solver)
+
+    
+    def reduce_samples_dimensions(samples, default_n_samples, final_n_samples):
+        """
+        Function that reduces the number of samples dingo returns to a user-specified value
+        (current implementation may include the same sample more than 1 time in the final samples dataset)
+        """
+        
+        if isinstance(final_n_samples, int):
+            
+            if final_n_samples < default_n_samples:
+                
+                # Reduce the dimensions of the samples to a specific value
+                samples_initial_dimensions = samples.shape[1]
+        
+                step = samples_initial_dimensions / final_n_samples
+                
+                subsample_indices = np.arange(0, samples_initial_dimensions, step).astype(int)
+                
+                # force exactly the same number of samples. This may take duplicate samples
+                subsample_indices = subsample_indices[:final_n_samples]
+                
+                final_samples = samples[:, subsample_indices]
+                
+            else:
+                raise ValueError("samples_dimensions must be an integer and not exceed the current dimensions.")
+        
+        return final_samples
+    
+    
+    sampler_dingo_default = PolytopeSampler(dingo_model)
+    samples_dingo = sampler_dingo_default.generate_steady_states(ess=ess, psrf=psrf)
+    default_n_samples = samples_dingo.shape[1]
+    
+    if final_n_samples != None:
+        samples_dingo = reduce_samples_dimensions(samples_dingo, default_n_samples, final_n_samples)
+        
     if reaction_in_rows == True:
         pass
     else:
-        samples_dingo_default = samples_dingo_default.T
+        samples_dingo = samples_dingo.T
         
-    return samples_dingo_default
+    return samples_dingo
 
 
 def sample_gapsplit(cobra_model, n_samples = 3000, reaction_in_rows = True, add_loopless_cobrapy = False, fraction_of_optimum=0):
+    """
+    Function that performs sampling with the gapsplit algorithm. Users can define number of samples, if they want
+    to modify their model with the "add_loopless" function and a value for the "fraction_of_optimum" parameter used in the gapsplit algorithm.
+    Resulting samples dataset is returned in a numpy array with reactions as rows or columns specified by user
+    """
     
     ec_cobra_model = cobra_model.copy()
     
@@ -131,11 +199,19 @@ def sample_gapsplit(cobra_model, n_samples = 3000, reaction_in_rows = True, add_
 
 
 def export_to_pickle(samples, filename):
+    """
+    Function that exports samples to a pickle file
+    """
+    
     with open(filename, "wb") as samples_file: 
         pickle.dump(samples, samples_file)
         
         
 def load_from_pickle(filename):
+    """
+    Function that loads samples from a pickle file
+    """
+    
     with open(filename, "rb") as samples_file:
         samples_file = pickle.load(samples_file)
         
@@ -143,6 +219,11 @@ def load_from_pickle(filename):
 
 
 def plot_grid_95_reactions(samples, cobra_model, nrows=20, ncols=5):
+    """
+    Function that plots a grid of the sampling distributions of all model reactions.
+    User can define distributions plotted per rows and columns
+    """
+    
     cobra_reactions_str = [str(reaction.id) for reaction in cobra_model.reactions]
     samples = samples.copy()
     
@@ -177,7 +258,11 @@ def plot_grid_95_reactions(samples, cobra_model, nrows=20, ncols=5):
     
 
 def sampling_statistics(samples, reactions_ids_list=None, reaction_id=""):
-    if reactions_ids_list != None:
+    """
+    Function that prints statistics for the sampling distribution of a specified model reaction
+    """
+    
+    if reactions_ids_list == None:
         raise Exception("List with Reactions IDs not provided")
         
     if reaction_id in reactions_ids_list:

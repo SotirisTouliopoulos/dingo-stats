@@ -5,7 +5,15 @@ from scipy import stats
 import numpy as np
         
 
-def significantly_altered_reactions(conditions=[], selected_comparisons = [(0, 1)], cobra_model=None, p_value_cutoff=0.05, fold_change_cutoff=2):
+def significantly_altered_reactions(conditions=[], selected_comparisons = [(0, 1)], 
+                                    cobra_model=None, p_value_cutoff=0.05, fold_change_cutoff=1.2, std_cutoff=1e-2):
+    
+    """
+    Function that takes as input at least 2 conditions to compare (diffeent sampling dataset) 
+    and performs the KS non-parametric test and based on a multiple-comparisons corrected p-value and fold change classifies
+    reactions as significantly altered or not. This function can provide reactions that can further filter graphs
+    """
+    
     cobra_reactions_str = [str(reaction.id) for reaction in cobra_model.reactions]
         
     # if provided sampling dataset has reactions as cols ==> transpose
@@ -23,12 +31,20 @@ def significantly_altered_reactions(conditions=[], selected_comparisons = [(0, 1
     for row in range(len(cobra_reactions_str)):
         for i, j in selected_comparisons:
             
-            ks, p = stats.ks_2samp(conditions[i][row], conditions[j][row], alternative='two-sided')
-            p_values[row].append(p)
-            ks_values[row].append(ks)
+            if (np.std(conditions[i][row]) > std_cutoff) or (np.std(conditions[j][row]) > std_cutoff):
             
-            fold_change = np.abs( (np.mean(conditions[i][row]) - np.mean(conditions[j][row]) ) / np.mean(conditions[j][row])+1e-8 )
-            fold_change_values[row].append(fold_change)
+                ks, p = stats.ks_2samp(conditions[i][row], conditions[j][row], alternative='two-sided')
+                p_values[row].append(p)
+                ks_values[row].append(ks)
+                
+                fold_change = np.absolute( (np.mean(conditions[i][row]) - np.mean(conditions[j][row]) ) / (np.mean(conditions[j][row]) + 1e-8) )
+                fold_change_values[row].append(fold_change)
+                
+            else:
+                p_values[row].append(1)
+                ks_values[row].append(1)
+                fold_change_values[row].append(0)
+
 
     p_values_copy = list(p_values.values())
     flat_p_values = np.array(p_values_copy).flatten()
