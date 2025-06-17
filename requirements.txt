@@ -1,0 +1,9 @@
+cobra
+numpy
+scipy 
+plotly
+statsmodels
+networkx
+matplotlib
+pandas
+kaleido==0.2.1
