@@ -1,0 +1,11 @@
+bioservices
+cobra
+gurobipy
+matplotlib
+networkx
+numpy
+pandas
+plotly
+scipy
+statsmodels
+kaleido
