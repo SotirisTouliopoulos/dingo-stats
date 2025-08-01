@@ -1,0 +1,35 @@
+clustering_utils
+================
+
+.. py:module:: clustering_utils
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   clustering_utils.clustering_of_correlation_matrix
+   clustering_utils.plot_dendrogram
+
+
+Module Contents
+---------------
+
+.. py:function:: clustering_of_correlation_matrix(correlation_matrix, reactions, linkage='ward', t=4.0, correction=True)
+
+   A Python function for hierarchical clustering of the correlation matrix
+
+   Keyword arguments:
+   correlation_matrix -- A numpy 2D array of a correlation matrix
+   reactions -- A list with the model's reactions
+   linkage -- linkage defines the type of linkage. 
+              Available linkage types are: single, average, complete, ward.
+   t -- A threshold that defines a threshold that cuts the dendrogram 
+        at a specific height and produces clusters
+   correction -- A boolean variable that if True converts the values of the
+                 the correlation matrix to absolute values.
+
+
+.. py:function:: plot_dendrogram(dissimilarity_matrix, reactions, group_map, linkage='ward', t=4.0, label_fontsize=10, height=600, width=1000, show_labels=True, title='')
+

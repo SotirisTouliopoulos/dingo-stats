@@ -9,6 +9,9 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../'))
 
+from pathlib import Path
+sys.path.insert(0, str(Path('../..', 'src').resolve()))
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -23,7 +26,8 @@ extensions = [
     # ... other extensions ...
     'sphinx.ext.autodoc',
     'sphinx_rtd_theme',
-    'myst_parser'
+    'myst_parser',
+    'autoapi.extension'
 ]
 
 myst_enable_extensions = [
@@ -46,6 +50,9 @@ myst_enable_extensions = [
 templates_path = ['_templates']
 exclude_patterns = []
 
+
+
+autoapi_dirs = ["../../src"]   # TODO: If interested in api, further dependencies may be required.
 
 
 # -- Options for HTML output -------------------------------------------------

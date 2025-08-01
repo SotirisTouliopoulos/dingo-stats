@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compute pairwise reaction correlations &mdash; dingo-stats  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="autoapi/index.html" />
+    <link rel="prev" title="Extract pathway information" href="pathways.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/bitmap.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#introduction-to-dingo">Introduction to dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#introduction-to-dingo-stats">Introduction to dingo-stats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#instllation-of-dingo">Instllation of dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-of-dingo-stats">Installation of dingo-stats</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#load-modify-and-sample-models">Load, Modify and Sample models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#inspect-sampling-distributions">Inspect Sampling distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pathways.html">Extract pathway information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pathways.html#map-bigg-seed-ids-to-kegg-pathways">Map BIGG/SEED ids to KEGG pathways</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Compute pairwise reaction correlations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#linear-correlations-with-pearson-spearman">Linear correlations with pearson/spearman</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#non-linear-dependencies-with-copulas">Non-Linear dependencies with copulas</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/gapsplit/index.html">gapsplit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/gapsplit/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/gapsplit/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/gapsplit/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/gapsplit/index.html#gapsplit.gapsplit"><code class="docutils literal notranslate"><span class="pre">gapsplit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/gapsplit/index.html#gapsplit._generate_sample"><code class="docutils literal notranslate"><span class="pre">_generate_sample()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/gapsplit/index.html#gapsplit._generate_sample_gurobi_direct"><code class="docutils literal notranslate"><span class="pre">_generate_sample_gurobi_direct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/gapsplit/index.html#gapsplit._maxgap"><code class="docutils literal notranslate"><span class="pre">_maxgap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/gapsplit/index.html#gapsplit._make_report_header"><code class="docutils literal notranslate"><span class="pre">_make_report_header()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/gapsplit/index.html#gapsplit._reduce_gurobi"><code class="docutils literal notranslate"><span class="pre">_reduce_gurobi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/gapsplit/index.html#gapsplit.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/graphs_utils/index.html">graphs_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/graphs_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/graphs_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/graphs_utils/index.html#graphs_utils.construct_graph"><code class="docutils literal notranslate"><span class="pre">construct_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/graphs_utils/index.html#graphs_utils.draw_positive_clique_shadows"><code class="docutils literal notranslate"><span class="pre">draw_positive_clique_shadows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/graphs_utils/index.html#graphs_utils.draw_negative_clique_shadows"><code class="docutils literal notranslate"><span class="pre">draw_negative_clique_shadows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/graphs_utils/index.html#graphs_utils.plot_graph"><code class="docutils literal notranslate"><span class="pre">plot_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/graphs_utils/index.html#graphs_utils.compute_nodes_centrality_metrics"><code class="docutils literal notranslate"><span class="pre">compute_nodes_centrality_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/graphs_utils/index.html#graphs_utils.compare_essential_to_network_central_reactions"><code class="docutils literal notranslate"><span class="pre">compare_essential_to_network_central_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/graphs_utils/index.html#graphs_utils.compare_network_modularities"><code class="docutils literal notranslate"><span class="pre">compare_network_modularities()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/graphs_utils/index.html#graphs_utils.compare_node_centralities"><code class="docutils literal notranslate"><span class="pre">compare_node_centralities()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/loopless_utils/index.html">loopless_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/loopless_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/loopless_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/loopless_utils/index.html#loopless_utils.loops_enumeration_from_fva"><code class="docutils literal notranslate"><span class="pre">loops_enumeration_from_fva()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/loopless_utils/index.html#loopless_utils.loopy_reactions_turned_off_in_pfba"><code class="docutils literal notranslate"><span class="pre">loopy_reactions_turned_off_in_pfba()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/loopless_utils/index.html#loopless_utils.get_loopless_solutions_from_samples"><code class="docutils literal notranslate"><span class="pre">get_loopless_solutions_from_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/loopless_utils/index.html#loopless_utils.calculate_affected_samples"><code class="docutils literal notranslate"><span class="pre">calculate_affected_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/loopless_utils/index.html#loopless_utils.calculate_distances_from_samples"><code class="docutils literal notranslate"><span class="pre">calculate_distances_from_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/loopless_utils/index.html#loopless_utils.calculate_distances_from_reactions"><code class="docutils literal notranslate"><span class="pre">calculate_distances_from_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/loopless_utils/index.html#loopless_utils.violin_plot_samples_distances"><code class="docutils literal notranslate"><span class="pre">violin_plot_samples_distances()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/pathways_utils/index.html">pathways_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/pathways_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/pathways_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.read_json_file"><code class="docutils literal notranslate"><span class="pre">read_json_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.map_model_to_kegg_reactions_dictionary"><code class="docutils literal notranslate"><span class="pre">map_model_to_kegg_reactions_dictionary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.dictionary_reaction_id_to_kegg_id"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_kegg_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.reaction_id_to_kegg_id"><code class="docutils literal notranslate"><span class="pre">reaction_id_to_kegg_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.fill_missing_kegg_ids_in_initial_dictionary"><code class="docutils literal notranslate"><span class="pre">fill_missing_kegg_ids_in_initial_dictionary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.fetch_kegg_pathway"><code class="docutils literal notranslate"><span class="pre">fetch_kegg_pathway()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.get_kegg_pathways_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">get_kegg_pathways_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.subset_model_reactions_from_pathway_info"><code class="docutils literal notranslate"><span class="pre">subset_model_reactions_from_pathway_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.dictionary_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_pathway()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.reaction_in_pathway_binary_matrix"><code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.plot_reaction_in_pathway_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.sort_reactions_by_model_order"><code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.subset_sampling_df_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/pathways_utils/index.html#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/clustering_utils/index.html">clustering_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/clustering_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/clustering_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/clustering_utils/index.html#clustering_utils.clustering_of_correlation_matrix"><code class="docutils literal notranslate"><span class="pre">clustering_of_correlation_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/clustering_utils/index.html#clustering_utils.plot_dendrogram"><code class="docutils literal notranslate"><span class="pre">plot_dendrogram()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/escher_maps_utils/index.html">escher_maps_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#escher_maps_utils.BIGG_COFACTORS"><code class="docutils literal notranslate"><span class="pre">BIGG_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#escher_maps_utils.BIGG_BUILDING_BLOCLS"><code class="docutils literal notranslate"><span class="pre">BIGG_BUILDING_BLOCLS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#escher_maps_utils.MODELSEED_COFACTORS"><code class="docutils literal notranslate"><span class="pre">MODELSEED_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#escher_maps_utils.EXCLUDED_COMPOUNDS"><code class="docutils literal notranslate"><span class="pre">EXCLUDED_COMPOUNDS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#escher_maps_utils.remove_cycles"><code class="docutils literal notranslate"><span class="pre">remove_cycles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#escher_maps_utils.build_reaction_hierarchy"><code class="docutils literal notranslate"><span class="pre">build_reaction_hierarchy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/escher_maps_utils/index.html#escher_maps_utils.build_escher_map"><code class="docutils literal notranslate"><span class="pre">build_escher_map()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/correlations_utils/index.html">correlations_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/correlations_utils/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/correlations_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/correlations_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.BIGG_COFACTORS"><code class="docutils literal notranslate"><span class="pre">BIGG_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.BIGG_BUILDING_BLOCKS"><code class="docutils literal notranslate"><span class="pre">BIGG_BUILDING_BLOCKS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.MODELSEED_COFACTORS"><code class="docutils literal notranslate"><span class="pre">MODELSEED_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.correlated_reactions"><code class="docutils literal notranslate"><span class="pre">correlated_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.plot_correlation_matrix"><code class="docutils literal notranslate"><span class="pre">plot_correlation_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.compute_copula"><code class="docutils literal notranslate"><span class="pre">compute_copula()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.copula_tail_dependence"><code class="docutils literal notranslate"><span class="pre">copula_tail_dependence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.plot_copula"><code class="docutils literal notranslate"><span class="pre">plot_copula()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.split_forward_reverse"><code class="docutils literal notranslate"><span class="pre">split_forward_reverse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.find_reactants_products"><code class="docutils literal notranslate"><span class="pre">find_reactants_products()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.sharing_metabolites"><code class="docutils literal notranslate"><span class="pre">sharing_metabolites()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/correlations_utils/index.html#correlations_utils.sharing_metabolites_square_matrix"><code class="docutils literal notranslate"><span class="pre">sharing_metabolites_square_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html">load_modify_sample_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.load_model"><code class="docutils literal notranslate"><span class="pre">load_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.get_objective_functions"><code class="docutils literal notranslate"><span class="pre">get_objective_functions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.get_reaction_bounds"><code class="docutils literal notranslate"><span class="pre">get_reaction_bounds()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.modify_model"><code class="docutils literal notranslate"><span class="pre">modify_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.sample_optgp"><code class="docutils literal notranslate"><span class="pre">sample_optgp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.sample_dingo"><code class="docutils literal notranslate"><span class="pre">sample_dingo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.sample_gapsplit"><code class="docutils literal notranslate"><span class="pre">sample_gapsplit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.export_to_pickle"><code class="docutils literal notranslate"><span class="pre">export_to_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.load_from_pickle"><code class="docutils literal notranslate"><span class="pre">load_from_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.plot_grid_reactions_flux"><code class="docutils literal notranslate"><span class="pre">plot_grid_reactions_flux()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/load_modify_sample_utils/index.html#load_modify_sample_utils.sampling_statistics"><code class="docutils literal notranslate"><span class="pre">sampling_statistics()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/distributions_comparison_utils/index.html">distributions_comparison_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/distributions_comparison_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/distributions_comparison_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/distributions_comparison_utils/index.html#distributions_comparison_utils.significantly_altered_reactions"><code class="docutils literal notranslate"><span class="pre">significantly_altered_reactions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dingo-stats</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Compute pairwise reaction correlations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/correlations.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="compute-pairwise-reaction-correlations">
+<h1>Compute pairwise reaction correlations<a class="headerlink" href="#compute-pairwise-reaction-correlations" title="Link to this heading"></a></h1>
+<section id="linear-correlations-with-pearson-spearman">
+<h2>Linear correlations with pearson/spearman<a class="headerlink" href="#linear-correlations-with-pearson-spearman" title="Link to this heading"></a></h2>
+</section>
+<section id="non-linear-dependencies-with-copulas">
+<h2>Non-Linear dependencies with copulas<a class="headerlink" href="#non-linear-dependencies-with-copulas" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pathways.html" class="btn btn-neutral float-left" title="Extract pathway information" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="autoapi/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+distributions_comparison_utils
+==============================
+
+.. py:module:: distributions_comparison_utils
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   distributions_comparison_utils.significantly_altered_reactions
+
+
+Module Contents
+---------------
+
+.. py:function:: significantly_altered_reactions(conditions=[], selected_comparisons=[(0, 1)], cobra_model=None, p_value_cutoff=0.05, fold_change_cutoff=1.2, std_cutoff=0.01)
+
+   Function that takes as input at least 2 conditions to compare (diffeent sampling dataset) 
+   and performs the KS non-parametric test and based on a multiple-comparisons corrected p-value and fold change classifies
+   reactions as significantly altered or not. This function can provide reactions that can further filter graphs
+
+

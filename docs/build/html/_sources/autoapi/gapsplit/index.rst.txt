@@ -1,0 +1,136 @@
+gapsplit
+========
+
+.. py:module:: gapsplit
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   gapsplit.model
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   gapsplit.gapsplit
+   gapsplit._generate_sample
+   gapsplit._generate_sample_gurobi_direct
+   gapsplit._maxgap
+   gapsplit._make_report_header
+   gapsplit._reduce_gurobi
+
+
+Module Contents
+---------------
+
+.. py:function:: gapsplit(model, n, max_tries=None, primary='sequential', primary_tol=0.001, secondary_frac=0.05, fva=None, min_range=1e-05, enforce_range=True, report_interval=0.1, quiet=False, gurobi_direct=False, fraction_of_optimum=0)
+
+   Randomly sample a COBRA model.
+
+   Parameters
+   ----------
+   model: cobra.Model
+       The model to sample. The model will not be modified during sampling.
+   n: integer
+       Number of samples to generate
+   max_tries: integer, optional, default=None
+       Sampling attempts that return infeasible or unbounded solutions are
+       discarded. Thus the total number of optimizations may exceed `n` for
+       difficult models. `max_tries` limits the total number of attempts. If
+       None (default), gapsplit will continue until `n` feasible samples are
+       found.
+   primary: str, optional, default='sequential'
+       Strategy for selection the primary target. Targets are chosen
+       sequentially ('sequential', default), randomly ('random'), or by always
+       targeting the variable with the largest relative gap ('max').
+   primary_tol: float, optional, default=0.001
+       The primary target is split by setting the upper and lower bounds to
+       the midway point of the max gap. The bounds are set to within +/-
+       `primary_tol` times the width of the gap to avoid infeasible solutions
+       due to numerical issues.
+   secondary_frac: float, optional, default=0.05
+       Fraction of model variables randomly chosen as secondary targets during
+       each iteration. Default is 0.05 (5% of reactions). If 0, no secondary
+       targeting is used; this may decrease coverage but improves runtime for
+       numerically difficult models.
+   fva: pandas.DataFrame, optional, default=None
+       gapsplit uses flux variability analysis (FVA) to find the feasible
+       ranges for each variable. The user can supply the output of a previous
+       `cobra.flux_analysis.flux_variability_analysis` run to avoid re-running
+       FVA. If None (default), gapsplit will run FVA.
+   min_range: float, optional, default=1e-5
+       Variables are targeted only if their feasible range is larger than
+       this value.
+   enforce_range: boolean, optional, default=True
+       If true (default), round solutions to fall within the feasible range.
+       This prevents small deviations outside the feasible range from causing
+       small decreases in coverage.
+   report_interval: float or int, optional, default=0.1
+       Show the coverage and gap statistics at this interval. If a number
+       between 0.0 and 1.0 is given, gapsplit reports when that fraction of
+       `n` samples is finished (i.e. if N=1000 and reportInterval=0.1, reports
+       are printed every 100 samples.) To turn off reporting, set to 0.
+   quiet: boolean, optional, default=True
+       Set to false to keep gapslit from printing status updates.
+   gurobi_direct: boolean, optional, default=False
+       Use the gurobipy interface directly to sample the model. This can
+       significantly reduce sampling times and gives identical results.
+       Requires the gurobipy model and model.solver be set to 'gurobi'.
+
+   Returns
+   -------
+   pandas.DataFrame
+       A data frame with rows = samples and columns = reactions. This is the
+       same format as the other cobrapy samplers.
+
+
+.. py:function:: _generate_sample(model, primary_var, primary_lb, primary_ub, secondary_vars=None, secondary_targets=None, secondary_weights=None)
+
+   Formulate a [MI]QP to find a single solution.
+
+
+.. py:function:: _generate_sample_gurobi_direct(model, primary_var, primary_lb, primary_ub, secondary_vars=None, secondary_targets=None, secondary_weights=None)
+
+   Solve the model directly with the gurobipy interface.
+
+   Cobrapy models have several features that makes them slow to sample. We can
+   apply some Gurobi-specific optimizations to improve gapsplit runtimes.
+       - "Unsplit" all the variables from forward and reverse to a single
+         reaction that has positive and negative fluxes.
+       - Set the objectives directly to skip the sympy interface.
+       - Collection solutions for all variables simultaneously.
+
+   The first optimization is handled by _reduce_gurobi. The latter tricks
+   are used in this function.
+
+   Inputs
+   ------
+   model: grb model object
+       A copy of the Gurobi model object from cobra_mode._solver.problem.
+       This model should be reduced using _reduce_gurobi.
+   <all other inputs from _generate_sample>
+
+   Returns
+   -------
+   Either a NumPy array with the new solution or None (if infeasible).
+
+
+.. py:function:: _maxgap(points, fva=None)
+
+.. py:function:: _make_report_header(maxN)
+
+   Return the header and format string for reporting coverage.
+
+
+.. py:function:: _reduce_gurobi(cobra)
+
+   Modify the gurobi model object to improve sampling efficiency.
+
+
+.. py:data:: model
+

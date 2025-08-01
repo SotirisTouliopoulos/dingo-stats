@@ -4,25 +4,50 @@ import plotly.graph_objects as go
 from scipy.cluster import hierarchy
 from matplotlib import cm
 from collections import defaultdict
+from typing import Dict, Tuple, List
+from cobra import Model, Reaction
+from numpy.typing import NDArray
 
 
-def clustering_of_correlation_matrix(correlation_matrix, reactions, linkage="ward", 
-                           t = 4.0, correction=True):
-    """A Python function for hierarchical clustering of the correlation matrix
+def clustering_of_correlation_matrix(
+    correlation_matrix: NDArray[np.float64], 
+    reactions: List, 
+    linkage: str = "ward",
+    t: float = 4.0, 
+    correction: bool = True
+) -> Tuple[NDArray[np.float64], NDArray[np.float64], List[List]]:
+    """
+    Function for hierarchical clustering of the correlation matrix
 
     Keyword arguments:
-    correlation_matrix -- A numpy 2D array of a correlation matrix
-    reactions -- A list with the model's reactions
-    linkage -- linkage defines the type of linkage. 
-               Available linkage types are: single, average, complete, ward.
-    t -- A threshold that defines a threshold that cuts the dendrogram 
-         at a specific height and produces clusters
-    correction -- A boolean variable that if True converts the values of the
-                  the correlation matrix to absolute values.
+    correlation_matrix (NDArray[np.float64]) -- A numpy 2D array of a correlation matrix
+    reactions (List) -- A list with the corresponding reactions (must be in accordance with the correlation matrix)
+    linkage (str) -- linkage defines the type of linkage. Available linkage types are: single, average, complete, ward.
+    t (float) -- A threshold that defines a threshold that cuts the dendrogram at a specific height and produces clusters
+    correction (bool) -- A boolean variable that if True converts the values of the the correlation matrix to absolute values.
+                         
+    Returns:
+    Tuple[NDArray[np.float64], NDArray[np.float64], List[List]]
+        dissimilarity_matrix (NDArray[np.float64]) -- The dissimilarity matrix calculated from the given correlation matrix
+        labels (NDArray[np.float64]) -- Integer labels corresponding to clusters
+        clusters (List[List]) -- Nested list containing reaction IDs grouped based on their cluster labels
     """
     
-    # function to return a nested list with grouped reactions based on clustering
-    def clusters_list(reactions, labels):
+    def clusters_list(
+        reactions: List, 
+        labels: NDArray[np.float64],
+        ) -> List[List]:
+        """
+        Function to return a nested list with grouped reactions based on clustering
+        
+        Keyword arguments:
+        reactions (List) -- A list with the corresponding reactions (must be in accordance with the correlation matrix)
+        labels (NDArray[np.float64]) -- Integer labels corresponding to clusters
+
+        Returns: 
+        clusters (List[List]) -- Nested list containing reaction IDs grouped based on their cluster labels
+        """
+        
         clusters = []
         unique_labels = np.unique(labels)
         for label in unique_labels:
@@ -46,17 +71,32 @@ def clustering_of_correlation_matrix(correlation_matrix, reactions, linkage="war
 
 
 def plot_dendrogram(
-    dissimilarity_matrix,
-    reactions,
-    group_map,
-    linkage='ward',
-    t=4.0,
-    label_fontsize=10,
-    height=600,
-    width=1000,
-    show_labels=True,
-    title="" 
+    dissimilarity_matrix: NDArray[np.float64],
+    reactions: List,
+    group_map: dict,
+    linkage: str = 'ward',
+    t: float = 4.0,
+    label_fontsize: int = 10,
+    height: int = 600,
+    width: int = 1000,
+    show_labels: bool = True,
+    title: str = "" 
 ):
+    """
+    Function that plots the dendrogram from hierarchical clustering
+    
+    Keyword arguments:
+    dissimilarity_matrix (NDArray[np.float64]) -- The dissimilarity matrix calculated from the `clustering_of_correlation_matrix` function
+    reactions (List) -- List with reactions IDs
+    group_map (Dict) -- Dictionary mapping reactions to pathways
+    linkage (str) -- linkage defines the type of linkage. Available linkage types are: single, average, complete, ward.
+    t (float) -- A threshold that defines a threshold that cuts the dendrogram at a specific height
+    label_fontsize (int) -- Size for the plotted labels (reaction IDs)
+    height (int) -- Defines the height of the plot
+    width (int) -- Defines the width of the plot
+    show_labels (bool) -- Boolean variable that if True labels are shown in the x-axis
+    title (str) -- Title for the plot
+    """
     
     # Default fallback
     if group_map is None:
@@ -78,7 +118,7 @@ def plot_dendrogram(
     icoord = np.array(dendro['icoord'])
     dcoord = np.array(dendro['dcoord'])
     labels = dendro['ivl']
-    leaves = dendro['leaves']
+    # leaves = dendro['leaves']
 
     # Group-color mapping
     if not group_map:
@@ -87,11 +127,12 @@ def plot_dendrogram(
     unique_groups = sorted(set(group_map.values()))
     
     color_map = {
-        g: f'rgba{tuple((np.array(cm.tab10(i % 10))[:3] * 255).astype(int)) + (1.0,)}'
-        for i, g in enumerate(unique_groups)
+    g: f'rgba({r},{g_},{b},1.0)'
+    for i, g in enumerate(unique_groups)
+    for r, g_, b in [tuple(int(x * 255) for x in cm.tab10(i % 10)[:3])]
     }
     
-    label_colors = {label: color_map[group_map.get(label, unique_groups[0])] for label in labels}
+    # label_colors = {label: color_map[group_map.get(label, unique_groups[0])] for label in labels}
 
     # Plot dendrogram branches
     fig = go.Figure()
@@ -110,7 +151,7 @@ def plot_dendrogram(
     num_leaves = len(leaf_labels)
     leaf_xs = list(range(5, 10 * num_leaves + 5, 10))  # Matches default dendrogram spacing
     leaf_ys = [0] * num_leaves
-    leaf_colors = [label_colors[label] for label in leaf_labels]
+    # leaf_colors = [label_colors[label] for label in leaf_labels]
 
     # Build per-group traces for toggle-able legend
     group_to_points = defaultdict(list)

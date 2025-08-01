@@ -1,0 +1,138 @@
+correlations_utils
+==================
+
+.. py:module:: correlations_utils
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   correlations_utils.BIGG_COFACTORS
+   correlations_utils.BIGG_BUILDING_BLOCKS
+   correlations_utils.MODELSEED_COFACTORS
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   correlations_utils.correlated_reactions
+   correlations_utils.plot_correlation_matrix
+   correlations_utils.compute_copula
+   correlations_utils.copula_tail_dependence
+   correlations_utils.plot_copula
+   correlations_utils.split_forward_reverse
+   correlations_utils.find_reactants_products
+   correlations_utils.sharing_metabolites
+   correlations_utils.sharing_metabolites_square_matrix
+
+
+Module Contents
+---------------
+
+.. py:data:: BIGG_COFACTORS
+   :value: ['atp_c0', 'atp_c', 'adp_c', 'adp_c0', 'atp_c0', 'atp_c', 'adp_c', 'adp_c0', 'udp_c0', 'udp_c',...
+
+
+.. py:data:: BIGG_BUILDING_BLOCKS
+   :value: ['ala_L_c0', 'asp_L_c0', ' gln_L_c0', 'glu_L_c0', 'glu_L_c0', 'ser_L_c0', 'trp_L_c0',...
+
+
+.. py:data:: MODELSEED_COFACTORS
+   :value: ['cpd00001_c0', 'cpd00002_c0', 'cpd00003_c0', 'cpd00004_c0', 'cpd00005_c0', 'cpd00006_c0',...
+
+
+.. py:function:: correlated_reactions(steady_states, reactions=[], linear_coeff='pearson', include_non_linear=False, boolean_sharing_metabolites_matrix=None, linear_corr_cutoff=0.3, indicator_cutoff=1.2, jensenshannon_cutoff=0.1, std_cutoff=0.001, cells=4, cop_coeff=0.2, lower_triangle=True, verbose=False)
+
+   A Python function to calculate the correlation matrix from a steady states array
+
+   Keyword arguments:
+   steady_states -- A numpy array of the generated steady states fluxes
+   reactions -- A list with the reactions IDs (must be in accordance with the rows of the steady states)
+   linear_coeff -- A string declaring the linear coefficient to be selected. Available options: "pearson", "spearman"
+   include_non_linear -- A boolean variable that if True, takes into account and calculates non-linear correlations
+   boolean_sharing_metabolites_matrix -- A boolean symmetric numpy 2D array with True/False based on the presense of shared metabolites between reactions
+   linear_corr_cutoff -- A cutoff to filter (remove) linear correlations (not greater than the cutoff) based on the pearson or spearmanr coefficient
+   indicator_cutoff -- A cutoff to classify non-linear correlations as positive, negative or non-significant
+   jensenshannon_cutoff -- A cutoff to filter (remove) non-linear correlations (not greater than the cutoff) based on the Jensen-Shannon metric
+   std_cutoff -- A cutoff to avoid computing the copula between 2 fluxes with almost fixed values
+   cells -- Number of cells to compute the copula
+   cop_coeff -- A value that narrows or widens the width of the copula's diagonal (use lower values to capture extreme tail dependences)
+   lower_triangle -- A boolean variable that if True returns only the lower triangular matrix
+   verbose -- A boolean variable that if True additional information is printed as an output.
+
+   if include_non_linear is set to False this function returns:
+       linear_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes only linear correlations
+       correlations_dictionary -- A dictionary containing unique reaction pairs and their corresponding correlation values
+
+   if include_non_linear is set to True this function additionally returns:
+       mixed_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes both linear and non-linear correlations
+       non_linear_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes only non-linear correlations
+
+
+.. py:function:: plot_correlation_matrix(correlation_matrix, reactions=[], label_font_size=5)
+
+   Function that plots a correlation matrix with customizable label font size.
+
+   Parameters:
+   - correlation_matrix (2D array): The correlation matrix to plot.
+   - reactions (list): Optional list of reaction labels for axes.
+   - label_font_size (int): Font size for axis labels (default: 5).
+
+
+.. py:function:: compute_copula(flux1, flux2, n)
+
+   A Python function to estimate the copula between two fluxes
+
+   Keyword arguments:
+   flux1: A vector that contains the measurements of the first reaxtion flux
+   flux2: A vector that contains the measurements of the second reaxtion flux
+   n: The number of cells
+
+
+.. py:function:: copula_tail_dependence(copula, cop_coeff_1, cop_coeff_2, cop_coeff_3, indicator_cutoff)
+
+   Function that given a copula and parameters, aims to reveal whether 2 reactions have a positive or negative tail-dependence.
+
+   cop_coeff parameters deal with the width of the diagonal of the copula.
+   indicator_cutoff is a cutoff to filter and reveal the sign (positive/negative) between a dependence 
+
+
+.. py:function:: plot_copula(data_flux1, data_flux2, n=5, width=900, height=600, export_format='svg')
+
+   A Python function to plot the copula between two fluxes
+
+   Keyword arguments:
+   data_flux1: A list that contains: (i) the vector of the measurements of the first reaction,
+                                     (ii) the name of the first reaction
+   data_flux2: A list that contains: (i) the vector of the measurements of the second reaction,
+                                     (ii) the name of the second reaction
+   n: The number of cells
+
+
+.. py:function:: split_forward_reverse(steady_states, reactions=[])
+
+   Function that given a sampling (steady states) dataset with reactions as rows, splits 
+   all reactions having at least 1 positive and at least 1 negative flux value into separate 
+   forward and reverse reactions
+
+
+.. py:function:: find_reactants_products(cobra_model, reactions_ids=[])
+
+   Function that identifies identifies the reactantsand products of each reaction in given model
+
+
+.. py:function:: sharing_metabolites(reactions_ids=[], reversibility_list_all_reactions=[], reactants_list_all_reactions=[], products_list_all_reactions=[], reaction_a='', reaction_b='')
+
+   Function that compares the reactants and products of 2 reactions and returns True when finding a common metabolite
+
+
+.. py:function:: sharing_metabolites_square_matrix(reactions_ids=[], reversibility_list_all_reactions=[], reactants_list_all_reactions=[], products_list_all_reactions=[])
+
+   Function that given the list wth reaction reactants/products and reversibility information calculated with a function above,
+   creates a square boolean matrix with True values representing reactions sharing the same metabolite.
+
+

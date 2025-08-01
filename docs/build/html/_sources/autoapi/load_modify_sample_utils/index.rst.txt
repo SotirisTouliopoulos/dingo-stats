@@ -1,0 +1,185 @@
+load_modify_sample_utils
+========================
+
+.. py:module:: load_modify_sample_utils
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   load_modify_sample_utils.load_model
+   load_modify_sample_utils.get_objective_functions
+   load_modify_sample_utils.get_reaction_bounds
+   load_modify_sample_utils.modify_model
+   load_modify_sample_utils.sample_optgp
+   load_modify_sample_utils.sample_dingo
+   load_modify_sample_utils.sample_gapsplit
+   load_modify_sample_utils.export_to_pickle
+   load_modify_sample_utils.load_from_pickle
+   load_modify_sample_utils.plot_grid_reactions_flux
+   load_modify_sample_utils.sampling_statistics
+
+
+Module Contents
+---------------
+
+.. py:function:: load_model(filepath: str) -> Tuple[cobra.Model, List[cobra.Reaction], List[str]]
+
+   Function to load and return a model in cobra format from given path.
+   It returns 3 objects, the cobra model and 2 lists, one with the model reactions (cobra_reactions)
+   and one with their IDs (cobra_reactions_ids)
+
+   Keyword arguments:
+   filepath -- path to cobra model in sbml format
+
+   Returns:
+   Tuple[Model, List, List]:
+       cobra_model -- metabolic model in cobra format
+       cobra_reactions -- list with the model reactions
+       cobra_reactions_ids -- list with the string IDs of model reactions
+
+
+.. py:function:: get_objective_functions(cobra_model: cobra.Model) -> List[str]
+
+   Function to find and return the objective functions of a cobra model
+
+   Keyword arguments:
+   cobra_model (Model) -- cobra model object
+
+   Returns:
+   objective_functions_ids (List) -- List containing one or multiple objective functions of given model
+
+
+.. py:function:: get_reaction_bounds(cobra_model: cobra.Model) -> Dict[str, Tuple[float, float]]
+
+   Function to create and return a dictionary of a cobra's model reaction bounds.
+   Reaction IDs are keys and their corresponding bounds are values.
+
+   Keyword arguments:
+   cobra_model (Model) -- cobra model object
+
+   Returns:
+   reaction_bounds_dict (Dict) -- Dictionary containing reaction IDs as keys and their bounds as values
+
+
+.. py:function:: modify_model(cobra_model: cobra.Model, objective_function: str = None, optimal_percentage: float = 100, reaction_bounds: dict = {}, objective_direction: str = 'max') -> cobra.Model
+
+   Function that modifies a given cobra model.
+
+   Users can change objective function, optimal percentage, define custom reaction bounds and change objective 
+   direction. Lower bound of the objective will be fixed based on the optimal percentage, in all cases. 
+
+   Keyword arguments:
+   cobra_model (Model) -- cobra model object
+   objective_function (str) -- string with the requested objective function ID to be assigned to the model
+   optimal_percentage (float) -- percentage of the FBA solution to be set as lower bound to the objectie function.
+   reaction_bounds (dict) -- dictionary of custom reaction bounds to be assigned to the model's reactions
+   objective_direction (str) -- the direction to optimize the model: `max` and `min` are available options.
+
+   Returns:
+   modified_cobra_model (Model) -- A modified cobra model object
+
+
+.. py:function:: sample_optgp(cobra_model: cobra.Model, n_samples: int = 3000, thinning: int = 100, reaction_in_rows: bool = True) -> numpy.typing.NDArray[numpy.float64]
+
+   Function that performs sampling with the OptGP sampler of cobrapy. Users can define number of samples,
+   thinning parameter. Resulting samples dataset is returned in a numpy array with 
+   reactions as rows or columns specified by user
+
+   Keyword arguments:
+   cobra_model (Model) -- cobra model object
+   n_samples (int) -- defines the number of samples returned to the user.
+   thinning (int) -- defines the `thinning` parameter. Default to 100 means samples are returned every 100th step.
+   reaction_in_rows (bool) -- boolean variable that if `True` reactions are rows in the sampling dataframe.
+
+   Returns:
+   samples_optgp (NDArray[np.float64]) -- Numpy 2D array of the sampling results
+
+
+.. py:function:: sample_dingo(dingo_model, ess: int = 1000, psrf: bool = False, solver: str = 'gurobi', final_n_samples: int = None, reaction_in_rows: bool = True) -> numpy.typing.NDArray[numpy.float64]
+
+   Function that performs sampling with dingo. Users can define the ess and psrf parameters.
+   Resulting samples dataset is returned in a numpy array with reactions as rows or columns specified by user.
+   User can call the "reduce_samples_dimensions" function to reduce the samples to a specified number
+
+   Keyword arguments:
+   dingo_model -- dingo model object
+   ess -- stands for the effective sample size (ESS) (default value is 1000).
+   psrf -- is a flag to request an upper bound equal to 1.1 for the value of the potential scale reduction factor of each marginal flux (default option is False).
+   solver -- defines the linear programming solver
+   final_n_samples -- integer that defines the final number of samples returned to the user (post sampling step)
+   reaction_in_rows -- boolean variable that if `True` reactions are rows in the sampling dataframe.
+
+   Returns:
+   samples_dingo (NDArray[np.float64]) -- Numpy 2D array of the sampling results
+
+
+.. py:function:: sample_gapsplit(cobra_model: cobra.Model, n_samples: int = 3000, reaction_in_rows: bool = True, add_loopless_cobrapy: bool = False, fraction_of_optimum: float = 0) -> numpy.typing.NDArray[numpy.float64]
+
+   Function that performs sampling with the gapsplit algorithm. Users can define number of samples, if they want
+   to modify their model with the "add_loopless" function and a value for the "fraction_of_optimum" parameter used in the gapsplit algorithm.
+   Resulting samples dataset is returned in a numpy array with reactions as rows or columns specified by user
+
+   Keyword arguments:
+   cobra_model (Model) -- cobra model object
+   n_samples (int) -- defines the number of samples returned to the user.
+   reaction_in_rows (bool) -- boolean variable that if `True` reactions are rows in the sampling dataframe
+   add_loopless_cobrapy (bool) -- Boolean variable that if True modifies the model with the `add_loopless` function
+   fraction_of_optimum (float) -- Float variable that defines the `fraction_of_optimum` parameter used in `gapsplit` algorithm
+
+   Returns:
+   gapsplit_samples (NDArray[np.float64]) -- Numpy 2D array of the sampling results
+
+
+.. py:function:: export_to_pickle(samples: numpy.typing.NDArray[numpy.float64], filename: str)
+
+   Function that exports samples to a pickle file
+
+   Keyword arguments: 
+   samples (NDArray[np.float64]) -- Numpy 2D array of the samples
+   filename (str) -- String to name the created file
+
+
+.. py:function:: load_from_pickle(filename: str) -> numpy.typing.NDArray[numpy.float64]
+
+   Function that loads samples from a pickle file
+
+   Keyword arguments: 
+   filename (str) -- String of the filename containing the samples
+
+
+.. py:function:: plot_grid_reactions_flux(samples: numpy.typing.NDArray[numpy.float64], model_reactions: List[str], tolerance: float = 0.001, nrows: int = 20, ncols: int = 5, title='Sampling Distributions')
+
+   Function that plots a grid of the sampling distributions of all model reactions.
+   User can define distributions plotted per rows and columns
+
+   Keyword arguments:
+   samples (NDArray[np.float64]) -- Numpy 2D array of the samples
+   model_reactions (List[str]) -- A list containing strings of reaction IDs
+   tolerance (float) -- tolerance level to make distribution plot transparent based on flux range
+   nrows (int) -- Number of rows for the plot
+   ncols (int) -- Number of columns for the plot
+   title (str) -- Title of the plot
+
+
+.. py:function:: sampling_statistics(samples: numpy.typing.NDArray[numpy.float64], model_reactions: List[str] = None, reaction_id: str = '') -> Tuple[float, float, float, float, float, float]
+
+   Function that prints statistics for the sampling distribution of a specified model reaction
+
+   Keyword arguments:
+   samples (NDArray[np.float64]) -- Numpy 2D array of the samples
+   model_reactions (List[str]) -- A list containing strings of reaction IDs
+   reaction_id (str) -- Reaction ID to calculate sampling statistics on
+
+   Returns:
+   Tuple[float, float, float, float, float, float]
+       mean (float) -- average value from the reaction's flux distribution
+       min (float) -- minimum value from the reaction's flux distribution
+       max (float) -- maximum value from the reaction's flux distribution
+       std (float) -- standard deviation value from the reaction's flux distribution
+       skewness (float) -- skewness value from the reaction's flux distribution
+       kurtosis (float) -- kurtosis value from the reaction's flux distribution
+
+

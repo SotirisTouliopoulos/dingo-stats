@@ -1,0 +1,140 @@
+graphs_utils
+============
+
+.. py:module:: graphs_utils
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   graphs_utils.construct_graph
+   graphs_utils.draw_positive_clique_shadows
+   graphs_utils.draw_negative_clique_shadows
+   graphs_utils.plot_graph
+   graphs_utils.compute_nodes_centrality_metrics
+   graphs_utils.compare_essential_to_network_central_reactions
+   graphs_utils.compare_network_modularities
+   graphs_utils.compare_node_centralities
+
+
+Module Contents
+---------------
+
+.. py:function:: construct_graph(linear_correlation_matrix=None, non_linear_correlation_matrix=None, reactions=[], remove_unconnected_nodes=False, correction=True, group_map=None)
+
+   Creates a graph from a linear correlation matrix or from both a linear and a non-linear correlation matrix.
+   Adds node attributes for group information if group_map is provided.
+
+   Parameters:
+   - linear_correlation_matrix: numpy 2D array
+   - non_linear_correlation_matrix: numpy 2D array (optional)
+   - reactions: list of reaction names (ordered like matrix indices)
+   - remove_unconnected_nodes: if True, removes isolated nodes
+   - correction: if True, use absolute values of correlations
+   - group_map: dictionary mapping reaction names to group names (optional)
+     
+       group_map = {
+               "PGI" : "Glycolysis",
+               "PGI_rev" : "Glycolysis", 
+               "PFK" : "Glycolysis", 
+               ...,
+               "G6PDH2r" : "Pentose-Phosphate", 
+               "PGL" : "Pentose-Phosphate", 
+               "GND" : "Pentose-Phosphate", 
+               }
+
+   Returns:
+   - NetworkX graph
+   - Layout positions for plotting
+
+
+.. py:function:: draw_positive_clique_shadows(G, pos, fig, positive_cliques, min_clique_size=3)
+
+   Add translucent shaded areas around positive cliques to a Plotly figure.
+
+   Parameters:
+   - G: NetworkX graph
+   - pos: dict of node positions
+   - fig: Plotly figure to add to
+   - positive_cliques: list of positive cliques (list of node lists)
+   - min_clique_size: minimum size of a clique to visualize
+
+
+.. py:function:: draw_negative_clique_shadows(G, pos, fig, positive_cliques, min_clique_size=3)
+
+   Add translucent red shaded areas between negatively connected positive cliques.
+
+   Parameters:
+   - G: NetworkX graph
+   - pos: dict of node positions
+   - fig: Plotly figure to add to
+   - positive_cliques: list of positive cliques (list of node lists)
+   - min_clique_size: minimum size of a clique to consider
+
+
+.. py:function:: plot_graph(G, pos, centralities, remove_clique_edges=False, include_matrix2_in_cliques=True, min_clique_size=5, shadow_edges=None)
+
+   Plot a correlation graph with:
+
+   - Nodes colored by group
+   - Positive cliques (size ≥ 3) visualized with shadows
+   - Red shadows for strong negative edges between cliques
+   - Edge styles based on weight and source
+   - Node annotations:
+       - Positive neighbors
+       - Negative neighbors
+       - In clique (True/False)
+       - Degree centrality
+       - Betweenness centrality
+       - Clustering coefficient
+   - Optional exclusion of matrix2 edges from clique detection
+
+   Parameters:
+   - G: NetworkX graph with edge weights and 'source' ('matrix1' or 'matrix2')
+   - pos: Node position dictionary
+   - remove_clique_edges: Whether to hide internal positive clique edges and negative edges between cliques
+   - include_matrix2_in_cliques: If False, only matrix1 is used for clique detection
+
+
+.. py:function:: compute_nodes_centrality_metrics(G)
+
+   Compute centrality measures on a correlation-based graph
+
+   Parameters:
+   - G: networkx Graph with 'weight' attribute on edges (correlation values in [-1, 1])
+
+   Returns:
+   - A dictionary with:
+       - 'degree': Degree centrality
+       - 'weighted_degree': Sum of absolute edge weights
+       - 'betweenness': Betweenness centrality (weighted by 1-abs(weight))
+       - 'clustering': Clustering coefficient (weighted by 1-abs(weight))
+
+
+.. py:function:: compare_essential_to_network_central_reactions(cobra_model, centrality_dict, threshold=0.999)
+
+   Count how many central network reaction (reactions with high centrality metrics)
+   belong to the group of essential reactions 
+
+   Parameters
+   ----------
+   cobra_model : Model
+       Metabolic Model in cobra format
+   centrality_dict : dict
+       Dictionary of {reaction_id: centrality_score}.
+   threshold : float
+       threshold to change the optimal solution of the objective function
+
+
+.. py:function:: compare_network_modularities(Graph_1, Graph_2)
+
+   Function that compares the modularity between 2 different graphs
+
+
+.. py:function:: compare_node_centralities(centrality_dict_1, centrality_dict_2)
+
+   Function that compares the node centralities across all nodes from 2 different input centrality dictionaries
+
+

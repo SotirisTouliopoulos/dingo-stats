@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>load_modify_sample_utils &mdash; dingo-stats  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="distributions_comparison_utils" href="../distributions_comparison_utils/index.html" />
+    <link rel="prev" title="correlations_utils" href="../correlations_utils/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/bitmap.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../intro.html#introduction-to-dingo">Introduction to dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro.html#introduction-to-dingo-stats">Introduction to dingo-stats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#instllation-of-dingo">Instllation of dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installation-of-dingo-stats">Installation of dingo-stats</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#load-modify-and-sample-models">Load, Modify and Sample models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#inspect-sampling-distributions">Inspect Sampling distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pathways.html">Extract pathway information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pathways.html#map-bigg-seed-ids-to-kegg-pathways">Map BIGG/SEED ids to KEGG pathways</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../correlations.html">Compute pairwise reaction correlations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../correlations.html#linear-correlations-with-pearson-spearman">Linear correlations with pearson/spearman</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../correlations.html#non-linear-dependencies-with-copulas">Non-Linear dependencies with copulas</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gapsplit/index.html">gapsplit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gapsplit/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gapsplit/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gapsplit/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit.gapsplit"><code class="docutils literal notranslate"><span class="pre">gapsplit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._generate_sample"><code class="docutils literal notranslate"><span class="pre">_generate_sample()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._generate_sample_gurobi_direct"><code class="docutils literal notranslate"><span class="pre">_generate_sample_gurobi_direct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._maxgap"><code class="docutils literal notranslate"><span class="pre">_maxgap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._make_report_header"><code class="docutils literal notranslate"><span class="pre">_make_report_header()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._reduce_gurobi"><code class="docutils literal notranslate"><span class="pre">_reduce_gurobi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../graphs_utils/index.html">graphs_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../graphs_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphs_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.construct_graph"><code class="docutils literal notranslate"><span class="pre">construct_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.draw_positive_clique_shadows"><code class="docutils literal notranslate"><span class="pre">draw_positive_clique_shadows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.draw_negative_clique_shadows"><code class="docutils literal notranslate"><span class="pre">draw_negative_clique_shadows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.plot_graph"><code class="docutils literal notranslate"><span class="pre">plot_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.compute_nodes_centrality_metrics"><code class="docutils literal notranslate"><span class="pre">compute_nodes_centrality_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.compare_essential_to_network_central_reactions"><code class="docutils literal notranslate"><span class="pre">compare_essential_to_network_central_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.compare_network_modularities"><code class="docutils literal notranslate"><span class="pre">compare_network_modularities()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.compare_node_centralities"><code class="docutils literal notranslate"><span class="pre">compare_node_centralities()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../loopless_utils/index.html">loopless_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../loopless_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../loopless_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.loops_enumeration_from_fva"><code class="docutils literal notranslate"><span class="pre">loops_enumeration_from_fva()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.loopy_reactions_turned_off_in_pfba"><code class="docutils literal notranslate"><span class="pre">loopy_reactions_turned_off_in_pfba()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.get_loopless_solutions_from_samples"><code class="docutils literal notranslate"><span class="pre">get_loopless_solutions_from_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.calculate_affected_samples"><code class="docutils literal notranslate"><span class="pre">calculate_affected_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.calculate_distances_from_samples"><code class="docutils literal notranslate"><span class="pre">calculate_distances_from_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.calculate_distances_from_reactions"><code class="docutils literal notranslate"><span class="pre">calculate_distances_from_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.violin_plot_samples_distances"><code class="docutils literal notranslate"><span class="pre">violin_plot_samples_distances()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pathways_utils/index.html">pathways_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../pathways_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pathways_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.read_json_file"><code class="docutils literal notranslate"><span class="pre">read_json_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.map_model_to_kegg_reactions_dictionary"><code class="docutils literal notranslate"><span class="pre">map_model_to_kegg_reactions_dictionary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.dictionary_reaction_id_to_kegg_id"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_kegg_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.reaction_id_to_kegg_id"><code class="docutils literal notranslate"><span class="pre">reaction_id_to_kegg_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.fill_missing_kegg_ids_in_initial_dictionary"><code class="docutils literal notranslate"><span class="pre">fill_missing_kegg_ids_in_initial_dictionary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.fetch_kegg_pathway"><code class="docutils literal notranslate"><span class="pre">fetch_kegg_pathway()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.get_kegg_pathways_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">get_kegg_pathways_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_model_reactions_from_pathway_info"><code class="docutils literal notranslate"><span class="pre">subset_model_reactions_from_pathway_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.dictionary_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_pathway()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.reaction_in_pathway_binary_matrix"><code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.plot_reaction_in_pathway_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.sort_reactions_by_model_order"><code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_df_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../clustering_utils/index.html">clustering_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../clustering_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../clustering_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../clustering_utils/index.html#clustering_utils.clustering_of_correlation_matrix"><code class="docutils literal notranslate"><span class="pre">clustering_of_correlation_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../clustering_utils/index.html#clustering_utils.plot_dendrogram"><code class="docutils literal notranslate"><span class="pre">plot_dendrogram()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../escher_maps_utils/index.html">escher_maps_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../escher_maps_utils/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../escher_maps_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../escher_maps_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.BIGG_COFACTORS"><code class="docutils literal notranslate"><span class="pre">BIGG_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.BIGG_BUILDING_BLOCLS"><code class="docutils literal notranslate"><span class="pre">BIGG_BUILDING_BLOCLS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.MODELSEED_COFACTORS"><code class="docutils literal notranslate"><span class="pre">MODELSEED_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.EXCLUDED_COMPOUNDS"><code class="docutils literal notranslate"><span class="pre">EXCLUDED_COMPOUNDS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.remove_cycles"><code class="docutils literal notranslate"><span class="pre">remove_cycles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.build_reaction_hierarchy"><code class="docutils literal notranslate"><span class="pre">build_reaction_hierarchy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.build_escher_map"><code class="docutils literal notranslate"><span class="pre">build_escher_map()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../correlations_utils/index.html">correlations_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../correlations_utils/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../correlations_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../correlations_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.BIGG_COFACTORS"><code class="docutils literal notranslate"><span class="pre">BIGG_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.BIGG_BUILDING_BLOCKS"><code class="docutils literal notranslate"><span class="pre">BIGG_BUILDING_BLOCKS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.MODELSEED_COFACTORS"><code class="docutils literal notranslate"><span class="pre">MODELSEED_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.correlated_reactions"><code class="docutils literal notranslate"><span class="pre">correlated_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.plot_correlation_matrix"><code class="docutils literal notranslate"><span class="pre">plot_correlation_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.compute_copula"><code class="docutils literal notranslate"><span class="pre">compute_copula()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.copula_tail_dependence"><code class="docutils literal notranslate"><span class="pre">copula_tail_dependence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.plot_copula"><code class="docutils literal notranslate"><span class="pre">plot_copula()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.split_forward_reverse"><code class="docutils literal notranslate"><span class="pre">split_forward_reverse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.find_reactants_products"><code class="docutils literal notranslate"><span class="pre">find_reactants_products()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.sharing_metabolites"><code class="docutils literal notranslate"><span class="pre">sharing_metabolites()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.sharing_metabolites_square_matrix"><code class="docutils literal notranslate"><span class="pre">sharing_metabolites_square_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">load_modify_sample_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.load_model"><code class="docutils literal notranslate"><span class="pre">load_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.get_objective_functions"><code class="docutils literal notranslate"><span class="pre">get_objective_functions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.get_reaction_bounds"><code class="docutils literal notranslate"><span class="pre">get_reaction_bounds()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.modify_model"><code class="docutils literal notranslate"><span class="pre">modify_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.sample_optgp"><code class="docutils literal notranslate"><span class="pre">sample_optgp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.sample_dingo"><code class="docutils literal notranslate"><span class="pre">sample_dingo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.sample_gapsplit"><code class="docutils literal notranslate"><span class="pre">sample_gapsplit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.export_to_pickle"><code class="docutils literal notranslate"><span class="pre">export_to_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.load_from_pickle"><code class="docutils literal notranslate"><span class="pre">load_from_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.plot_grid_reactions_flux"><code class="docutils literal notranslate"><span class="pre">plot_grid_reactions_flux()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load_modify_sample_utils.sampling_statistics"><code class="docutils literal notranslate"><span class="pre">sampling_statistics()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../distributions_comparison_utils/index.html">distributions_comparison_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.significantly_altered_reactions"><code class="docutils literal notranslate"><span class="pre">significantly_altered_reactions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dingo-stats</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">load_modify_sample_utils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/autoapi/load_modify_sample_utils/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-load_modify_sample_utils">
+<span id="load-modify-sample-utils"></span><h1>load_modify_sample_utils<a class="headerlink" href="#module-load_modify_sample_utils" title="Link to this heading"></a></h1>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#load_modify_sample_utils.load_model" title="load_modify_sample_utils.load_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_model</span></code></a>(→ Tuple[cobra.Model, List[cobra.Reaction], ...)</p></td>
+<td><p>Function to load and return a model in cobra format from given path.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#load_modify_sample_utils.get_objective_functions" title="load_modify_sample_utils.get_objective_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_objective_functions</span></code></a>(→ List[str])</p></td>
+<td><p>Function to find and return the objective functions of a cobra model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#load_modify_sample_utils.get_reaction_bounds" title="load_modify_sample_utils.get_reaction_bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reaction_bounds</span></code></a>(→ Dict[str, Tuple[float, float]])</p></td>
+<td><p>Function to create and return a dictionary of a cobra's model reaction bounds.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#load_modify_sample_utils.modify_model" title="load_modify_sample_utils.modify_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_model</span></code></a>(→ cobra.Model)</p></td>
+<td><p>Function that modifies a given cobra model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#load_modify_sample_utils.sample_optgp" title="load_modify_sample_utils.sample_optgp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_optgp</span></code></a>(→ numpy.typing.NDArray[numpy.float64])</p></td>
+<td><p>Function that performs sampling with the OptGP sampler of cobrapy. Users can define number of samples,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#load_modify_sample_utils.sample_dingo" title="load_modify_sample_utils.sample_dingo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_dingo</span></code></a>(→ numpy.typing.NDArray[numpy.float64])</p></td>
+<td><p>Function that performs sampling with dingo. Users can define the ess and psrf parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#load_modify_sample_utils.sample_gapsplit" title="load_modify_sample_utils.sample_gapsplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample_gapsplit</span></code></a>(→ numpy.typing.NDArray[numpy.float64])</p></td>
+<td><p>Function that performs sampling with the gapsplit algorithm. Users can define number of samples, if they want</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#load_modify_sample_utils.export_to_pickle" title="load_modify_sample_utils.export_to_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_to_pickle</span></code></a>(samples, filename)</p></td>
+<td><p>Function that exports samples to a pickle file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#load_modify_sample_utils.load_from_pickle" title="load_modify_sample_utils.load_from_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from_pickle</span></code></a>(→ numpy.typing.NDArray[numpy.float64])</p></td>
+<td><p>Function that loads samples from a pickle file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#load_modify_sample_utils.plot_grid_reactions_flux" title="load_modify_sample_utils.plot_grid_reactions_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_grid_reactions_flux</span></code></a>(samples, model_reactions[, ...])</p></td>
+<td><p>Function that plots a grid of the sampling distributions of all model reactions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#load_modify_sample_utils.sampling_statistics" title="load_modify_sample_utils.sampling_statistics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sampling_statistics</span></code></a>(→ Tuple[float, float, float, ...)</p></td>
+<td><p>Function that prints statistics for the sampling distribution of a specified model reaction</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.load_model">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">cobra.Model</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">cobra.Reaction</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#load_modify_sample_utils.load_model" title="Link to this definition"></a></dt>
+<dd><p>Function to load and return a model in cobra format from given path.
+It returns 3 objects, the cobra model and 2 lists, one with the model reactions (cobra_reactions)
+and one with their IDs (cobra_reactions_ids)</p>
+<p>Keyword arguments:
+filepath – path to cobra model in sbml format</p>
+<p>Returns:
+Tuple[Model, List, List]:</p>
+<blockquote>
+<div><p>cobra_model – metabolic model in cobra format
+cobra_reactions – list with the model reactions
+cobra_reactions_ids – list with the string IDs of model reactions</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.get_objective_functions">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">get_objective_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#load_modify_sample_utils.get_objective_functions" title="Link to this definition"></a></dt>
+<dd><p>Function to find and return the objective functions of a cobra model</p>
+<p>Keyword arguments:
+cobra_model (Model) – cobra model object</p>
+<p>Returns:
+objective_functions_ids (List) – List containing one or multiple objective functions of given model</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.get_reaction_bounds">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">get_reaction_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#load_modify_sample_utils.get_reaction_bounds" title="Link to this definition"></a></dt>
+<dd><p>Function to create and return a dictionary of a cobra’s model reaction bounds.
+Reaction IDs are keys and their corresponding bounds are values.</p>
+<p>Keyword arguments:
+cobra_model (Model) – cobra model object</p>
+<p>Returns:
+reaction_bounds_dict (Dict) – Dictionary containing reaction IDs as keys and their bounds as values</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.modify_model">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">modify_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objective_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimal_percentage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objective_direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'max'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">cobra.Model</span></span></span><a class="headerlink" href="#load_modify_sample_utils.modify_model" title="Link to this definition"></a></dt>
+<dd><p>Function that modifies a given cobra model.</p>
+<p>Users can change objective function, optimal percentage, define custom reaction bounds and change objective
+direction. Lower bound of the objective will be fixed based on the optimal percentage, in all cases.</p>
+<p>Keyword arguments:
+cobra_model (Model) – cobra model object
+objective_function (str) – string with the requested objective function ID to be assigned to the model
+optimal_percentage (float) – percentage of the FBA solution to be set as lower bound to the objectie function.
+reaction_bounds (dict) – dictionary of custom reaction bounds to be assigned to the model’s reactions
+objective_direction (str) – the direction to optimize the model: <cite>max</cite> and <cite>min</cite> are available options.</p>
+<p>Returns:
+modified_cobra_model (Model) – A modified cobra model object</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.sample_optgp">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">sample_optgp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thinning</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_in_rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#load_modify_sample_utils.sample_optgp" title="Link to this definition"></a></dt>
+<dd><p>Function that performs sampling with the OptGP sampler of cobrapy. Users can define number of samples,
+thinning parameter. Resulting samples dataset is returned in a numpy array with
+reactions as rows or columns specified by user</p>
+<p>Keyword arguments:
+cobra_model (Model) – cobra model object
+n_samples (int) – defines the number of samples returned to the user.
+thinning (int) – defines the <cite>thinning</cite> parameter. Default to 100 means samples are returned every 100th step.
+reaction_in_rows (bool) – boolean variable that if <cite>True</cite> reactions are rows in the sampling dataframe.</p>
+<p>Returns:
+samples_optgp (NDArray[np.float64]) – Numpy 2D array of the sampling results</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.sample_dingo">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">sample_dingo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dingo_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psrf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'gurobi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_in_rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#load_modify_sample_utils.sample_dingo" title="Link to this definition"></a></dt>
+<dd><p>Function that performs sampling with dingo. Users can define the ess and psrf parameters.
+Resulting samples dataset is returned in a numpy array with reactions as rows or columns specified by user.
+User can call the “reduce_samples_dimensions” function to reduce the samples to a specified number</p>
+<p>Keyword arguments:
+dingo_model – dingo model object
+ess – stands for the effective sample size (ESS) (default value is 1000).
+psrf – is a flag to request an upper bound equal to 1.1 for the value of the potential scale reduction factor of each marginal flux (default option is False).
+solver – defines the linear programming solver
+final_n_samples – integer that defines the final number of samples returned to the user (post sampling step)
+reaction_in_rows – boolean variable that if <cite>True</cite> reactions are rows in the sampling dataframe.</p>
+<p>Returns:
+samples_dingo (NDArray[np.float64]) – Numpy 2D array of the sampling results</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.sample_gapsplit">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">sample_gapsplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_in_rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_loopless_cobrapy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction_of_optimum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#load_modify_sample_utils.sample_gapsplit" title="Link to this definition"></a></dt>
+<dd><p>Function that performs sampling with the gapsplit algorithm. Users can define number of samples, if they want
+to modify their model with the “add_loopless” function and a value for the “fraction_of_optimum” parameter used in the gapsplit algorithm.
+Resulting samples dataset is returned in a numpy array with reactions as rows or columns specified by user</p>
+<p>Keyword arguments:
+cobra_model (Model) – cobra model object
+n_samples (int) – defines the number of samples returned to the user.
+reaction_in_rows (bool) – boolean variable that if <cite>True</cite> reactions are rows in the sampling dataframe
+add_loopless_cobrapy (bool) – Boolean variable that if True modifies the model with the <cite>add_loopless</cite> function
+fraction_of_optimum (float) – Float variable that defines the <cite>fraction_of_optimum</cite> parameter used in <cite>gapsplit</cite> algorithm</p>
+<p>Returns:
+gapsplit_samples (NDArray[np.float64]) – Numpy 2D array of the sampling results</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.export_to_pickle">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">export_to_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#load_modify_sample_utils.export_to_pickle" title="Link to this definition"></a></dt>
+<dd><p>Function that exports samples to a pickle file</p>
+<p>Keyword arguments:
+samples (NDArray[np.float64]) – Numpy 2D array of the samples
+filename (str) – String to name the created file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.load_from_pickle">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">load_from_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#load_modify_sample_utils.load_from_pickle" title="Link to this definition"></a></dt>
+<dd><p>Function that loads samples from a pickle file</p>
+<p>Keyword arguments:
+filename (str) – String of the filename containing the samples</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.plot_grid_reactions_flux">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">plot_grid_reactions_flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sampling</span> <span class="pre">Distributions'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#load_modify_sample_utils.plot_grid_reactions_flux" title="Link to this definition"></a></dt>
+<dd><p>Function that plots a grid of the sampling distributions of all model reactions.
+User can define distributions plotted per rows and columns</p>
+<p>Keyword arguments:
+samples (NDArray[np.float64]) – Numpy 2D array of the samples
+model_reactions (List[str]) – A list containing strings of reaction IDs
+tolerance (float) – tolerance level to make distribution plot transparent based on flux range
+nrows (int) – Number of rows for the plot
+ncols (int) – Number of columns for the plot
+title (str) – Title of the plot</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="load_modify_sample_utils.sampling_statistics">
+<span class="sig-prename descclassname"><span class="pre">load_modify_sample_utils.</span></span><span class="sig-name descname"><span class="pre">sampling_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#load_modify_sample_utils.sampling_statistics" title="Link to this definition"></a></dt>
+<dd><p>Function that prints statistics for the sampling distribution of a specified model reaction</p>
+<p>Keyword arguments:
+samples (NDArray[np.float64]) – Numpy 2D array of the samples
+model_reactions (List[str]) – A list containing strings of reaction IDs
+reaction_id (str) – Reaction ID to calculate sampling statistics on</p>
+<p>Returns:
+Tuple[float, float, float, float, float, float]</p>
+<blockquote>
+<div><p>mean (float) – average value from the reaction’s flux distribution
+min (float) – minimum value from the reaction’s flux distribution
+max (float) – maximum value from the reaction’s flux distribution
+std (float) – standard deviation value from the reaction’s flux distribution
+skewness (float) – skewness value from the reaction’s flux distribution
+kurtosis (float) – kurtosis value from the reaction’s flux distribution</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../correlations_utils/index.html" class="btn btn-neutral float-left" title="correlations_utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../distributions_comparison_utils/index.html" class="btn btn-neutral float-right" title="distributions_comparison_utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+escher_maps_utils
+=================
+
+.. py:module:: escher_maps_utils
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   escher_maps_utils.BIGG_COFACTORS
+   escher_maps_utils.BIGG_BUILDING_BLOCLS
+   escher_maps_utils.MODELSEED_COFACTORS
+   escher_maps_utils.EXCLUDED_COMPOUNDS
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   escher_maps_utils.remove_cycles
+   escher_maps_utils.build_reaction_hierarchy
+   escher_maps_utils.build_escher_map
+
+
+Module Contents
+---------------
+
+.. py:data:: BIGG_COFACTORS
+   :value: ['atp_c0', 'atp_c', 'adp_c', 'adp_c0', 'atp_c0', 'atp_c', 'adp_c', 'adp_c0', 'udp_c0', 'udp_c',...
+
+
+.. py:data:: BIGG_BUILDING_BLOCLS
+   :value: ['ala_L_c0', 'asp_L_c0', ' gln_L_c0', 'glu_L_c0', 'glu_L_c0', 'ser_L_c0', 'trp_L_c0',...
+
+
+.. py:data:: MODELSEED_COFACTORS
+   :value: ['cpd00001_c0', 'cpd00002_c0', 'cpd00003_c0', 'cpd00004_c0', 'cpd00005_c0', 'cpd00006_c0',...
+
+
+.. py:data:: EXCLUDED_COMPOUNDS
+
+.. py:function:: remove_cycles(hierarchy)
+
+   Takes a {parent: (child,…)} hierarchy and returns the same structure
+   with cycles removed (based on DFS). All original keys are preserved,
+   even if they end up with no children.
+
+
+.. py:function:: build_reaction_hierarchy(reaction_dict)
+
+.. py:function:: build_escher_map(model, type: Literal['pathway', 'graph'] = 'pathway', reaction_list=[], pathway=None, KEGG_pathway_id=None, map_name='test_map', vertical=False, prev_gc={})
+
+   Build Escher map from cobra model.
+
+   Example:
+       glycolysis = ['ALCD2x', 'ENO', 'FBA', 'FBP', 'GAPD', 'PFK', 'PGK', 'PGM', 'PPCK', 'PPS', 'PYK', 'TPI']
+       ppp = ['FBA', 'FBP', 'GND', 'PFK', 'PGL', 'RPE', 'RPI', 'TKT1']
+
+

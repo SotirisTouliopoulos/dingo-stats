@@ -1,0 +1,519 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pathways_utils &mdash; dingo-stats  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="clustering_utils" href="../clustering_utils/index.html" />
+    <link rel="prev" title="loopless_utils" href="../loopless_utils/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/bitmap.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../intro.html#introduction-to-dingo">Introduction to dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../intro.html#introduction-to-dingo-stats">Introduction to dingo-stats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#instllation-of-dingo">Instllation of dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installation-of-dingo-stats">Installation of dingo-stats</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#load-modify-and-sample-models">Load, Modify and Sample models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#inspect-sampling-distributions">Inspect Sampling distributions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pathways.html">Extract pathway information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pathways.html#map-bigg-seed-ids-to-kegg-pathways">Map BIGG/SEED ids to KEGG pathways</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../correlations.html">Compute pairwise reaction correlations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../correlations.html#linear-correlations-with-pearson-spearman">Linear correlations with pearson/spearman</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../correlations.html#non-linear-dependencies-with-copulas">Non-Linear dependencies with copulas</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gapsplit/index.html">gapsplit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../gapsplit/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gapsplit/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gapsplit/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit.gapsplit"><code class="docutils literal notranslate"><span class="pre">gapsplit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._generate_sample"><code class="docutils literal notranslate"><span class="pre">_generate_sample()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._generate_sample_gurobi_direct"><code class="docutils literal notranslate"><span class="pre">_generate_sample_gurobi_direct()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._maxgap"><code class="docutils literal notranslate"><span class="pre">_maxgap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._make_report_header"><code class="docutils literal notranslate"><span class="pre">_make_report_header()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit._reduce_gurobi"><code class="docutils literal notranslate"><span class="pre">_reduce_gurobi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../gapsplit/index.html#gapsplit.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../graphs_utils/index.html">graphs_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../graphs_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphs_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.construct_graph"><code class="docutils literal notranslate"><span class="pre">construct_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.draw_positive_clique_shadows"><code class="docutils literal notranslate"><span class="pre">draw_positive_clique_shadows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.draw_negative_clique_shadows"><code class="docutils literal notranslate"><span class="pre">draw_negative_clique_shadows()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.plot_graph"><code class="docutils literal notranslate"><span class="pre">plot_graph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.compute_nodes_centrality_metrics"><code class="docutils literal notranslate"><span class="pre">compute_nodes_centrality_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.compare_essential_to_network_central_reactions"><code class="docutils literal notranslate"><span class="pre">compare_essential_to_network_central_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.compare_network_modularities"><code class="docutils literal notranslate"><span class="pre">compare_network_modularities()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../graphs_utils/index.html#graphs_utils.compare_node_centralities"><code class="docutils literal notranslate"><span class="pre">compare_node_centralities()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../loopless_utils/index.html">loopless_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../loopless_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../loopless_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.loops_enumeration_from_fva"><code class="docutils literal notranslate"><span class="pre">loops_enumeration_from_fva()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.loopy_reactions_turned_off_in_pfba"><code class="docutils literal notranslate"><span class="pre">loopy_reactions_turned_off_in_pfba()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.get_loopless_solutions_from_samples"><code class="docutils literal notranslate"><span class="pre">get_loopless_solutions_from_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.calculate_affected_samples"><code class="docutils literal notranslate"><span class="pre">calculate_affected_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.calculate_distances_from_samples"><code class="docutils literal notranslate"><span class="pre">calculate_distances_from_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.calculate_distances_from_reactions"><code class="docutils literal notranslate"><span class="pre">calculate_distances_from_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../loopless_utils/index.html#loopless_utils.violin_plot_samples_distances"><code class="docutils literal notranslate"><span class="pre">violin_plot_samples_distances()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pathways_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.read_json_file"><code class="docutils literal notranslate"><span class="pre">read_json_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.map_model_to_kegg_reactions_dictionary"><code class="docutils literal notranslate"><span class="pre">map_model_to_kegg_reactions_dictionary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.dictionary_reaction_id_to_kegg_id"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_kegg_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.reaction_id_to_kegg_id"><code class="docutils literal notranslate"><span class="pre">reaction_id_to_kegg_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.fill_missing_kegg_ids_in_initial_dictionary"><code class="docutils literal notranslate"><span class="pre">fill_missing_kegg_ids_in_initial_dictionary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.fetch_kegg_pathway"><code class="docutils literal notranslate"><span class="pre">fetch_kegg_pathway()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.get_kegg_pathways_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">get_kegg_pathways_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.subset_model_reactions_from_pathway_info"><code class="docutils literal notranslate"><span class="pre">subset_model_reactions_from_pathway_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.dictionary_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_pathway()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.reaction_in_pathway_binary_matrix"><code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.plot_reaction_in_pathway_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.sort_reactions_by_model_order"><code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.subset_sampling_df_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../clustering_utils/index.html">clustering_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../clustering_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../clustering_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../clustering_utils/index.html#clustering_utils.clustering_of_correlation_matrix"><code class="docutils literal notranslate"><span class="pre">clustering_of_correlation_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../clustering_utils/index.html#clustering_utils.plot_dendrogram"><code class="docutils literal notranslate"><span class="pre">plot_dendrogram()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../escher_maps_utils/index.html">escher_maps_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../escher_maps_utils/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../escher_maps_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../escher_maps_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.BIGG_COFACTORS"><code class="docutils literal notranslate"><span class="pre">BIGG_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.BIGG_BUILDING_BLOCLS"><code class="docutils literal notranslate"><span class="pre">BIGG_BUILDING_BLOCLS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.MODELSEED_COFACTORS"><code class="docutils literal notranslate"><span class="pre">MODELSEED_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.EXCLUDED_COMPOUNDS"><code class="docutils literal notranslate"><span class="pre">EXCLUDED_COMPOUNDS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.remove_cycles"><code class="docutils literal notranslate"><span class="pre">remove_cycles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.build_reaction_hierarchy"><code class="docutils literal notranslate"><span class="pre">build_reaction_hierarchy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../escher_maps_utils/index.html#escher_maps_utils.build_escher_map"><code class="docutils literal notranslate"><span class="pre">build_escher_map()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../correlations_utils/index.html">correlations_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../correlations_utils/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../correlations_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../correlations_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.BIGG_COFACTORS"><code class="docutils literal notranslate"><span class="pre">BIGG_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.BIGG_BUILDING_BLOCKS"><code class="docutils literal notranslate"><span class="pre">BIGG_BUILDING_BLOCKS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.MODELSEED_COFACTORS"><code class="docutils literal notranslate"><span class="pre">MODELSEED_COFACTORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.correlated_reactions"><code class="docutils literal notranslate"><span class="pre">correlated_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.plot_correlation_matrix"><code class="docutils literal notranslate"><span class="pre">plot_correlation_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.compute_copula"><code class="docutils literal notranslate"><span class="pre">compute_copula()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.copula_tail_dependence"><code class="docutils literal notranslate"><span class="pre">copula_tail_dependence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.plot_copula"><code class="docutils literal notranslate"><span class="pre">plot_copula()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.split_forward_reverse"><code class="docutils literal notranslate"><span class="pre">split_forward_reverse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.find_reactants_products"><code class="docutils literal notranslate"><span class="pre">find_reactants_products()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.sharing_metabolites"><code class="docutils literal notranslate"><span class="pre">sharing_metabolites()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../correlations_utils/index.html#correlations_utils.sharing_metabolites_square_matrix"><code class="docutils literal notranslate"><span class="pre">sharing_metabolites_square_matrix()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../load_modify_sample_utils/index.html">load_modify_sample_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../load_modify_sample_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../load_modify_sample_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.load_model"><code class="docutils literal notranslate"><span class="pre">load_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.get_objective_functions"><code class="docutils literal notranslate"><span class="pre">get_objective_functions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.get_reaction_bounds"><code class="docutils literal notranslate"><span class="pre">get_reaction_bounds()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.modify_model"><code class="docutils literal notranslate"><span class="pre">modify_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.sample_optgp"><code class="docutils literal notranslate"><span class="pre">sample_optgp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.sample_dingo"><code class="docutils literal notranslate"><span class="pre">sample_dingo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.sample_gapsplit"><code class="docutils literal notranslate"><span class="pre">sample_gapsplit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.export_to_pickle"><code class="docutils literal notranslate"><span class="pre">export_to_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.load_from_pickle"><code class="docutils literal notranslate"><span class="pre">load_from_pickle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.plot_grid_reactions_flux"><code class="docutils literal notranslate"><span class="pre">plot_grid_reactions_flux()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../load_modify_sample_utils/index.html#load_modify_sample_utils.sampling_statistics"><code class="docutils literal notranslate"><span class="pre">sampling_statistics()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../distributions_comparison_utils/index.html">distributions_comparison_utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#module-contents">Module Contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.significantly_altered_reactions"><code class="docutils literal notranslate"><span class="pre">significantly_altered_reactions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dingo-stats</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">pathways_utils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/autoapi/pathways_utils/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pathways_utils">
+<span id="pathways-utils"></span><h1>pathways_utils<a class="headerlink" href="#module-pathways_utils" title="Link to this heading"></a></h1>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.read_json_file" title="pathways_utils.read_json_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_json_file</span></code></a>(→ Tuple[Dict, pandas.DataFrame])</p></td>
+<td><p>Function that loads and returns the JSON file with KEGG information in JSON and pandas dataframe format</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.map_model_to_kegg_reactions_dictionary" title="pathways_utils.map_model_to_kegg_reactions_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_model_to_kegg_reactions_dictionary</span></code></a>(→ Dict[str, str])</p></td>
+<td><p>Function that creates a dictionary that will assign KEGG terms (values) to BiGG/SEED ids (keys)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.dictionary_reaction_id_to_kegg_id" title="pathways_utils.dictionary_reaction_id_to_kegg_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_kegg_id</span></code></a>(→ Tuple[Dict[str, ...)</p></td>
+<td><p>Given the <cite>reactions.json</cite> file this function builds two dictionaries for fast lookup of KEGG reaction IDs from BiGG or SEED IDs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.reaction_id_to_kegg_id" title="pathways_utils.reaction_id_to_kegg_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reaction_id_to_kegg_id</span></code></a>(→ str)</p></td>
+<td><p>Lookup function to get KEGG ID for a given BiGG or SEED reaction ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.fill_missing_kegg_ids_in_initial_dictionary" title="pathways_utils.fill_missing_kegg_ids_in_initial_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fill_missing_kegg_ids_in_initial_dictionary</span></code></a>(→ Dict)</p></td>
+<td><p>Fill in missing KEGG IDs (NAs) in the initial mapping dictionary using a function that maps</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.fetch_kegg_pathway" title="pathways_utils.fetch_kegg_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_kegg_pathway</span></code></a>(→ Tuple[str, List, List])</p></td>
+<td><p>Extract associated KEGG pathways from a given KEGG id.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.get_kegg_pathways_from_reaction_ids" title="pathways_utils.get_kegg_pathways_from_reaction_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_kegg_pathways_from_reaction_ids</span></code></a>(→ pandas.DataFrame)</p></td>
+<td><p>Fetch KEGG pathway information for a set of model reactions using parallel requests.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.subset_model_reactions_from_pathway_info" title="pathways_utils.subset_model_reactions_from_pathway_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subset_model_reactions_from_pathway_info</span></code></a>(→ List)</p></td>
+<td><p>Given a DataFrame with columns ['model_reaction', 'kegg_reaction', 'pathway_ids', 'pathway_names'],</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.dictionary_reaction_id_to_pathway" title="pathways_utils.dictionary_reaction_id_to_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_pathway</span></code></a>(→ Dict[str, str])</p></td>
+<td><p>Function that takes one or multiple lists containing reaction IDs (corresponding to pathways as shown above)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.reaction_in_pathway_binary_matrix" title="pathways_utils.reaction_in_pathway_binary_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix</span></code></a>(→ pandas.DataFrame)</p></td>
+<td><p>Given a mapping dictionary, this function builds a binary matrix where rows are keys,</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.plot_reaction_in_pathway_heatmap" title="pathways_utils.plot_reaction_in_pathway_heatmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap</span></code></a>(binary_df[, ...])</p></td>
+<td><p>Plot a binary mapping matrix using Plotly with discrete color values (0 = grey, 1 = blue).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.sort_reactions_by_model_order" title="pathways_utils.sort_reactions_by_model_order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_reactions_by_model_order</span></code></a>(full_list, *subsets)</p></td>
+<td><p>Sorts and merges all subsets (reactions from pathway) into a single list based on the order of elements in the full list (reactions order in model).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.subset_sampling_df_from_reaction_ids" title="pathways_utils.subset_sampling_df_from_reaction_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids</span></code></a>(...)</p></td>
+<td><p>This function takes a sampling dataframe with reactions as rows and samples as columns and subsets it</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway" title="pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway</span></code></a>(...)</p></td>
+<td><p>This function is used in cases where split of directional reactions to separate forward and reverse reactions takes place.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.read_json_file">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">read_json_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.read_json_file" title="Link to this definition"></a></dt>
+<dd><p>Function that loads and returns the JSON file with KEGG information in JSON and pandas dataframe format</p>
+<p>Keyword arguments:
+filepath (str) – path to the JSON file</p>
+<dl class="simple">
+<dt>Tuple[dict, pd.DataFrame]</dt><dd><p>reactions_json (dict) – The raw content of the JSON file as a Python dictionary.
+reactions_pandas (pd.DataFrame) – A pandas DataFrame constructed from the JSON content.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.map_model_to_kegg_reactions_dictionary">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">map_model_to_kegg_reactions_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.map_model_to_kegg_reactions_dictionary" title="Link to this definition"></a></dt>
+<dd><p>Function that creates a dictionary that will assign KEGG terms (values) to BiGG/SEED ids (keys)
+only from model information (without searching in online databases or in external files)</p>
+<p>Keyword arguments:
+cobra_model (cobra.Model) – cobra model object</p>
+<p>Returns:
+Dictionary (dict): maps each model’s BiGG/SEED ID → KEGG ID</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.dictionary_reaction_id_to_kegg_id">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">dictionary_reaction_id_to_kegg_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reactions_pandas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.dictionary_reaction_id_to_kegg_id" title="Link to this definition"></a></dt>
+<dd><p>Given the <cite>reactions.json</cite> file this function builds two dictionaries for fast lookup of KEGG reaction IDs from BiGG or SEED IDs.
+These dictionaries will be used as input in the <cite>reaction_id_to_kegg_id</cite> function.</p>
+<p>Keyword arguments:
+reactions_pandas (pd.DataFrame) – DataFrame with columns including:</p>
+<blockquote>
+<div><p>‘aliases’ (list of strings): may contain entries like “BiGG:SUCDi” or “KEGG:R00010”
+‘linked_reaction’ (str): may contain SEED reaction IDs like “rxn12345;rxn67890”</p>
+</div></blockquote>
+<p>Returns:
+Tuple[dict, dict]:</p>
+<blockquote>
+<div><p>bigg_to_kegg (dict): maps each BiGG ID → KEGG ID
+seed_to_kegg (dict): maps each SEED ID → KEGG ID</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.reaction_id_to_kegg_id">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">reaction_id_to_kegg_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modeltype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bigg_to_kegg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_to_kegg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pathways_utils.reaction_id_to_kegg_id" title="Link to this definition"></a></dt>
+<dd><p>Lookup function to get KEGG ID for a given BiGG or SEED reaction ID.
+This function is used inside the <cite>fill_missing_kegg_ids_in_initial_dictionary</cite> function</p>
+<p>Keyword arguments:
+reaction_id (str) – The BiGG or SEED reaction ID (e.g., “SUCDi” or “rxn12345”)
+modeltype (str) – Either “BiGG” or “SEED” (determines which dictionary to use)
+bigg_to_kegg (dict) – Dictionary mapping BiGG IDs to KEGG IDs
+seed_to_kegg (dict) – Dictionary mapping SEED IDs to KEGG IDs</p>
+<p>Returns:
+str: The corresponding KEGG ID (e.g., “R00010”), or “NA” if not found</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.fill_missing_kegg_ids_in_initial_dictionary">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">fill_missing_kegg_ids_in_initial_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_model_to_kegg_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bigg_to_kegg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_to_kegg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modeltype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BiGG'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#pathways_utils.fill_missing_kegg_ids_in_initial_dictionary" title="Link to this definition"></a></dt>
+<dd><p>Fill in missing KEGG IDs (NAs) in the initial mapping dictionary using a function that maps
+BiGG/SEED IDs to KEGG IDs.</p>
+<p>Keyword arguments:
+initial_model_to_kegg_dictionary (dict) – Dictionary with reaction IDs as keys and KEGG IDs (or None) as values.
+bigg_to_kegg (dict) – Dictionary mapping BiGG IDs to KEGG IDs
+seed_to_kegg (dict) – Dictionary mapping SEED IDs to KEGG IDs
+modeltype (str) – Either “BiGG” or “SEED” (determines which dictionary to use)</p>
+<p>Returns:
+final_model_to_kegg_dictionary (dict): Updated dictionary with KEGG IDs filled where possible.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.fetch_kegg_pathway">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">fetch_kegg_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kegg_rxn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.fetch_kegg_pathway" title="Link to this definition"></a></dt>
+<dd><p>Extract associated KEGG pathways from a given KEGG id.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><p>kegg_rxn (str) – KEGG reaction ID (e.g., ‘R00010’).</p>
+</dd>
+</dl>
+<p>Returns:
+kegg_rxn (str), pathway_ids (list), pathway_names (list)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.get_kegg_pathways_from_reaction_ids">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">get_kegg_pathways_from_reaction_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">final_model_to_kegg_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#pathways_utils.get_kegg_pathways_from_reaction_ids" title="Link to this definition"></a></dt>
+<dd><p>Fetch KEGG pathway information for a set of model reactions using parallel requests.</p>
+<p>Keyword arguments:
+final_model_to_kegg_dictionary (dict) – dictionary where keys are model reaction IDs and values are KEGG reaction IDs (e.g., ‘R00010’).
+max_workers (int) – Number of threads for parallel downloading (default = 8).</p>
+<p>Returns:
+pd.DataFrame:</p>
+<blockquote>
+<div><p>A DataFrame with columns:
+[‘model_reaction’, ‘kegg_reaction’, ‘pathway_ids’, ‘pathway_names’]</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.subset_model_reactions_from_pathway_info">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">subset_model_reactions_from_pathway_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kegg_info_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathway_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#pathways_utils.subset_model_reactions_from_pathway_info" title="Link to this definition"></a></dt>
+<dd><p>Given a DataFrame with columns [‘model_reaction’, ‘kegg_reaction’, ‘pathway_ids’, ‘pathway_names’],
+return all reaction IDs affiliated with a given KEGG pathway name or ID.</p>
+<p>Keyword arguments:
+kegg_info_df (pd.DataFrame) – Output from <cite>get_kegg_pathways_from_reaction_ids</cite>, must contain ‘pathway_ids’ and ‘pathway_names’.
+pathway_query (str) – Exact KEGG pathway name or ID to match (e.g., ‘Glycolysis / Gluconeogenesis’ or ‘rn00010’).</p>
+<p>Returns:
+List[str]: List of reaction IDs affiliated with the <strong>exact</strong> given pathway.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.dictionary_reaction_id_to_pathway">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">dictionary_reaction_id_to_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">named_lists</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.dictionary_reaction_id_to_pathway" title="Link to this definition"></a></dt>
+<dd><p>Function that takes one or multiple lists containing reaction IDs (corresponding to pathways as shown above)
+and creates a dictionary that maps the IDs to pathway names.</p>
+<p>Keyword arguments:
+<a href="#id1"><span class="problematic" id="id2">**</span></a>named_lists: List[str] – Named keyword arguments where each argument is a list of reaction IDs</p>
+<blockquote>
+<div><p>and the argument name represents the pathway name.</p>
+</div></blockquote>
+<p>Returns:
+reaction_id_to_pathway_dict (dict): dictionary mapping reaction id to pathway name</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.reaction_in_pathway_binary_matrix">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">reaction_in_pathway_binary_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_id_to_pathway_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#pathways_utils.reaction_in_pathway_binary_matrix" title="Link to this definition"></a></dt>
+<dd><p>Given a mapping dictionary, this function builds a binary matrix where rows are keys,
+columns are unique values, and the cell is 1 if the key maps to that value.</p>
+<p>Keyword arguments:
+mapping_dict: Dict – dictionary mapping reaction id to pathway name</p>
+<p>Returns:
+binary_df: pd.DataFrame – DataFrame with binary values (0 or 1) matching reactions to pathways</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.plot_reaction_in_pathway_heatmap">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">plot_reaction_in_pathway_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binary_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pathways_utils.plot_reaction_in_pathway_heatmap" title="Link to this definition"></a></dt>
+<dd><p>Plot a binary mapping matrix using Plotly with discrete color values (0 = grey, 1 = blue).</p>
+<p>Parameters:
+- binary_df: DataFrame with binary values (0 or 1)
+- font_size: Font size for axis labels and ticks
+- fig_width: Width of the figure in pixels
+- fig_height: Height of the figure in pixels</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.sort_reactions_by_model_order">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">sort_reactions_by_model_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">subsets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pathways_utils.sort_reactions_by_model_order" title="Link to this definition"></a></dt>
+<dd><p>Sorts and merges all subsets (reactions from pathway) into a single list based on the order of elements in the full list (reactions order in model).</p>
+<p>Keyword arguments:
+full_list (list) – The reference list that defines the desired order.
+<a href="#id3"><span class="problematic" id="id4">*</span></a>subsets (lists) – One or more subset lists to be merged and ordered.</p>
+<p>Returns:
+sorted_merged: a single merged list of all subsets sorted by the order in full_list.</p>
+<p>Example Usage:
+Glycolysis = [“PGI”, “PFK”, “FBA”, “TPI”, “GAPD”, “PGK”, “PGM”, “ENO”, “PYK”]
+PPP = [“G6PDH2r”, “PGL”, “GND”, “RPE”, “RPI”, “TKT1”, “TKT2”, “TALA”]
+reactions_ordered = sort_reactions_in_pathways_by_reactions_in_model_order(ec_cobra_reactions_str, Glycolysis, PPP)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.subset_sampling_df_from_reaction_ids">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">subset_sampling_df_from_reaction_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.subset_sampling_df_from_reaction_ids" title="Link to this definition"></a></dt>
+<dd><p>This function takes a sampling dataframe with reactions as rows and samples as columns and subsets it
+to include only reactions of interest</p>
+<p>Keyword arguments:
+samples: (Numpy 2D array) – A sampling 2D array with reactions as rows and samples as columns
+model_reactions (List) – A list containing the model’s reactions
+subset_reactions (List) – A list containing reactions of interest to subset the sampling array</p>
+<p>Returns:
+subset_samples: (NDArray[np.float64]) – subset of the sampling dataframe containing only reactions of interest</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pathways_utils.dictionary_map_reverse_reaction_id_to_pathway">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_id_to_pathway_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">for_rev_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway" title="Link to this definition"></a></dt>
+<dd><p>This function is used in cases where split of directional reactions to separate forward and reverse reactions takes place.</p>
+<p>Keyword arguments:
+reaction_id_to_pathway_dict (Dict) – Dict mapping reaction IDs to pathway names
+for_rev_reactions (List) – List of the splitted reactions</p>
+<p>Returns:
+reaction_id_forward_reverse_to_pathway_dict: (Dict) – Dictionary containing reaction-pathway mapping information</p>
+<blockquote>
+<div><p>for forward and reverse reactions separately</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../loopless_utils/index.html" class="btn btn-neutral float-left" title="loopless_utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../clustering_utils/index.html" class="btn btn-neutral float-right" title="clustering_utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

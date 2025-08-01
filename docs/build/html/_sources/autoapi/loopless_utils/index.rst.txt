@@ -1,0 +1,65 @@
+loopless_utils
+==============
+
+.. py:module:: loopless_utils
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   loopless_utils.loops_enumeration_from_fva
+   loopless_utils.loopy_reactions_turned_off_in_pfba
+   loopless_utils.get_loopless_solutions_from_samples
+   loopless_utils.calculate_affected_samples
+   loopless_utils.calculate_distances_from_samples
+   loopless_utils.calculate_distances_from_reactions
+   loopless_utils.violin_plot_samples_distances
+
+
+Module Contents
+---------------
+
+.. py:function:: loops_enumeration_from_fva(ec_cobra_model, fraction_of_optimum=1)
+
+   Function that aims to identify loopy reaction from FVA.
+   This method was introduced here: https://doi.org/10.1016/j.bpj.2010.12.3707
+
+
+.. py:function:: loopy_reactions_turned_off_in_pfba(loopy_cobra_model, loopy_reactions)
+
+   Identify which subset of loopy reactions calculated with the above function 
+   can be turned off when performing a pFBA or a loopless solutions to pFBA results
+
+
+.. py:function:: get_loopless_solutions_from_samples(samples, cobra_model)
+
+   Function that calculate the loopless solution from each sample and saves results into a new numpy 2D array
+
+
+.. py:function:: calculate_affected_samples(initial_samples, loopless_samples, cobra_model, tol_reaction_difference=0.01, tol_reactions_count=1)
+
+   Function that given the default and the lopless solutions samples identifies how many samples have significant differences.
+   This is done by calculating (for each sample) the distance across the reactions between the default and loopless solution.
+   Reactions that have a difference higher than a given threshold are counted and sample can potentially be classified as loopy.
+   However, if user does not assume a sample as loopy when only 1 reaction overcomes this value, he can specify the least number 
+   of reactions needed for this classification. 
+
+
+.. py:function:: calculate_distances_from_samples(initial_samples, loopless_samples, cobra_model)
+
+   Function that calculates the euclidean distance between a sampling dataset and itself after applyig the loopless solutions.
+   Distances are calculated between different samples, so if you have 3000 samples you will end up with 3000 distances.
+
+
+.. py:function:: calculate_distances_from_reactions(initial_samples, loopless_samples, cobra_model)
+
+   Same as above but distances are calculated between reactions.
+
+
+.. py:function:: violin_plot_samples_distances(distances_array, title='', exponentformat='none')
+
+   Function that creates a violin plot from a distances_array (this array is calculated from the above 2 functions)
+
+
