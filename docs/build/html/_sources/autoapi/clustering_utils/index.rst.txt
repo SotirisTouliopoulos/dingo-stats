@@ -16,20 +16,38 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: clustering_of_correlation_matrix(correlation_matrix, reactions, linkage='ward', t=4.0, correction=True)
+.. py:function:: clustering_of_correlation_matrix(correlation_matrix: numpy.typing.NDArray[numpy.float64], reactions: List, linkage: str = 'ward', t: float = 4.0, correction: bool = True) -> Tuple[numpy.typing.NDArray[numpy.float64], numpy.typing.NDArray[numpy.float64], List[List]]
 
-   A Python function for hierarchical clustering of the correlation matrix
+   Function for hierarchical clustering of the correlation matrix
 
    Keyword arguments:
-   correlation_matrix -- A numpy 2D array of a correlation matrix
-   reactions -- A list with the model's reactions
-   linkage -- linkage defines the type of linkage. 
-              Available linkage types are: single, average, complete, ward.
-   t -- A threshold that defines a threshold that cuts the dendrogram 
-        at a specific height and produces clusters
-   correction -- A boolean variable that if True converts the values of the
-                 the correlation matrix to absolute values.
+   correlation_matrix (NDArray[np.float64]) -- A numpy 2D array of a correlation matrix
+   reactions (List) -- A list with the corresponding reactions (must be in accordance with the correlation matrix)
+   linkage (str) -- linkage defines the type of linkage. Available linkage types are: single, average, complete, ward.
+   t (float) -- A threshold that defines a threshold that cuts the dendrogram at a specific height and produces clusters
+   correction (bool) -- A boolean variable that if True converts the values of the the correlation matrix to absolute values.
+                        
+   Returns:
+   Tuple[NDArray[np.float64], NDArray[np.float64], List[List]]
+       dissimilarity_matrix (NDArray[np.float64]) -- The dissimilarity matrix calculated from the given correlation matrix
+       labels (NDArray[np.float64]) -- Integer labels corresponding to clusters
+       clusters (List[List]) -- Nested list containing reaction IDs grouped based on their cluster labels
 
 
-.. py:function:: plot_dendrogram(dissimilarity_matrix, reactions, group_map, linkage='ward', t=4.0, label_fontsize=10, height=600, width=1000, show_labels=True, title='')
+.. py:function:: plot_dendrogram(dissimilarity_matrix: numpy.typing.NDArray[numpy.float64], reactions: List, group_map: dict, linkage: str = 'ward', t: float = 4.0, label_fontsize: int = 10, height: int = 600, width: int = 1000, show_labels: bool = True, title: str = '')
+
+   Function that plots the dendrogram from hierarchical clustering
+
+   Keyword arguments:
+   dissimilarity_matrix (NDArray[np.float64]) -- The dissimilarity matrix calculated from the `clustering_of_correlation_matrix` function
+   reactions (List) -- List with reactions IDs
+   group_map (Dict) -- Dictionary mapping reactions to pathways
+   linkage (str) -- linkage defines the type of linkage. Available linkage types are: single, average, complete, ward.
+   t (float) -- A threshold that defines a threshold that cuts the dendrogram at a specific height
+   label_fontsize (int) -- Size for the plotted labels (reaction IDs)
+   height (int) -- Defines the height of the plot
+   width (int) -- Defines the width of the plot
+   show_labels (bool) -- Boolean variable that if True labels are shown in the x-axis
+   title (str) -- Title for the plot
+
 

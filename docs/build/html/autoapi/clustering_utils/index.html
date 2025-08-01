@@ -136,7 +136,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.reaction_in_pathway_binary_matrix"><code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.plot_reaction_in_pathway_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.sort_reactions_by_model_order"><code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_df_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_array_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_array_from_reaction_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway()</span></code></a></li>
 </ul>
 </li>
@@ -208,6 +208,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#module-contents">Module Contents</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.significantly_altered_reactions"><code class="docutils literal notranslate"><span class="pre">significantly_altered_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_volcano"><code class="docutils literal notranslate"><span class="pre">plot_volcano()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.dictionary_reaction_to_all_pathways"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_to_all_pathways()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.hypergeometric_test_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">hypergeometric_test_pathway_enrichment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">plot_pathway_enrichment()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -247,11 +251,11 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#clustering_utils.clustering_of_correlation_matrix" title="clustering_utils.clustering_of_correlation_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustering_of_correlation_matrix</span></code></a>(correlation_matrix, ...)</p></td>
-<td><p>A Python function for hierarchical clustering of the correlation matrix</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#clustering_utils.clustering_of_correlation_matrix" title="clustering_utils.clustering_of_correlation_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clustering_of_correlation_matrix</span></code></a>(...)</p></td>
+<td><p>Function for hierarchical clustering of the correlation matrix</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#clustering_utils.plot_dendrogram" title="clustering_utils.plot_dendrogram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_dendrogram</span></code></a>(dissimilarity_matrix, reactions, group_map)</p></td>
-<td><p></p></td>
+<td><p>Function that plots the dendrogram from hierarchical clustering</p></td>
 </tr>
 </tbody>
 </table>
@@ -260,27 +264,39 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="clustering_utils.clustering_of_correlation_matrix">
-<span class="sig-prename descclassname"><span class="pre">clustering_utils.</span></span><span class="sig-name descname"><span class="pre">clustering_of_correlation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correlation_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linkage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clustering_utils.clustering_of_correlation_matrix" title="Link to this definition"></a></dt>
-<dd><p>A Python function for hierarchical clustering of the correlation matrix</p>
+<span class="sig-prename descclassname"><span class="pre">clustering_utils.</span></span><span class="sig-name descname"><span class="pre">clustering_of_correlation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correlation_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linkage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#clustering_utils.clustering_of_correlation_matrix" title="Link to this definition"></a></dt>
+<dd><p>Function for hierarchical clustering of the correlation matrix</p>
 <p>Keyword arguments:
-correlation_matrix – A numpy 2D array of a correlation matrix
-reactions – A list with the model’s reactions
-linkage – linkage defines the type of linkage.</p>
+correlation_matrix (NDArray[np.float64]) – A numpy 2D array of a correlation matrix
+reactions (List) – A list with the corresponding reactions (must be in accordance with the correlation matrix)
+linkage (str) – linkage defines the type of linkage. Available linkage types are: single, average, complete, ward.
+t (float) – A threshold that defines a threshold that cuts the dendrogram at a specific height and produces clusters
+correction (bool) – A boolean variable that if True converts the values of the the correlation matrix to absolute values.</p>
+<p>Returns:
+Tuple[NDArray[np.float64], NDArray[np.float64], List[List]]</p>
 <blockquote>
-<div><p>Available linkage types are: single, average, complete, ward.</p>
+<div><p>dissimilarity_matrix (NDArray[np.float64]) – The dissimilarity matrix calculated from the given correlation matrix
+labels (NDArray[np.float64]) – Integer labels corresponding to clusters
+clusters (List[List]) – Nested list containing reaction IDs grouped based on their cluster labels</p>
 </div></blockquote>
-<dl class="simple">
-<dt>t – A threshold that defines a threshold that cuts the dendrogram</dt><dd><p>at a specific height and produces clusters</p>
-</dd>
-<dt>correction – A boolean variable that if True converts the values of the</dt><dd><p>the correlation matrix to absolute values.</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="clustering_utils.plot_dendrogram">
-<span class="sig-prename descclassname"><span class="pre">clustering_utils.</span></span><span class="sig-name descname"><span class="pre">plot_dendrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dissimilarity_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linkage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clustering_utils.plot_dendrogram" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">clustering_utils.</span></span><span class="sig-name descname"><span class="pre">plot_dendrogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dissimilarity_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linkage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ward'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_fontsize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#clustering_utils.plot_dendrogram" title="Link to this definition"></a></dt>
+<dd><p>Function that plots the dendrogram from hierarchical clustering</p>
+<p>Keyword arguments:
+dissimilarity_matrix (NDArray[np.float64]) – The dissimilarity matrix calculated from the <cite>clustering_of_correlation_matrix</cite> function
+reactions (List) – List with reactions IDs
+group_map (Dict) – Dictionary mapping reactions to pathways
+linkage (str) – linkage defines the type of linkage. Available linkage types are: single, average, complete, ward.
+t (float) – A threshold that defines a threshold that cuts the dendrogram at a specific height
+label_fontsize (int) – Size for the plotted labels (reaction IDs)
+height (int) – Defines the height of the plot
+width (int) – Defines the width of the plot
+show_labels (bool) – Boolean variable that if True labels are shown in the x-axis
+title (str) – Title for the plot</p>
+</dd></dl>
 
 </section>
 </section>

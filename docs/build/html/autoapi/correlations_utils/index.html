@@ -136,7 +136,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.reaction_in_pathway_binary_matrix"><code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.plot_reaction_in_pathway_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.sort_reactions_by_model_order"><code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_df_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_array_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_array_from_reaction_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway()</span></code></a></li>
 </ul>
 </li>
@@ -208,6 +208,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#module-contents">Module Contents</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.significantly_altered_reactions"><code class="docutils literal notranslate"><span class="pre">significantly_altered_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_volcano"><code class="docutils literal notranslate"><span class="pre">plot_volcano()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.dictionary_reaction_to_all_pathways"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_to_all_pathways()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.hypergeometric_test_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">hypergeometric_test_pathway_enrichment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">plot_pathway_enrichment()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -263,32 +267,32 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#correlations_utils.correlated_reactions" title="correlations_utils.correlated_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correlated_reactions</span></code></a>(steady_states[, reactions, ...])</p></td>
-<td><p>A Python function to calculate the correlation matrix from a steady states array</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#correlations_utils.correlated_reactions" title="correlations_utils.correlated_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correlated_reactions</span></code></a>(→ Tuple)</p></td>
+<td><p>Function that calculate pairwise linear correlations and non-linear copula dependencies given a flux sampling array</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#correlations_utils.plot_correlation_matrix" title="correlations_utils.plot_correlation_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_correlation_matrix</span></code></a>(correlation_matrix[, ...])</p></td>
-<td><p>Function that plots a correlation matrix with customizable label font size.</p></td>
+<td><p>Function that plots a correlation matrix created with the <cite>correlated_reactions</cite> function.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#correlations_utils.compute_copula" title="correlations_utils.compute_copula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_copula</span></code></a>(flux1, flux2, n)</p></td>
-<td><p>A Python function to estimate the copula between two fluxes</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#correlations_utils.compute_copula" title="correlations_utils.compute_copula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_copula</span></code></a>(→ numpy.typing.NDArray[numpy.float64])</p></td>
+<td><p>Function that estimates the copula between two fluxes</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#correlations_utils.copula_tail_dependence" title="correlations_utils.copula_tail_dependence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copula_tail_dependence</span></code></a>(copula, cop_coeff_1, ...)</p></td>
-<td><p>Function that given a copula and parameters, aims to reveal whether 2 reactions have a positive or negative tail-dependence.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#correlations_utils.copula_tail_dependence" title="correlations_utils.copula_tail_dependence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copula_tail_dependence</span></code></a>(→ Tuple[str, float])</p></td>
+<td><p>Function that given a copula and parameters that define the diagonals width, classifies the tail-dependence between a reaction pair.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#correlations_utils.plot_copula" title="correlations_utils.plot_copula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_copula</span></code></a>(data_flux1, data_flux2[, n, width, ...])</p></td>
-<td><p>A Python function to plot the copula between two fluxes</p></td>
+<td><p>Function that plots the copula between two fluxes</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#correlations_utils.split_forward_reverse" title="correlations_utils.split_forward_reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_forward_reverse</span></code></a>(steady_states[, reactions])</p></td>
-<td><p>Function that given a sampling (steady states) dataset with reactions as rows, splits</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#correlations_utils.split_forward_reverse" title="correlations_utils.split_forward_reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_forward_reverse</span></code></a>(...)</p></td>
+<td><p>Function that given a flux sampling (steady states) array with reactions as rows, splits</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#correlations_utils.find_reactants_products" title="correlations_utils.find_reactants_products"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_reactants_products</span></code></a>(cobra_model[, reactions_ids])</p></td>
-<td><p>Function that identifies identifies the reactantsand products of each reaction in given model</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#correlations_utils.find_reactants_products" title="correlations_utils.find_reactants_products"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_reactants_products</span></code></a>(→ Tuple[List, List, List])</p></td>
+<td><p>Function that identifies and saves in separate lists the reactants, products and directionality status</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#correlations_utils.sharing_metabolites" title="correlations_utils.sharing_metabolites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharing_metabolites</span></code></a>([reactions_ids, ...])</p></td>
-<td><p>Function that compares the reactants and products of 2 reactions and returns True when finding a common metabolite</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#correlations_utils.sharing_metabolites" title="correlations_utils.sharing_metabolites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharing_metabolites</span></code></a>(→ bool)</p></td>
+<td><p>Function that compares the reactants and products of 2 reactions and returns True</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#correlations_utils.sharing_metabolites_square_matrix" title="correlations_utils.sharing_metabolites_square_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharing_metabolites_square_matrix</span></code></a>([reactions_ids, ...])</p></td>
-<td><p>Function that given the list wth reaction reactants/products and reversibility information calculated with a function above,</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#correlations_utils.sharing_metabolites_square_matrix" title="correlations_utils.sharing_metabolites_square_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharing_metabolites_square_matrix</span></code></a>(...)</p></td>
+<td><p>Function that given the lists with reactants, products and reversibility information,</p></td>
 </tr>
 </tbody>
 </table>
@@ -312,73 +316,145 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="correlations_utils.correlated_reactions">
-<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">correlated_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steady_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linear_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pearson'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_non_linear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boolean_sharing_metabolites_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linear_corr_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicator_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jensenshannon_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cop_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_triangle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.correlated_reactions" title="Link to this definition"></a></dt>
-<dd><p>A Python function to calculate the correlation matrix from a steady states array</p>
+<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">correlated_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steady_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linear_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pearson'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_non_linear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boolean_sharing_metabolites_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linear_corr_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicator_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jensenshannon_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cop_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_triangle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span></span></span><a class="headerlink" href="#correlations_utils.correlated_reactions" title="Link to this definition"></a></dt>
+<dd><p>Function that calculate pairwise linear correlations and non-linear copula dependencies given a flux sampling array
+User can choose the preffered coefficient to calculate pairwise linear correlations (pearson or spearman).
+Moreover, he can filter correlations not meeting a cutoff value and choose whether to proceed with calculation of
+non-linear dependencies using copulas.</p>
 <p>Keyword arguments:
-steady_states – A numpy array of the generated steady states fluxes
-reactions – A list with the reactions IDs (must be in accordance with the rows of the steady states)
-linear_coeff – A string declaring the linear coefficient to be selected. Available options: “pearson”, “spearman”
-include_non_linear – A boolean variable that if True, takes into account and calculates non-linear correlations
-boolean_sharing_metabolites_matrix – A boolean symmetric numpy 2D array with True/False based on the presense of shared metabolites between reactions
-linear_corr_cutoff – A cutoff to filter (remove) linear correlations (not greater than the cutoff) based on the pearson or spearmanr coefficient
-indicator_cutoff – A cutoff to classify non-linear correlations as positive, negative or non-significant
-jensenshannon_cutoff – A cutoff to filter (remove) non-linear correlations (not greater than the cutoff) based on the Jensen-Shannon metric
-std_cutoff – A cutoff to avoid computing the copula between 2 fluxes with almost fixed values
-cells – Number of cells to compute the copula
-cop_coeff – A value that narrows or widens the width of the copula’s diagonal (use lower values to capture extreme tail dependences)
-lower_triangle – A boolean variable that if True returns only the lower triangular matrix
-verbose – A boolean variable that if True additional information is printed as an output.</p>
-<dl class="simple">
-<dt>if include_non_linear is set to False this function returns:</dt><dd><p>linear_correlation_matrix – A correlations matrix filtered based on the given cutoffs that includes only linear correlations
+steady_states (NDArray[np.float64]) – A numpy array of the generated steady states fluxes
+reactions (List) – A list with the reactions IDs (must be in accordance with the rows of the steady states)
+linear_coeff (float) – A string declaring the linear coefficient to be selected. Available options: “pearson”, “spearman”
+include_non_linear (bool) – A boolean variable that if True, takes into account and calculates non-linear correlations
+boolean_sharing_metabolites_matrix (NDArray[np.float64]) – A boolean symmetric numpy 2D array with True/False based on the presense of shared metabolites between reactions
+linear_corr_cutoff (float) – A cutoff to filter (remove) linear correlations (not greater than the cutoff) based on the pearson or spearmanr coefficient
+indicator_cutoff (float) – A cutoff to classify non-linear correlations as positive, negative or non-significant
+jensenshannon_cutoff (float) – A cutoff to filter (remove) non-linear correlations (not greater than the cutoff) based on the Jensen-Shannon metric
+std_cutoff (float) – A cutoff to avoid computing the copula between 2 fluxes with almost fixed values
+cells (int) – Number of cells to compute the copula
+cop_coeff (float) – A value that narrows or widens the width of the copula’s diagonal (use lower values to capture extreme tail dependences)
+lower_triangle (bool) – A boolean variable that if True returns only the lower triangular matrix
+verbose (bool) – A boolean variable that if True additional information is printed as an output.</p>
+<p>Returns:
+if include_non_linear is set to False:
+Tuple[NDArray[np.float64], Dict]</p>
+<blockquote>
+<div><p>linear_correlation_matrix – A correlations matrix filtered based on the given cutoffs that includes only linear correlations
 correlations_dictionary – A dictionary containing unique reaction pairs and their corresponding correlation values</p>
-</dd>
-<dt>if include_non_linear is set to True this function additionally returns:</dt><dd><p>mixed_correlation_matrix – A correlations matrix filtered based on the given cutoffs that includes both linear and non-linear correlations
+</div></blockquote>
+<p>if include_non_linear is set to True:
+Tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64], Dict]</p>
+<blockquote>
+<div><p>linear_correlation_matrix – A correlations matrix filtered based on the given cutoffs that includes only linear correlations
+correlations_dictionary – A dictionary containing unique reaction pairs and their corresponding correlation values
+mixed_correlation_matrix – A correlations matrix filtered based on the given cutoffs that includes both linear and non-linear correlations
 non_linear_correlation_matrix – A correlations matrix filtered based on the given cutoffs that includes only non-linear correlations</p>
-</dd>
-</dl>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="correlations_utils.plot_correlation_matrix">
-<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">plot_correlation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correlation_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.plot_correlation_matrix" title="Link to this definition"></a></dt>
-<dd><p>Function that plots a correlation matrix with customizable label font size.</p>
-<p>Parameters:
-- correlation_matrix (2D array): The correlation matrix to plot.
-- reactions (list): Optional list of reaction labels for axes.
-- label_font_size (int): Font size for axis labels (default: 5).</p>
+<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">plot_correlation_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correlation_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">900</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">900</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.plot_correlation_matrix" title="Link to this definition"></a></dt>
+<dd><p>Function that plots a correlation matrix created with the <cite>correlated_reactions</cite> function.</p>
+<p>Keyword arguments:
+correlation_matrix (2D array) – The correlation matrix to plot.
+reactions (list) – Optional list of reaction labels for axes.
+label_font_size (int) – Font size for axis labels (default: 5).
+width (int) – Width of the plot
+height (int) – Height of the plot</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="correlations_utils.compute_copula">
-<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">compute_copula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flux1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.compute_copula" title="Link to this definition"></a></dt>
-<dd><p>A Python function to estimate the copula between two fluxes</p>
+<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">compute_copula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flux1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#correlations_utils.compute_copula" title="Link to this definition"></a></dt>
+<dd><p>Function that estimates the copula between two fluxes</p>
 <p>Keyword arguments:
-flux1: A vector that contains the measurements of the first reaxtion flux
-flux2: A vector that contains the measurements of the second reaxtion flux
-n: The number of cells</p>
+flux1 (NDArray[np.float64]) – A vector that contains the measurements of the first reaxtion flux
+flux2 (NDArray[np.float64]) – A vector that contains the measurements of the second reaxtion flux
+n (int) – The number of cells</p>
+<p>Returns:
+copula (NDArray[np.float64]) – The computed copula matrix</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="correlations_utils.copula_tail_dependence">
-<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">copula_tail_dependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cop_coeff_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cop_coeff_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cop_coeff_3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicator_cutoff</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.copula_tail_dependence" title="Link to this definition"></a></dt>
-<dd><p>Function that given a copula and parameters, aims to reveal whether 2 reactions have a positive or negative tail-dependence.</p>
-<p>cop_coeff parameters deal with the width of the diagonal of the copula.
-indicator_cutoff is a cutoff to filter and reveal the sign (positive/negative) between a dependence</p>
+<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">copula_tail_dependence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cop_coeff_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cop_coeff_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cop_coeff_3</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indicator_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#correlations_utils.copula_tail_dependence" title="Link to this definition"></a></dt>
+<dd><p>Function that given a copula and parameters that define the diagonals width, classifies the tail-dependence between a reaction pair.</p>
+<p>Suppose we have a 5*5 copula (for better vizualization, this works with any dimensions) looking like:</p>
+<p>[
+[0.001      0.03766667 0.05       0.05433333 0.057     ]
+[0.015      0.04733333 0.04333333 0.048      0.04633333]
+[0.03       0.05       0.046      0.036      0.038     ]
+[0.05766667 0.03833333 0.035      0.034      0.035     ]
+[0.09633333 0.02666667 0.02566667 0.02766667 0.02366667]
+]</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>This copula array for our algorithm has 4 separate edges/areas:</dt><dd><ul>
+<li><p>Top left, for example cells close to: [0,0], [0,1], [1,0] matrix position</p></li>
+<li><p>Bottom right, for example cells close to: [4,4], [4,3], [3,4] matrix position</p></li>
+<li><p>Top right, for example cells close to: [4,0], [3,0], [4,1] matrix position</p></li>
+<li><p>Bottom left, for example cells close to: [0,4], [0,3], [1,4] matrix position</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>This copula array for our algorithm has 2 diagonals:</dt><dd><ul>
+<li><p>1st diagonal: includes top left and bottom right areas</p></li>
+<li><p>2nd diaognal: includes top right and bottom left areas</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>This function parses the 2 copula’s diagonals and picks values from the 4 copula’s edges.
+One diagonal (the 1st) corresponds to the mass probability of 2 reactions working together at the same time
+(when one is active the other is active too) and the other diagonal (the 2nd) corresponds to the mass propability
+of 2 reactions not working together at the same time (when one is active the other is inactive).</p>
+<p>Then, by dividing the sum of propability mass of the 1st to the 2nd diagonal the indicator value is calculated.
+This value informs us on which diagonal has a higher mass concentration. If the indicator value is above a significance cutoff,
+this gives a sign to the dependence (positive for indicator value above given threshold or negative for indicator value
+below the reciprocal of the given threshold).</p>
+<p>Division of the corresponding edges (e.g. for the 1st diagonal: top left with the bottom right edge) shows whether
+higher mass concentration appears in one or both edges. This helps with classification of the copula dependence.</p>
+<p>We have different classification types based on:
+- sign: <cite>positive</cite> or <cite>negative</cite>, as explained above
+- tail(s): show which tail or tails have significant higher mass concentration based on the sign:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>positive_upper_tail</cite> for higher mass in the top left area</p></li>
+<li><p><cite>positive_lower_tail</cite> for higher mass in the bottom right area</p></li>
+<li><p><cite>positive_upper_lower_tail</cite> for higher mass in both bottom right and top left areas</p></li>
+<li><p><cite>negative_upper_tail</cite> for higher mass in the top right area</p></li>
+<li><p><cite>negative_lower_tail</cite> for higher mass in the bottom left area</p></li>
+<li><p><cite>negative_upper_lower_tail</cite> for higher mass in both top right and bottom left areas</p></li>
+</ul>
+</div></blockquote>
+<p>Keyword arguments:
+cop_coeff (float) – Parameters that define the width of the copula’s diagonal (leading to more wide or narrow diagonals).
+indicator_cutoff (float) – Cutoff to filter and reveal the sign (positive/negative) between a dependence. Must be greater than 1</p>
+<p>Returns:
+Tuple[str, float]</p>
+<blockquote>
+<div><p>dependence (str) – The classification for the tail-dependence
+indicator (float) – The value of the indicator</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="correlations_utils.plot_copula">
-<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">plot_copula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_flux1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_flux2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">900</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'svg'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.plot_copula" title="Link to this definition"></a></dt>
-<dd><p>A Python function to plot the copula between two fluxes</p>
+<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">plot_copula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_flux1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_flux2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">900</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'svg'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.plot_copula" title="Link to this definition"></a></dt>
+<dd><p>Function that plots the copula between two fluxes</p>
 <p>Keyword arguments:
-data_flux1: A list that contains: (i) the vector of the measurements of the first reaction,</p>
+data_flux1 – A list that contains: (i) the vector of the measurements of the first reaction,</p>
 <blockquote>
 <div><ol class="lowerroman simple" start="2">
 <li><p>the name of the first reaction</p></li>
 </ol>
 </div></blockquote>
 <dl class="simple">
-<dt>data_flux2: A list that contains: (i) the vector of the measurements of the second reaction,</dt><dd><ol class="lowerroman simple" start="2">
+<dt>data_flux2 – A list that contains: (i) the vector of the measurements of the second reaction,</dt><dd><ol class="lowerroman simple" start="2">
 <li><p>the name of the second reaction</p></li>
 </ol>
 </dd>
@@ -388,29 +464,81 @@ data_flux1: A list that contains: (i) the vector of the measurements of the firs
 
 <dl class="py function">
 <dt class="sig sig-object py" id="correlations_utils.split_forward_reverse">
-<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">split_forward_reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steady_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.split_forward_reverse" title="Link to this definition"></a></dt>
-<dd><p>Function that given a sampling (steady states) dataset with reactions as rows, splits
-all reactions having at least 1 positive and at least 1 negative flux value into separate
-forward and reverse reactions</p>
+<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">split_forward_reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steady_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#correlations_utils.split_forward_reverse" title="Link to this definition"></a></dt>
+<dd><p>Function that given a flux sampling (steady states) array with reactions as rows, splits
+all bidirectional reactions having at least 1 positive and 1 negative flux value into separate
+forward and reverse reactions.</p>
+<p>Keyword arguments:
+steady_states (NDArray[np.float64]) – Flux Sampling array with only forward reactions
+reactions (List) – List with reactions of interest to split and create separate forward-reverse reactions</p>
+<blockquote>
+<div><p>(pathway of interest, not all reactions will be split)</p>
+</div></blockquote>
+<p>Return:
+extended_steady_states (NDArray[np.float64]) – Extended Flux Sampling array with separate forward and reverse fluxes in bidirectional reactions
+extended_reactions (List) – Extended List including the names of the added reverse reactions</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="correlations_utils.find_reactants_products">
-<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">find_reactants_products</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.find_reactants_products" title="Link to this definition"></a></dt>
-<dd><p>Function that identifies identifies the reactantsand products of each reaction in given model</p>
+<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">find_reactants_products</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#correlations_utils.find_reactants_products" title="Link to this definition"></a></dt>
+<dd><p>Function that identifies and saves in separate lists the reactants, products and directionality status
+of each reaction in a given metabolic model. Cofactors do not count as reactants/products.</p>
+<p>Keyword arguments:
+cobra_model (Model) – Metabolic Model in cobra format
+reactions_ids (List) – List of the reactions of interest</p>
+<p>Returns:
+Tuple[List, List, List]</p>
+<blockquote>
+<div><p>reversibility_list_all_reactions (List) – List containing the reversibility status of the given reaction IDs
+reactants_list_all_reactions (List) – List containing the reactants of the given reaction IDs
+products_list_all_reactions (List) – List containing the products of the given reaction IDs</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="correlations_utils.sharing_metabolites">
-<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">sharing_metabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reactions_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversibility_list_all_reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactants_list_all_reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products_list_all_reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.sharing_metabolites" title="Link to this definition"></a></dt>
-<dd><p>Function that compares the reactants and products of 2 reactions and returns True when finding a common metabolite</p>
+<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">sharing_metabolites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reactions_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversibility_list_all_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactants_list_all_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products_list_all_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#correlations_utils.sharing_metabolites" title="Link to this definition"></a></dt>
+<dd><p>Function that compares the reactants and products of 2 reactions and returns True
+when a common metabolite (reactant/product and not cofactor) exists between them</p>
+<p>Keyword arguments:
+reactions_ids (List) – List containing IDs from a set of reactions of interest
+reversibility_list_all_reactions (List) – List containing the reversibility status from a set of reactions</p>
+<blockquote>
+<div><p>(Reactions must be the same and in accordance with their order in <cite>reactions_ids</cite> list)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>reactants_list_all_reactions (List) – List containing the reactants from a set of reactions</dt><dd><p>(Reactions must be the same and in accordance with their order in <cite>reactions_ids</cite> list)</p>
+</dd>
+<dt>products_list_all_reactions (List) – List containing the products from a set of reactions</dt><dd><p>(Reactions must be the same and in accordance with their order in <cite>reactions_ids</cite> list)</p>
+</dd>
+</dl>
+<p>reaction_a (str) – ID of reaction 1
+reaction_b (str) – ID of reaction 2</p>
+<p>Returns:
+bool – True/False based on the presence of a common metabolite between the 2 reactions</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="correlations_utils.sharing_metabolites_square_matrix">
-<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">sharing_metabolites_square_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reactions_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversibility_list_all_reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactants_list_all_reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products_list_all_reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#correlations_utils.sharing_metabolites_square_matrix" title="Link to this definition"></a></dt>
-<dd><p>Function that given the list wth reaction reactants/products and reversibility information calculated with a function above,
-creates a square boolean matrix with True values representing reactions sharing the same metabolite.</p>
+<span class="sig-prename descclassname"><span class="pre">correlations_utils.</span></span><span class="sig-name descname"><span class="pre">sharing_metabolites_square_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reactions_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversibility_list_all_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactants_list_all_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products_list_all_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#correlations_utils.sharing_metabolites_square_matrix" title="Link to this definition"></a></dt>
+<dd><p>Function that given the lists with reactants, products and reversibility information,
+creates a square boolean matrix with True values representing reactions sharing
+a common metabolite, as implemented in <cite>sharing_metabolites</cite> function.</p>
+<p>Keyword arguments:
+reactions_ids (List) – List containing IDs from a set of reactions of interest
+reversibility_list_all_reactions (List) – List containing the reversibility status from a set of reactions</p>
+<blockquote>
+<div><p>(Reactions must be the same and in accordance with their order in <cite>reactions_ids</cite> list)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>reactants_list_all_reactions (List) – List containing the reactants from a set of reactions</dt><dd><p>(Reactions must be the same and in accordance with their order in <cite>reactions_ids</cite> list)</p>
+</dd>
+<dt>products_list_all_reactions (List) – List containing the products from a set of reactions</dt><dd><p>(Reactions must be the same and in accordance with their order in <cite>reactions_ids</cite> list)</p>
+</dd>
+</dl>
+<p>Returns:
+boolean_sharing_metabolites_matrix (NDArray[np.float64]) – Boolean Square Matrix with information on reactions sharing metabolites</p>
 </dd></dl>
 
 </section>

@@ -136,7 +136,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#pathways_utils.reaction_in_pathway_binary_matrix"><code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pathways_utils.plot_reaction_in_pathway_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pathways_utils.sort_reactions_by_model_order"><code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.subset_sampling_df_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pathways_utils.subset_sampling_array_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_array_from_reaction_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway()</span></code></a></li>
 </ul>
 </li>
@@ -208,6 +208,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#module-contents">Module Contents</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.significantly_altered_reactions"><code class="docutils literal notranslate"><span class="pre">significantly_altered_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_volcano"><code class="docutils literal notranslate"><span class="pre">plot_volcano()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.dictionary_reaction_to_all_pathways"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_to_all_pathways()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.hypergeometric_test_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">hypergeometric_test_pathway_enrichment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">plot_pathway_enrichment()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -254,40 +258,40 @@
 <td><p>Function that creates a dictionary that will assign KEGG terms (values) to BiGG/SEED ids (keys)</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.dictionary_reaction_id_to_kegg_id" title="pathways_utils.dictionary_reaction_id_to_kegg_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_kegg_id</span></code></a>(→ Tuple[Dict[str, ...)</p></td>
-<td><p>Given the <cite>reactions.json</cite> file this function builds two dictionaries for fast lookup of KEGG reaction IDs from BiGG or SEED IDs.</p></td>
+<td><p>Function that given the <cite>reactions.json</cite> file builds two dictionaries for fast lookup of KEGG reaction IDs from BiGG or SEED IDs.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.reaction_id_to_kegg_id" title="pathways_utils.reaction_id_to_kegg_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reaction_id_to_kegg_id</span></code></a>(→ str)</p></td>
-<td><p>Lookup function to get KEGG ID for a given BiGG or SEED reaction ID.</p></td>
+<td><p>FUnction that performs lookup to get KEGG ID for a given BiGG or SEED reaction ID.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.fill_missing_kegg_ids_in_initial_dictionary" title="pathways_utils.fill_missing_kegg_ids_in_initial_dictionary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fill_missing_kegg_ids_in_initial_dictionary</span></code></a>(→ Dict)</p></td>
-<td><p>Fill in missing KEGG IDs (NAs) in the initial mapping dictionary using a function that maps</p></td>
+<td><p>Function that fills in missing KEGG IDs (NAs) in the initial mapping dictionary using a function that maps</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.fetch_kegg_pathway" title="pathways_utils.fetch_kegg_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_kegg_pathway</span></code></a>(→ Tuple[str, List, List])</p></td>
-<td><p>Extract associated KEGG pathways from a given KEGG id.</p></td>
+<td><p>Function that extracts associated KEGG pathways from a given KEGG id.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.get_kegg_pathways_from_reaction_ids" title="pathways_utils.get_kegg_pathways_from_reaction_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_kegg_pathways_from_reaction_ids</span></code></a>(→ pandas.DataFrame)</p></td>
-<td><p>Fetch KEGG pathway information for a set of model reactions using parallel requests.</p></td>
+<td><p>Function that fetches KEGG pathway information for a set of model reactions using parallel requests.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.subset_model_reactions_from_pathway_info" title="pathways_utils.subset_model_reactions_from_pathway_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subset_model_reactions_from_pathway_info</span></code></a>(→ List)</p></td>
-<td><p>Given a DataFrame with columns ['model_reaction', 'kegg_reaction', 'pathway_ids', 'pathway_names'],</p></td>
+<td><p>Function that given a DataFrame with columns ['model_reaction', 'kegg_reaction', 'pathway_ids', 'pathway_names'],</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.dictionary_reaction_id_to_pathway" title="pathways_utils.dictionary_reaction_id_to_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_pathway</span></code></a>(→ Dict[str, str])</p></td>
-<td><p>Function that takes one or multiple lists containing reaction IDs (corresponding to pathways as shown above)</p></td>
+<td><p>Function that takes one or multiple lists containing reaction IDs (corresponding to KEGG pathways</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.reaction_in_pathway_binary_matrix" title="pathways_utils.reaction_in_pathway_binary_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix</span></code></a>(→ pandas.DataFrame)</p></td>
-<td><p>Given a mapping dictionary, this function builds a binary matrix where rows are keys,</p></td>
+<td><p>Function that given a mapping dictionary, builds a binary matrix where rows (reactions) are keys,</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.plot_reaction_in_pathway_heatmap" title="pathways_utils.plot_reaction_in_pathway_heatmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap</span></code></a>(binary_df[, ...])</p></td>
-<td><p>Plot a binary mapping matrix using Plotly with discrete color values (0 = grey, 1 = blue).</p></td>
+<td><p>Function that plots a binary mapping matrix created from the <cite>reaction_in_pathway_binary_matrix</cite> function.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.sort_reactions_by_model_order" title="pathways_utils.sort_reactions_by_model_order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_reactions_by_model_order</span></code></a>(full_list, *subsets)</p></td>
-<td><p>Sorts and merges all subsets (reactions from pathway) into a single list based on the order of elements in the full list (reactions order in model).</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.sort_reactions_by_model_order" title="pathways_utils.sort_reactions_by_model_order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_reactions_by_model_order</span></code></a>(→ List)</p></td>
+<td><p>Function that flattens the lists provided in the <cite>subsets</cite> argument (corresponding to reactions from different pathways)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.subset_sampling_df_from_reaction_ids" title="pathways_utils.subset_sampling_df_from_reaction_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids</span></code></a>(...)</p></td>
-<td><p>This function takes a sampling dataframe with reactions as rows and samples as columns and subsets it</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pathways_utils.subset_sampling_array_from_reaction_ids" title="pathways_utils.subset_sampling_array_from_reaction_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subset_sampling_array_from_reaction_ids</span></code></a>(...)</p></td>
+<td><p>Function that takes a sampling array with reactions as rows and samples as columns and subsets it</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway" title="pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway</span></code></a>(...)</p></td>
-<td><p>This function is used in cases where split of directional reactions to separate forward and reverse reactions takes place.</p></td>
+<td><p>Function that is used when we split bidirectional reactions to separate forward and reverse reactions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -315,13 +319,13 @@ only from model information (without searching in online databases or in externa
 <p>Keyword arguments:
 cobra_model (cobra.Model) – cobra model object</p>
 <p>Returns:
-Dictionary (dict): maps each model’s BiGG/SEED ID → KEGG ID</p>
+Dictionary (dict) – maps each model’s BiGG/SEED ID → KEGG ID</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.dictionary_reaction_id_to_kegg_id">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">dictionary_reaction_id_to_kegg_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reactions_pandas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.dictionary_reaction_id_to_kegg_id" title="Link to this definition"></a></dt>
-<dd><p>Given the <cite>reactions.json</cite> file this function builds two dictionaries for fast lookup of KEGG reaction IDs from BiGG or SEED IDs.
+<dd><p>Function that given the <cite>reactions.json</cite> file builds two dictionaries for fast lookup of KEGG reaction IDs from BiGG or SEED IDs.
 These dictionaries will be used as input in the <cite>reaction_id_to_kegg_id</cite> function.</p>
 <p>Keyword arguments:
 reactions_pandas (pd.DataFrame) – DataFrame with columns including:</p>
@@ -332,15 +336,15 @@ reactions_pandas (pd.DataFrame) – DataFrame with columns including:</p>
 <p>Returns:
 Tuple[dict, dict]:</p>
 <blockquote>
-<div><p>bigg_to_kegg (dict): maps each BiGG ID → KEGG ID
-seed_to_kegg (dict): maps each SEED ID → KEGG ID</p>
+<div><p>bigg_to_kegg (dict) – maps each BiGG ID → KEGG ID
+seed_to_kegg (dict) – maps each SEED ID → KEGG ID</p>
 </div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.reaction_id_to_kegg_id">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">reaction_id_to_kegg_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modeltype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bigg_to_kegg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_to_kegg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pathways_utils.reaction_id_to_kegg_id" title="Link to this definition"></a></dt>
-<dd><p>Lookup function to get KEGG ID for a given BiGG or SEED reaction ID.
+<dd><p>FUnction that performs lookup to get KEGG ID for a given BiGG or SEED reaction ID.
 This function is used inside the <cite>fill_missing_kegg_ids_in_initial_dictionary</cite> function</p>
 <p>Keyword arguments:
 reaction_id (str) – The BiGG or SEED reaction ID (e.g., “SUCDi” or “rxn12345”)
@@ -348,13 +352,13 @@ modeltype (str) – Either “BiGG” or “SEED” (determines which dictionary
 bigg_to_kegg (dict) – Dictionary mapping BiGG IDs to KEGG IDs
 seed_to_kegg (dict) – Dictionary mapping SEED IDs to KEGG IDs</p>
 <p>Returns:
-str: The corresponding KEGG ID (e.g., “R00010”), or “NA” if not found</p>
+str – The corresponding KEGG ID (e.g., “R00010”), or “NA” if not found</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.fill_missing_kegg_ids_in_initial_dictionary">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">fill_missing_kegg_ids_in_initial_dictionary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_model_to_kegg_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bigg_to_kegg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_to_kegg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modeltype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BiGG'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#pathways_utils.fill_missing_kegg_ids_in_initial_dictionary" title="Link to this definition"></a></dt>
-<dd><p>Fill in missing KEGG IDs (NAs) in the initial mapping dictionary using a function that maps
+<dd><p>Function that fills in missing KEGG IDs (NAs) in the initial mapping dictionary using a function that maps
 BiGG/SEED IDs to KEGG IDs.</p>
 <p>Keyword arguments:
 initial_model_to_kegg_dictionary (dict) – Dictionary with reaction IDs as keys and KEGG IDs (or None) as values.
@@ -362,93 +366,98 @@ bigg_to_kegg (dict) – Dictionary mapping BiGG IDs to KEGG IDs
 seed_to_kegg (dict) – Dictionary mapping SEED IDs to KEGG IDs
 modeltype (str) – Either “BiGG” or “SEED” (determines which dictionary to use)</p>
 <p>Returns:
-final_model_to_kegg_dictionary (dict): Updated dictionary with KEGG IDs filled where possible.</p>
+final_model_to_kegg_dictionary (dict) – Updated dictionary with KEGG IDs filled where possible.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.fetch_kegg_pathway">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">fetch_kegg_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kegg_rxn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.fetch_kegg_pathway" title="Link to this definition"></a></dt>
-<dd><p>Extract associated KEGG pathways from a given KEGG id.</p>
+<dd><p>Function that extracts associated KEGG pathways from a given KEGG id.</p>
 <dl class="simple">
 <dt>Keyword arguments:</dt><dd><p>kegg_rxn (str) – KEGG reaction ID (e.g., ‘R00010’).</p>
 </dd>
 </dl>
 <p>Returns:
-kegg_rxn (str), pathway_ids (list), pathway_names (list)</p>
+Tuple[str, List, List]</p>
+<blockquote>
+<div><p>kegg_rxn (str) – The KEGG reaction ID
+pathway_ids (list) – The corresponding KEGG pathway IDs
+pathway_names (list) – The corresponding KEGG pathway names</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.get_kegg_pathways_from_reaction_ids">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">get_kegg_pathways_from_reaction_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">final_model_to_kegg_dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#pathways_utils.get_kegg_pathways_from_reaction_ids" title="Link to this definition"></a></dt>
-<dd><p>Fetch KEGG pathway information for a set of model reactions using parallel requests.</p>
+<dd><p>Function that fetches KEGG pathway information for a set of model reactions using parallel requests.</p>
 <p>Keyword arguments:
 final_model_to_kegg_dictionary (dict) – dictionary where keys are model reaction IDs and values are KEGG reaction IDs (e.g., ‘R00010’).
 max_workers (int) – Number of threads for parallel downloading (default = 8).</p>
 <p>Returns:
-pd.DataFrame:</p>
-<blockquote>
-<div><p>A DataFrame with columns:
-[‘model_reaction’, ‘kegg_reaction’, ‘pathway_ids’, ‘pathway_names’]</p>
-</div></blockquote>
+kegg_info_df (pd.DataFrame) – A DataFrame with columns: [‘model_reaction’, ‘kegg_reaction’, ‘pathway_ids’, ‘pathway_names’]</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.subset_model_reactions_from_pathway_info">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">subset_model_reactions_from_pathway_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kegg_info_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathway_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#pathways_utils.subset_model_reactions_from_pathway_info" title="Link to this definition"></a></dt>
-<dd><p>Given a DataFrame with columns [‘model_reaction’, ‘kegg_reaction’, ‘pathway_ids’, ‘pathway_names’],
-return all reaction IDs affiliated with a given KEGG pathway name or ID.</p>
+<dd><p>Function that given a DataFrame with columns [‘model_reaction’, ‘kegg_reaction’, ‘pathway_ids’, ‘pathway_names’],
+created wuth the <cite>get_kegg_pathways_from_reaction_ids</cite> function returns all reaction IDs affiliated
+with a given KEGG pathway name or ID.</p>
 <p>Keyword arguments:
 kegg_info_df (pd.DataFrame) – Output from <cite>get_kegg_pathways_from_reaction_ids</cite>, must contain ‘pathway_ids’ and ‘pathway_names’.
 pathway_query (str) – Exact KEGG pathway name or ID to match (e.g., ‘Glycolysis / Gluconeogenesis’ or ‘rn00010’).</p>
 <p>Returns:
-List[str]: List of reaction IDs affiliated with the <strong>exact</strong> given pathway.</p>
+List[str] – List of reaction IDs affiliated with the <strong>exact</strong> given pathway.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.dictionary_reaction_id_to_pathway">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">dictionary_reaction_id_to_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">named_lists</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.dictionary_reaction_id_to_pathway" title="Link to this definition"></a></dt>
-<dd><p>Function that takes one or multiple lists containing reaction IDs (corresponding to pathways as shown above)
-and creates a dictionary that maps the IDs to pathway names.</p>
+<dd><p>Function that takes one or multiple lists containing reaction IDs (corresponding to KEGG pathways
+and creates a dictionary that maps the IDs to pathway names. If a reaction appears in more than 1 pathway,
+it is classified with the term “Multiple-Pathways”</p>
 <p>Keyword arguments:
 <a href="#id1"><span class="problematic" id="id2">**</span></a>named_lists: List[str] – Named keyword arguments where each argument is a list of reaction IDs</p>
 <blockquote>
 <div><p>and the argument name represents the pathway name.</p>
 </div></blockquote>
 <p>Returns:
-reaction_id_to_pathway_dict (dict): dictionary mapping reaction id to pathway name</p>
+reaction_id_to_pathway_dict (dict) – dictionary mapping reaction id to pathway name</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.reaction_in_pathway_binary_matrix">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">reaction_in_pathway_binary_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_id_to_pathway_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#pathways_utils.reaction_in_pathway_binary_matrix" title="Link to this definition"></a></dt>
-<dd><p>Given a mapping dictionary, this function builds a binary matrix where rows are keys,
-columns are unique values, and the cell is 1 if the key maps to that value.</p>
+<dd><p>Function that given a mapping dictionary, builds a binary matrix where rows (reactions) are keys,
+columns (pathways) are unique values, and the cell is 1 if the key maps to that value.</p>
 <p>Keyword arguments:
-mapping_dict: Dict – dictionary mapping reaction id to pathway name</p>
+mapping_dict (Dict) – dictionary mapping reaction id to pathway name</p>
 <p>Returns:
-binary_df: pd.DataFrame – DataFrame with binary values (0 or 1) matching reactions to pathways</p>
+binary_df (pd.DataFrame) – DataFrame with binary values (0 or 1) matching reactions to pathways</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.plot_reaction_in_pathway_heatmap">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">plot_reaction_in_pathway_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binary_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pathways_utils.plot_reaction_in_pathway_heatmap" title="Link to this definition"></a></dt>
-<dd><p>Plot a binary mapping matrix using Plotly with discrete color values (0 = grey, 1 = blue).</p>
-<p>Parameters:
-- binary_df: DataFrame with binary values (0 or 1)
-- font_size: Font size for axis labels and ticks
-- fig_width: Width of the figure in pixels
-- fig_height: Height of the figure in pixels</p>
+<dd><p>Function that plots a binary mapping matrix created from the <cite>reaction_in_pathway_binary_matrix</cite> function.</p>
+<p>Keyword arguments:
+binary_df (pd.DataFrame) – DataFrame with binary values (0 or 1)
+font_size (int) – Font size for axis labels and ticks
+fig_width (int) – Width of the figure in pixels
+fig_height (int) – Height of the figure in pixels
+title (str) – Title of the plot</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.sort_reactions_by_model_order">
-<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">sort_reactions_by_model_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_list</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">subsets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pathways_utils.sort_reactions_by_model_order" title="Link to this definition"></a></dt>
-<dd><p>Sorts and merges all subsets (reactions from pathway) into a single list based on the order of elements in the full list (reactions order in model).</p>
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">sort_reactions_by_model_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">subsets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#pathways_utils.sort_reactions_by_model_order" title="Link to this definition"></a></dt>
+<dd><p>Function that flattens the lists provided in the <cite>subsets</cite> argument (corresponding to reactions from different pathways)
+in a single list and then orders the element of the new list based on the order of the reaction in the initial model</p>
 <p>Keyword arguments:
-full_list (list) – The reference list that defines the desired order.
-<a href="#id3"><span class="problematic" id="id4">*</span></a>subsets (lists) – One or more subset lists to be merged and ordered.</p>
+full_list (List) – The reference list that defines the desired order.
+<a href="#id3"><span class="problematic" id="id4">*</span></a>subsets (List) – One or more subset lists to be merged and ordered.</p>
 <p>Returns:
-sorted_merged: a single merged list of all subsets sorted by the order in full_list.</p>
+sorted_merged – a single merged list of all subsets sorted by the order in full_list.</p>
 <p>Example Usage:
 Glycolysis = [“PGI”, “PFK”, “FBA”, “TPI”, “GAPD”, “PGK”, “PGM”, “ENO”, “PYK”]
 PPP = [“G6PDH2r”, “PGL”, “GND”, “RPE”, “RPI”, “TKT1”, “TKT2”, “TALA”]
@@ -456,27 +465,29 @@ reactions_ordered = sort_reactions_in_pathways_by_reactions_in_model_order(ec_co
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pathways_utils.subset_sampling_df_from_reaction_ids">
-<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">subset_sampling_df_from_reaction_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.subset_sampling_df_from_reaction_ids" title="Link to this definition"></a></dt>
-<dd><p>This function takes a sampling dataframe with reactions as rows and samples as columns and subsets it
+<dt class="sig sig-object py" id="pathways_utils.subset_sampling_array_from_reaction_ids">
+<span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">subset_sampling_array_from_reaction_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.subset_sampling_array_from_reaction_ids" title="Link to this definition"></a></dt>
+<dd><p>Function that takes a sampling array with reactions as rows and samples as columns and subsets it
 to include only reactions of interest</p>
 <p>Keyword arguments:
-samples: (Numpy 2D array) – A sampling 2D array with reactions as rows and samples as columns
+samples (Numpy 2D array) – A sampling 2D array with reactions as rows and samples as columns
 model_reactions (List) – A list containing the model’s reactions
 subset_reactions (List) – A list containing reactions of interest to subset the sampling array</p>
 <p>Returns:
-subset_samples: (NDArray[np.float64]) – subset of the sampling dataframe containing only reactions of interest</p>
+subset_samples (NDArray[np.float64]) – subset of the sampling dataframe containing only reactions of interest</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pathways_utils.dictionary_map_reverse_reaction_id_to_pathway">
 <span class="sig-prename descclassname"><span class="pre">pathways_utils.</span></span><span class="sig-name descname"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reaction_id_to_pathway_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">for_rev_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway" title="Link to this definition"></a></dt>
-<dd><p>This function is used in cases where split of directional reactions to separate forward and reverse reactions takes place.</p>
+<dd><p>Function that is used when we split bidirectional reactions to separate forward and reverse reactions.
+It maps the reverse reaction to the corresponding pathway (the one that the forward reactions maps to)
+It enriches the dictionary created from the <cite>dictionary_reaction_id_to_pathway</cite> function</p>
 <p>Keyword arguments:
 reaction_id_to_pathway_dict (Dict) – Dict mapping reaction IDs to pathway names
 for_rev_reactions (List) – List of the splitted reactions</p>
 <p>Returns:
-reaction_id_forward_reverse_to_pathway_dict: (Dict) – Dictionary containing reaction-pathway mapping information</p>
+reaction_id_forward_reverse_to_pathway_dict (Dict) – Dictionary containing reaction-pathway mapping information</p>
 <blockquote>
 <div><p>for forward and reverse reactions separately</p>
 </div></blockquote>

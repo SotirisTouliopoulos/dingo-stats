@@ -21,45 +21,103 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: loops_enumeration_from_fva(ec_cobra_model, fraction_of_optimum=1)
+.. py:function:: loops_enumeration_from_fva(ec_cobra_model: cobra.Model, fraction_of_optimum: float = 1.0) -> List
 
-   Function that aims to identify loopy reaction from FVA.
+   Function that aims to identify loopy reaction from Flux Variability Analysis.
    This method was introduced here: https://doi.org/10.1016/j.bpj.2010.12.3707
 
+   Keyword arguments:
+   cobra_model (Model) -- cobra model object
+   fraction_of_optimum (float) -- Float variable that defines the `fraction_of_optimum` parameter used in `flux_variability_analysis`
 
-.. py:function:: loopy_reactions_turned_off_in_pfba(loopy_cobra_model, loopy_reactions)
-
-   Identify which subset of loopy reactions calculated with the above function 
-   can be turned off when performing a pFBA or a loopless solutions to pFBA results
-
-
-.. py:function:: get_loopless_solutions_from_samples(samples, cobra_model)
-
-   Function that calculate the loopless solution from each sample and saves results into a new numpy 2D array
+   Returns:
+   loopy_reactions (List) -- List with reactions classified as loopy based on the algorithm
 
 
-.. py:function:: calculate_affected_samples(initial_samples, loopless_samples, cobra_model, tol_reaction_difference=0.01, tol_reactions_count=1)
+.. py:function:: loopy_reactions_turned_off_in_pfba(loopy_cobra_model: cobra.Model, loopy_reactions: List, tol: float = 1e-06) -> List
 
-   Function that given the default and the lopless solutions samples identifies how many samples have significant differences.
-   This is done by calculating (for each sample) the distance across the reactions between the default and loopless solution.
-   Reactions that have a difference higher than a given threshold are counted and sample can potentially be classified as loopy.
-   However, if user does not assume a sample as loopy when only 1 reaction overcomes this value, he can specify the least number 
-   of reactions needed for this classification. 
+   Function that identifies which reactions from the loopy reactions set calculated with the `loops_enumeration_from_fva` function 
+   can be turned off when performing a `pFBA` or a `loopless_solution` to `pFBA` results
 
+   Keyword arguments:
+   loopy_cobra_model (Model) -- cobra model object possibly containing loops (default model without any preproccess)
+   loopy_reactions (List) -- loopy_reactions (List) -- List with reactions classified as loopy
+   tol (float) -- Tolerance value used to classify a numeric change as important or not
 
-.. py:function:: calculate_distances_from_samples(initial_samples, loopless_samples, cobra_model)
-
-   Function that calculates the euclidean distance between a sampling dataset and itself after applyig the loopless solutions.
-   Distances are calculated between different samples, so if you have 3000 samples you will end up with 3000 distances.
-
-
-.. py:function:: calculate_distances_from_reactions(initial_samples, loopless_samples, cobra_model)
-
-   Same as above but distances are calculated between reactions.
+   Returns:
+   turned_off_reactions (List) -- List with reactions turned of in `pFBA` with `loopless_solution` applied 
 
 
-.. py:function:: violin_plot_samples_distances(distances_array, title='', exponentformat='none')
+.. py:function:: get_loopless_solutions_from_samples(samples: numpy.typing.NDArray[numpy.float64], cobra_model: cobra.Model) -> numpy.typing.NDArray[numpy.float64]
 
-   Function that creates a violin plot from a distances_array (this array is calculated from the above 2 functions)
+   Function that calculates the `loopless_solution` from each sample and saves results into a new numpy 2D array
+
+   Keyword arguments:
+   samples (NDArray[np.float64]) -- Numpy 2D array of the samples
+   cobra_model (model) -- cobra model object
+
+   Returns:
+   samples_loopless_solutions (NDArray[np.float64]) -- Numpy 2D array of the samples after application of `loopless_solution`
+
+
+.. py:function:: calculate_affected_samples(initial_samples: numpy.typing.NDArray[numpy.float64], loopless_samples: numpy.typing.NDArray[numpy.float64], cobra_model: cobra.Model, tol_reaction_difference: float = 0.01, tol_reactions_count: int = 1) -> Tuple[List, int]
+
+   Function that given the default and the `get_loopless_solutions_from_samples` samples identifies how many samples have significant differences.
+   This is done by calculating (for each sample) the distance (change) of the reactions from the given arrays.
+   Reactions that have a difference higher than a given threshold are counted and the corresponding sample can potentially be classified as a loopy sample.
+   However, if user does not consider importance when only 1 reaction overcomes this tolerance, he can specify the least number 
+   of reactions needed for this classification (e.g 2, 5, 10 ..).
+
+   Keyword arguments:
+   initial_samples (NDArray[np.float64]) -- Numpy 2D array of the default samples
+   loopless_samples (NDArray[np.float64]) -- Numpy 2D array of the default samples after application of the `get_loopless_solutions_from_samples`
+   cobra_model (Model) -- ocbra model object
+   tol_reaction_difference (float) -- Tolerance value to classify the difference in reactions before and after `get_loopless_solutions_from_samples` as important
+   tol_reactions_count (int) -- Tolerance value to classify a sample as loopy based on the least amount of significantly altered reactions
+
+   Returns:
+   Tuple[List, int]
+       affected_reactions_count (List) -- List containing the number of affected (significantly altered) reactions across all samples
+       total_affected_samples (int) -- The total number of affected (significantly altered) samples
+
+
+.. py:function:: calculate_distances_from_samples(initial_samples: numpy.typing.NDArray[numpy.float64], loopless_samples: numpy.typing.NDArray[numpy.float64], cobra_model: cobra.Model) -> numpy.typing.NDArray[numpy.float64]
+
+   Function that calculates the euclidean distance between a sampling dataset before and after applying the `get_loopless_solutions_from_samples`.
+   Distances are calculated between different samples, so if user has 3000 samples, he will end up with 3000 distances.
+
+   Keyword arguments:
+   initial_samples (NDArray[np.float64]) -- Numpy 2D array of the default samples
+   loopless_samples (NDArray[np.float64]) -- Numpy 2D array of the default samples after application of the `get_loopless_solutions_from_samples`
+   cobra_model (Model) -- cobra model object
+
+   Returns:
+   distances_array (NDArray[np.float64]) -- Numpy 1D array of the samples' euclidean distances before and after the `get_loopless_solutions_from_samples`
+
+
+.. py:function:: calculate_distances_from_reactions(initial_samples: numpy.typing.NDArray[numpy.float64], loopless_samples: numpy.typing.NDArray[numpy.float64], cobra_model: cobra.Model) -> numpy.typing.NDArray[numpy.float64]
+
+   Function that calculates the euclidean distance between a sampling dataset before and after applying the `get_loopless_solutions_from_samples`.
+   Distances are calculated between different reactions, so if user provides samples of 100 reactions, he will end up with 100 distances.    
+
+   Keyword arguments:
+   initial_samples (NDArray[np.float64]) -- Numpy 2D array of the default samples
+   loopless_samples (NDArray[np.float64]) -- Numpy 2D array of the default samples after application of the `get_loopless_solutions_from_samples`
+   cobra_model (Model) -- cobra model object
+
+   Returns:
+   distances_array (NDArray[np.float64]) -- Numpy 1D array of the reactions' euclidean distances before and after the `get_loopless_solutions_from_samples`
+
+
+.. py:function:: violin_plot_samples_distances(distances_array: numpy.typing.NDArray[numpy.float64], title: str = '', exponentformat: str = 'none')
+
+   Function that creates a violin plot from a given `distances_array`
+
+   Keyword arguments:
+       distances_array (NDArray[np.float64]) -- Numpy 1D array of either the reactions' or samples' euclidean distances before and after 
+                                                the `get_loopless_solutions_from_samples`
+       title (str) -- Title for the plot
+       exponentformat (str) -- Parameter used to determine the numeric scientific notation in the plot (determines a formatting rule for the tick exponents). 
+                               Available options: "e", "E", "power", "SI", "B"
 
 

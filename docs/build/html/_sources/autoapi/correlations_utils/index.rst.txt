@@ -45,94 +45,207 @@ Module Contents
    :value: ['cpd00001_c0', 'cpd00002_c0', 'cpd00003_c0', 'cpd00004_c0', 'cpd00005_c0', 'cpd00006_c0',...
 
 
-.. py:function:: correlated_reactions(steady_states, reactions=[], linear_coeff='pearson', include_non_linear=False, boolean_sharing_metabolites_matrix=None, linear_corr_cutoff=0.3, indicator_cutoff=1.2, jensenshannon_cutoff=0.1, std_cutoff=0.001, cells=4, cop_coeff=0.2, lower_triangle=True, verbose=False)
+.. py:function:: correlated_reactions(steady_states: numpy.typing.NDArray[numpy.float64], reactions: List = [], linear_coeff: str = 'pearson', include_non_linear: bool = False, boolean_sharing_metabolites_matrix: numpy.typing.NDArray[numpy.float64] = None, linear_corr_cutoff: float = 0.3, indicator_cutoff: float = 1.2, jensenshannon_cutoff: float = 0.1, std_cutoff: float = 0.001, cells: int = 4, cop_coeff: float = 0.2, lower_triangle: bool = True, verbose: bool = False) -> Tuple
 
-   A Python function to calculate the correlation matrix from a steady states array
+   Function that calculate pairwise linear correlations and non-linear copula dependencies given a flux sampling array
+   User can choose the preffered coefficient to calculate pairwise linear correlations (pearson or spearman). 
+   Moreover, he can filter correlations not meeting a cutoff value and choose whether to proceed with calculation of
+   non-linear dependencies using copulas.
 
    Keyword arguments:
-   steady_states -- A numpy array of the generated steady states fluxes
-   reactions -- A list with the reactions IDs (must be in accordance with the rows of the steady states)
-   linear_coeff -- A string declaring the linear coefficient to be selected. Available options: "pearson", "spearman"
-   include_non_linear -- A boolean variable that if True, takes into account and calculates non-linear correlations
-   boolean_sharing_metabolites_matrix -- A boolean symmetric numpy 2D array with True/False based on the presense of shared metabolites between reactions
-   linear_corr_cutoff -- A cutoff to filter (remove) linear correlations (not greater than the cutoff) based on the pearson or spearmanr coefficient
-   indicator_cutoff -- A cutoff to classify non-linear correlations as positive, negative or non-significant
-   jensenshannon_cutoff -- A cutoff to filter (remove) non-linear correlations (not greater than the cutoff) based on the Jensen-Shannon metric
-   std_cutoff -- A cutoff to avoid computing the copula between 2 fluxes with almost fixed values
-   cells -- Number of cells to compute the copula
-   cop_coeff -- A value that narrows or widens the width of the copula's diagonal (use lower values to capture extreme tail dependences)
-   lower_triangle -- A boolean variable that if True returns only the lower triangular matrix
-   verbose -- A boolean variable that if True additional information is printed as an output.
+   steady_states (NDArray[np.float64]) -- A numpy array of the generated steady states fluxes
+   reactions (List) -- A list with the reactions IDs (must be in accordance with the rows of the steady states)
+   linear_coeff (float) -- A string declaring the linear coefficient to be selected. Available options: "pearson", "spearman"
+   include_non_linear (bool) -- A boolean variable that if True, takes into account and calculates non-linear correlations
+   boolean_sharing_metabolites_matrix (NDArray[np.float64]) -- A boolean symmetric numpy 2D array with True/False based on the presense of shared metabolites between reactions
+   linear_corr_cutoff (float) -- A cutoff to filter (remove) linear correlations (not greater than the cutoff) based on the pearson or spearmanr coefficient
+   indicator_cutoff (float) -- A cutoff to classify non-linear correlations as positive, negative or non-significant
+   jensenshannon_cutoff (float) -- A cutoff to filter (remove) non-linear correlations (not greater than the cutoff) based on the Jensen-Shannon metric
+   std_cutoff (float) -- A cutoff to avoid computing the copula between 2 fluxes with almost fixed values
+   cells (int) -- Number of cells to compute the copula
+   cop_coeff (float) -- A value that narrows or widens the width of the copula's diagonal (use lower values to capture extreme tail dependences)
+   lower_triangle (bool) -- A boolean variable that if True returns only the lower triangular matrix
+   verbose (bool) -- A boolean variable that if True additional information is printed as an output.
 
-   if include_non_linear is set to False this function returns:
+   Returns:
+   if include_non_linear is set to False:
+   Tuple[NDArray[np.float64], Dict]
        linear_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes only linear correlations
        correlations_dictionary -- A dictionary containing unique reaction pairs and their corresponding correlation values
 
-   if include_non_linear is set to True this function additionally returns:
+   if include_non_linear is set to True:
+   Tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64], Dict]
+       linear_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes only linear correlations
+       correlations_dictionary -- A dictionary containing unique reaction pairs and their corresponding correlation values
        mixed_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes both linear and non-linear correlations
        non_linear_correlation_matrix -- A correlations matrix filtered based on the given cutoffs that includes only non-linear correlations
 
 
-.. py:function:: plot_correlation_matrix(correlation_matrix, reactions=[], label_font_size=5)
+.. py:function:: plot_correlation_matrix(correlation_matrix: numpy.typing.NDArray[numpy.float64], reactions: List = [], label_font_size: int = 5, width: int = 900, height: int = 900)
 
-   Function that plots a correlation matrix with customizable label font size.
-
-   Parameters:
-   - correlation_matrix (2D array): The correlation matrix to plot.
-   - reactions (list): Optional list of reaction labels for axes.
-   - label_font_size (int): Font size for axis labels (default: 5).
-
-
-.. py:function:: compute_copula(flux1, flux2, n)
-
-   A Python function to estimate the copula between two fluxes
+   Function that plots a correlation matrix created with the `correlated_reactions` function.
 
    Keyword arguments:
-   flux1: A vector that contains the measurements of the first reaxtion flux
-   flux2: A vector that contains the measurements of the second reaxtion flux
-   n: The number of cells
+   correlation_matrix (2D array) -- The correlation matrix to plot.
+   reactions (list) -- Optional list of reaction labels for axes.
+   label_font_size (int) -- Font size for axis labels (default: 5).
+   width (int) -- Width of the plot
+   height (int) -- Height of the plot
 
 
-.. py:function:: copula_tail_dependence(copula, cop_coeff_1, cop_coeff_2, cop_coeff_3, indicator_cutoff)
+.. py:function:: compute_copula(flux1: numpy.typing.NDArray[numpy.float64], flux2: numpy.typing.NDArray[numpy.float64], n: int) -> numpy.typing.NDArray[numpy.float64]
 
-   Function that given a copula and parameters, aims to reveal whether 2 reactions have a positive or negative tail-dependence.
-
-   cop_coeff parameters deal with the width of the diagonal of the copula.
-   indicator_cutoff is a cutoff to filter and reveal the sign (positive/negative) between a dependence 
-
-
-.. py:function:: plot_copula(data_flux1, data_flux2, n=5, width=900, height=600, export_format='svg')
-
-   A Python function to plot the copula between two fluxes
+   Function that estimates the copula between two fluxes
 
    Keyword arguments:
-   data_flux1: A list that contains: (i) the vector of the measurements of the first reaction,
+   flux1 (NDArray[np.float64]) -- A vector that contains the measurements of the first reaxtion flux
+   flux2 (NDArray[np.float64]) -- A vector that contains the measurements of the second reaxtion flux
+   n (int) -- The number of cells
+
+   Returns:
+   copula (NDArray[np.float64]) -- The computed copula matrix 
+
+
+.. py:function:: copula_tail_dependence(copula: numpy.typing.NDArray[numpy.float64], cop_coeff_1: float, cop_coeff_2: float, cop_coeff_3: float, indicator_cutoff: float) -> Tuple[str, float]
+
+   Function that given a copula and parameters that define the diagonals width, classifies the tail-dependence between a reaction pair.
+
+   Suppose we have a 5*5 copula (for better vizualization, this works with any dimensions) looking like:
+
+   [
+   [0.001      0.03766667 0.05       0.05433333 0.057     ]
+   [0.015      0.04733333 0.04333333 0.048      0.04633333]
+   [0.03       0.05       0.046      0.036      0.038     ]
+   [0.05766667 0.03833333 0.035      0.034      0.035     ]
+   [0.09633333 0.02666667 0.02566667 0.02766667 0.02366667] 
+   ]
+
+   - This copula array for our algorithm has 4 separate edges/areas:
+       - Top left, for example cells close to: [0,0], [0,1], [1,0] matrix position
+       - Bottom right, for example cells close to: [4,4], [4,3], [3,4] matrix position
+       - Top right, for example cells close to: [4,0], [3,0], [4,1] matrix position
+       - Bottom left, for example cells close to: [0,4], [0,3], [1,4] matrix position
+
+   - This copula array for our algorithm has 2 diagonals: 
+       - 1st diagonal: includes top left and bottom right areas
+       - 2nd diaognal: includes top right and bottom left areas
+       
+   This function parses the 2 copula's diagonals and picks values from the 4 copula's edges. 
+   One diagonal (the 1st) corresponds to the mass probability of 2 reactions working together at the same time 
+   (when one is active the other is active too) and the other diagonal (the 2nd) corresponds to the mass propability 
+   of 2 reactions not working together at the same time (when one is active the other is inactive).
+
+   Then, by dividing the sum of propability mass of the 1st to the 2nd diagonal the indicator value is calculated. 
+   This value informs us on which diagonal has a higher mass concentration. If the indicator value is above a significance cutoff, 
+   this gives a sign to the dependence (positive for indicator value above given threshold or negative for indicator value 
+   below the reciprocal of the given threshold).
+
+   Division of the corresponding edges (e.g. for the 1st diagonal: top left with the bottom right edge) shows whether 
+   higher mass concentration appears in one or both edges. This helps with classification of the copula dependence.
+
+   We have different classification types based on:
+   - sign: `positive` or `negative`, as explained above
+   - tail(s): show which tail or tails have significant higher mass concentration based on the sign:
+       - `positive_upper_tail` for higher mass in the top left area
+       - `positive_lower_tail` for higher mass in the bottom right area
+       - `positive_upper_lower_tail` for higher mass in both bottom right and top left areas
+       
+       - `negative_upper_tail` for higher mass in the top right area
+       - `negative_lower_tail` for higher mass in the bottom left area
+       - `negative_upper_lower_tail` for higher mass in both top right and bottom left areas
+
+   Keyword arguments:
+   cop_coeff (float) -- Parameters that define the width of the copula's diagonal (leading to more wide or narrow diagonals).
+   indicator_cutoff (float) -- Cutoff to filter and reveal the sign (positive/negative) between a dependence. Must be greater than 1
+
+   Returns:
+   Tuple[str, float]
+       dependence (str) -- The classification for the tail-dependence
+       indicator (float) -- The value of the indicator
+
+
+.. py:function:: plot_copula(data_flux1: numpy.typing.NDArray[numpy.float64], data_flux2: numpy.typing.NDArray[numpy.float64], n: int = 5, width: int = 900, height: int = 600, export_format: str = 'svg')
+
+   Function that plots the copula between two fluxes
+
+   Keyword arguments:
+   data_flux1 -- A list that contains: (i) the vector of the measurements of the first reaction,
                                      (ii) the name of the first reaction
-   data_flux2: A list that contains: (i) the vector of the measurements of the second reaction,
+   data_flux2 -- A list that contains: (i) the vector of the measurements of the second reaction,
                                      (ii) the name of the second reaction
    n: The number of cells
 
 
-.. py:function:: split_forward_reverse(steady_states, reactions=[])
+.. py:function:: split_forward_reverse(steady_states: numpy.typing.NDArray[numpy.float64], reactions: List = []) -> Tuple[numpy.typing.NDArray[numpy.float64], List]
 
-   Function that given a sampling (steady states) dataset with reactions as rows, splits 
-   all reactions having at least 1 positive and at least 1 negative flux value into separate 
-   forward and reverse reactions
+   Function that given a flux sampling (steady states) array with reactions as rows, splits 
+   all bidirectional reactions having at least 1 positive and 1 negative flux value into separate 
+   forward and reverse reactions.
+
+   Keyword arguments:
+   steady_states (NDArray[np.float64]) -- Flux Sampling array with only forward reactions
+   reactions (List) -- List with reactions of interest to split and create separate forward-reverse reactions 
+                       (pathway of interest, not all reactions will be split)
+                       
+   Return: 
+   extended_steady_states (NDArray[np.float64]) -- Extended Flux Sampling array with separate forward and reverse fluxes in bidirectional reactions
+   extended_reactions (List) -- Extended List including the names of the added reverse reactions 
 
 
-.. py:function:: find_reactants_products(cobra_model, reactions_ids=[])
+.. py:function:: find_reactants_products(cobra_model: cobra.Model, reactions_ids: List = []) -> Tuple[List, List, List]
 
-   Function that identifies identifies the reactantsand products of each reaction in given model
+   Function that identifies and saves in separate lists the reactants, products and directionality status 
+   of each reaction in a given metabolic model. Cofactors do not count as reactants/products.
+
+   Keyword arguments:
+   cobra_model (Model) -- Metabolic Model in cobra format
+   reactions_ids (List) -- List of the reactions of interest
+
+   Returns:
+   Tuple[List, List, List]
+       reversibility_list_all_reactions (List) -- List containing the reversibility status of the given reaction IDs
+       reactants_list_all_reactions (List) -- List containing the reactants of the given reaction IDs
+       products_list_all_reactions (List) -- List containing the products of the given reaction IDs
 
 
-.. py:function:: sharing_metabolites(reactions_ids=[], reversibility_list_all_reactions=[], reactants_list_all_reactions=[], products_list_all_reactions=[], reaction_a='', reaction_b='')
+.. py:function:: sharing_metabolites(reactions_ids: List = [], reversibility_list_all_reactions: List = [], reactants_list_all_reactions: List = [], products_list_all_reactions: List = [], reaction_a: str = '', reaction_b: str = '') -> bool
 
-   Function that compares the reactants and products of 2 reactions and returns True when finding a common metabolite
+   Function that compares the reactants and products of 2 reactions and returns True 
+   when a common metabolite (reactant/product and not cofactor) exists between them
+
+   Keyword arguments:
+   reactions_ids (List) -- List containing IDs from a set of reactions of interest
+   reversibility_list_all_reactions (List) -- List containing the reversibility status from a set of reactions 
+                                              (Reactions must be the same and in accordance with their order in `reactions_ids` list)
+   reactants_list_all_reactions (List) -- List containing the reactants from a set of reactions
+                                          (Reactions must be the same and in accordance with their order in `reactions_ids` list)
+   products_list_all_reactions (List) -- List containing the products from a set of reactions
+                                         (Reactions must be the same and in accordance with their order in `reactions_ids` list)
+   reaction_a (str) -- ID of reaction 1
+   reaction_b (str) -- ID of reaction 2
+
+   Returns:
+   bool -- True/False based on the presence of a common metabolite between the 2 reactions
 
 
-.. py:function:: sharing_metabolites_square_matrix(reactions_ids=[], reversibility_list_all_reactions=[], reactants_list_all_reactions=[], products_list_all_reactions=[])
+.. py:function:: sharing_metabolites_square_matrix(reactions_ids: List = [], reversibility_list_all_reactions: List = [], reactants_list_all_reactions: List = [], products_list_all_reactions: List = []) -> numpy.typing.NDArray[numpy.float64]
 
-   Function that given the list wth reaction reactants/products and reversibility information calculated with a function above,
-   creates a square boolean matrix with True values representing reactions sharing the same metabolite.
+   Function that given the lists with reactants, products and reversibility information,
+   creates a square boolean matrix with True values representing reactions sharing 
+   a common metabolite, as implemented in `sharing_metabolites` function.
+
+   Keyword arguments:
+   reactions_ids (List) -- List containing IDs from a set of reactions of interest
+   reversibility_list_all_reactions (List) -- List containing the reversibility status from a set of reactions 
+                                              (Reactions must be the same and in accordance with their order in `reactions_ids` list)
+
+   reactants_list_all_reactions (List) -- List containing the reactants from a set of reactions
+                                          (Reactions must be the same and in accordance with their order in `reactions_ids` list)
+
+   products_list_all_reactions (List) -- List containing the products from a set of reactions
+                                         (Reactions must be the same and in accordance with their order in `reactions_ids` list)
+
+   Returns:
+   boolean_sharing_metabolites_matrix (NDArray[np.float64]) -- Boolean Square Matrix with information on reactions sharing metabolites
 
 

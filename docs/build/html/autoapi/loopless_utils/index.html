@@ -136,7 +136,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.reaction_in_pathway_binary_matrix"><code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.plot_reaction_in_pathway_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.sort_reactions_by_model_order"><code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_df_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_array_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_array_from_reaction_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway()</span></code></a></li>
 </ul>
 </li>
@@ -208,6 +208,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#module-contents">Module Contents</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.significantly_altered_reactions"><code class="docutils literal notranslate"><span class="pre">significantly_altered_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_volcano"><code class="docutils literal notranslate"><span class="pre">plot_volcano()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.dictionary_reaction_to_all_pathways"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_to_all_pathways()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.hypergeometric_test_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">hypergeometric_test_pathway_enrichment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">plot_pathway_enrichment()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -247,26 +251,26 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#loopless_utils.loops_enumeration_from_fva" title="loopless_utils.loops_enumeration_from_fva"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loops_enumeration_from_fva</span></code></a>(ec_cobra_model[, ...])</p></td>
-<td><p>Function that aims to identify loopy reaction from FVA.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#loopless_utils.loops_enumeration_from_fva" title="loopless_utils.loops_enumeration_from_fva"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loops_enumeration_from_fva</span></code></a>(→ List)</p></td>
+<td><p>Function that aims to identify loopy reaction from Flux Variability Analysis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#loopless_utils.loopy_reactions_turned_off_in_pfba" title="loopless_utils.loopy_reactions_turned_off_in_pfba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loopy_reactions_turned_off_in_pfba</span></code></a>(loopy_cobra_model, ...)</p></td>
-<td><p>Identify which subset of loopy reactions calculated with the above function</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#loopless_utils.loopy_reactions_turned_off_in_pfba" title="loopless_utils.loopy_reactions_turned_off_in_pfba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loopy_reactions_turned_off_in_pfba</span></code></a>(→ List)</p></td>
+<td><p>Function that identifies which reactions from the loopy reactions set calculated with the <cite>loops_enumeration_from_fva</cite> function</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#loopless_utils.get_loopless_solutions_from_samples" title="loopless_utils.get_loopless_solutions_from_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_loopless_solutions_from_samples</span></code></a>(samples, cobra_model)</p></td>
-<td><p>Function that calculate the loopless solution from each sample and saves results into a new numpy 2D array</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#loopless_utils.get_loopless_solutions_from_samples" title="loopless_utils.get_loopless_solutions_from_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_loopless_solutions_from_samples</span></code></a>(...)</p></td>
+<td><p>Function that calculates the <cite>loopless_solution</cite> from each sample and saves results into a new numpy 2D array</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#loopless_utils.calculate_affected_samples" title="loopless_utils.calculate_affected_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_affected_samples</span></code></a>(initial_samples, ...[, ...])</p></td>
-<td><p>Function that given the default and the lopless solutions samples identifies how many samples have significant differences.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#loopless_utils.calculate_affected_samples" title="loopless_utils.calculate_affected_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_affected_samples</span></code></a>(→ Tuple[List, int])</p></td>
+<td><p>Function that given the default and the <cite>get_loopless_solutions_from_samples</cite> samples identifies how many samples have significant differences.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#loopless_utils.calculate_distances_from_samples" title="loopless_utils.calculate_distances_from_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_distances_from_samples</span></code></a>(initial_samples, ...)</p></td>
-<td><p>Function that calculates the euclidean distance between a sampling dataset and itself after applyig the loopless solutions.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#loopless_utils.calculate_distances_from_samples" title="loopless_utils.calculate_distances_from_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_distances_from_samples</span></code></a>(...)</p></td>
+<td><p>Function that calculates the euclidean distance between a sampling dataset before and after applying the <cite>get_loopless_solutions_from_samples</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#loopless_utils.calculate_distances_from_reactions" title="loopless_utils.calculate_distances_from_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_distances_from_reactions</span></code></a>(initial_samples, ...)</p></td>
-<td><p>Same as above but distances are calculated between reactions.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#loopless_utils.calculate_distances_from_reactions" title="loopless_utils.calculate_distances_from_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_distances_from_reactions</span></code></a>(...)</p></td>
+<td><p>Function that calculates the euclidean distance between a sampling dataset before and after applying the <cite>get_loopless_solutions_from_samples</cite>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#loopless_utils.violin_plot_samples_distances" title="loopless_utils.violin_plot_samples_distances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">violin_plot_samples_distances</span></code></a>(distances_array[, ...])</p></td>
-<td><p>Function that creates a violin plot from a distances_array (this array is calculated from the above 2 functions)</p></td>
+<td><p>Function that creates a violin plot from a given <cite>distances_array</cite></p></td>
 </tr>
 </tbody>
 </table>
@@ -275,51 +279,104 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="loopless_utils.loops_enumeration_from_fva">
-<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">loops_enumeration_from_fva</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ec_cobra_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction_of_optimum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loopless_utils.loops_enumeration_from_fva" title="Link to this definition"></a></dt>
-<dd><p>Function that aims to identify loopy reaction from FVA.
+<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">loops_enumeration_from_fva</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ec_cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fraction_of_optimum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#loopless_utils.loops_enumeration_from_fva" title="Link to this definition"></a></dt>
+<dd><p>Function that aims to identify loopy reaction from Flux Variability Analysis.
 This method was introduced here: <a class="reference external" href="https://doi.org/10.1016/j.bpj.2010.12.3707">https://doi.org/10.1016/j.bpj.2010.12.3707</a></p>
+<p>Keyword arguments:
+cobra_model (Model) – cobra model object
+fraction_of_optimum (float) – Float variable that defines the <cite>fraction_of_optimum</cite> parameter used in <cite>flux_variability_analysis</cite></p>
+<p>Returns:
+loopy_reactions (List) – List with reactions classified as loopy based on the algorithm</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="loopless_utils.loopy_reactions_turned_off_in_pfba">
-<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">loopy_reactions_turned_off_in_pfba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loopy_cobra_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loopy_reactions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loopless_utils.loopy_reactions_turned_off_in_pfba" title="Link to this definition"></a></dt>
-<dd><p>Identify which subset of loopy reactions calculated with the above function
-can be turned off when performing a pFBA or a loopless solutions to pFBA results</p>
+<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">loopy_reactions_turned_off_in_pfba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loopy_cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loopy_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#loopless_utils.loopy_reactions_turned_off_in_pfba" title="Link to this definition"></a></dt>
+<dd><p>Function that identifies which reactions from the loopy reactions set calculated with the <cite>loops_enumeration_from_fva</cite> function
+can be turned off when performing a <cite>pFBA</cite> or a <cite>loopless_solution</cite> to <cite>pFBA</cite> results</p>
+<p>Keyword arguments:
+loopy_cobra_model (Model) – cobra model object possibly containing loops (default model without any preproccess)
+loopy_reactions (List) – loopy_reactions (List) – List with reactions classified as loopy
+tol (float) – Tolerance value used to classify a numeric change as important or not</p>
+<p>Returns:
+turned_off_reactions (List) – List with reactions turned of in <cite>pFBA</cite> with <cite>loopless_solution</cite> applied</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="loopless_utils.get_loopless_solutions_from_samples">
-<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">get_loopless_solutions_from_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loopless_utils.get_loopless_solutions_from_samples" title="Link to this definition"></a></dt>
-<dd><p>Function that calculate the loopless solution from each sample and saves results into a new numpy 2D array</p>
+<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">get_loopless_solutions_from_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#loopless_utils.get_loopless_solutions_from_samples" title="Link to this definition"></a></dt>
+<dd><p>Function that calculates the <cite>loopless_solution</cite> from each sample and saves results into a new numpy 2D array</p>
+<p>Keyword arguments:
+samples (NDArray[np.float64]) – Numpy 2D array of the samples
+cobra_model (model) – cobra model object</p>
+<p>Returns:
+samples_loopless_solutions (NDArray[np.float64]) – Numpy 2D array of the samples after application of <cite>loopless_solution</cite></p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="loopless_utils.calculate_affected_samples">
-<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">calculate_affected_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loopless_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_reaction_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_reactions_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loopless_utils.calculate_affected_samples" title="Link to this definition"></a></dt>
-<dd><p>Function that given the default and the lopless solutions samples identifies how many samples have significant differences.
-This is done by calculating (for each sample) the distance across the reactions between the default and loopless solution.
-Reactions that have a difference higher than a given threshold are counted and sample can potentially be classified as loopy.
-However, if user does not assume a sample as loopy when only 1 reaction overcomes this value, he can specify the least number
-of reactions needed for this classification.</p>
+<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">calculate_affected_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loopless_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_reaction_difference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol_reactions_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#loopless_utils.calculate_affected_samples" title="Link to this definition"></a></dt>
+<dd><p>Function that given the default and the <cite>get_loopless_solutions_from_samples</cite> samples identifies how many samples have significant differences.
+This is done by calculating (for each sample) the distance (change) of the reactions from the given arrays.
+Reactions that have a difference higher than a given threshold are counted and the corresponding sample can potentially be classified as a loopy sample.
+However, if user does not consider importance when only 1 reaction overcomes this tolerance, he can specify the least number
+of reactions needed for this classification (e.g 2, 5, 10 ..).</p>
+<p>Keyword arguments:
+initial_samples (NDArray[np.float64]) – Numpy 2D array of the default samples
+loopless_samples (NDArray[np.float64]) – Numpy 2D array of the default samples after application of the <cite>get_loopless_solutions_from_samples</cite>
+cobra_model (Model) – ocbra model object
+tol_reaction_difference (float) – Tolerance value to classify the difference in reactions before and after <cite>get_loopless_solutions_from_samples</cite> as important
+tol_reactions_count (int) – Tolerance value to classify a sample as loopy based on the least amount of significantly altered reactions</p>
+<p>Returns:
+Tuple[List, int]</p>
+<blockquote>
+<div><p>affected_reactions_count (List) – List containing the number of affected (significantly altered) reactions across all samples
+total_affected_samples (int) – The total number of affected (significantly altered) samples</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="loopless_utils.calculate_distances_from_samples">
-<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">calculate_distances_from_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loopless_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loopless_utils.calculate_distances_from_samples" title="Link to this definition"></a></dt>
-<dd><p>Function that calculates the euclidean distance between a sampling dataset and itself after applyig the loopless solutions.
-Distances are calculated between different samples, so if you have 3000 samples you will end up with 3000 distances.</p>
+<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">calculate_distances_from_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loopless_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#loopless_utils.calculate_distances_from_samples" title="Link to this definition"></a></dt>
+<dd><p>Function that calculates the euclidean distance between a sampling dataset before and after applying the <cite>get_loopless_solutions_from_samples</cite>.
+Distances are calculated between different samples, so if user has 3000 samples, he will end up with 3000 distances.</p>
+<p>Keyword arguments:
+initial_samples (NDArray[np.float64]) – Numpy 2D array of the default samples
+loopless_samples (NDArray[np.float64]) – Numpy 2D array of the default samples after application of the <cite>get_loopless_solutions_from_samples</cite>
+cobra_model (Model) – cobra model object</p>
+<p>Returns:
+distances_array (NDArray[np.float64]) – Numpy 1D array of the samples’ euclidean distances before and after the <cite>get_loopless_solutions_from_samples</cite></p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="loopless_utils.calculate_distances_from_reactions">
-<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">calculate_distances_from_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loopless_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loopless_utils.calculate_distances_from_reactions" title="Link to this definition"></a></dt>
-<dd><p>Same as above but distances are calculated between reactions.</p>
+<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">calculate_distances_from_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loopless_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#loopless_utils.calculate_distances_from_reactions" title="Link to this definition"></a></dt>
+<dd><p>Function that calculates the euclidean distance between a sampling dataset before and after applying the <cite>get_loopless_solutions_from_samples</cite>.
+Distances are calculated between different reactions, so if user provides samples of 100 reactions, he will end up with 100 distances.</p>
+<p>Keyword arguments:
+initial_samples (NDArray[np.float64]) – Numpy 2D array of the default samples
+loopless_samples (NDArray[np.float64]) – Numpy 2D array of the default samples after application of the <cite>get_loopless_solutions_from_samples</cite>
+cobra_model (Model) – cobra model object</p>
+<p>Returns:
+distances_array (NDArray[np.float64]) – Numpy 1D array of the reactions’ euclidean distances before and after the <cite>get_loopless_solutions_from_samples</cite></p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="loopless_utils.violin_plot_samples_distances">
-<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">violin_plot_samples_distances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distances_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponentformat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loopless_utils.violin_plot_samples_distances" title="Link to this definition"></a></dt>
-<dd><p>Function that creates a violin plot from a distances_array (this array is calculated from the above 2 functions)</p>
+<span class="sig-prename descclassname"><span class="pre">loopless_utils.</span></span><span class="sig-name descname"><span class="pre">violin_plot_samples_distances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distances_array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponentformat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'none'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#loopless_utils.violin_plot_samples_distances" title="Link to this definition"></a></dt>
+<dd><p>Function that creates a violin plot from a given <cite>distances_array</cite></p>
+<dl>
+<dt>Keyword arguments:</dt><dd><dl class="simple">
+<dt>distances_array (NDArray[np.float64]) – Numpy 1D array of either the reactions’ or samples’ euclidean distances before and after</dt><dd><p>the <cite>get_loopless_solutions_from_samples</cite></p>
+</dd>
+</dl>
+<p>title (str) – Title for the plot
+exponentformat (str) – Parameter used to determine the numeric scientific notation in the plot (determines a formatting rule for the tick exponents).</p>
+<blockquote>
+<div><p>Available options: “e”, “E”, “power”, “SI”, “B”</p>
+</div></blockquote>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

@@ -21,7 +21,7 @@ Functions
    pathways_utils.reaction_in_pathway_binary_matrix
    pathways_utils.plot_reaction_in_pathway_heatmap
    pathways_utils.sort_reactions_by_model_order
-   pathways_utils.subset_sampling_df_from_reaction_ids
+   pathways_utils.subset_sampling_array_from_reaction_ids
    pathways_utils.dictionary_map_reverse_reaction_id_to_pathway
 
 
@@ -49,12 +49,12 @@ Module Contents
    cobra_model (cobra.Model) -- cobra model object
 
    Returns:
-   Dictionary (dict): maps each model's BiGG/SEED ID → KEGG ID 
+   Dictionary (dict) -- maps each model's BiGG/SEED ID → KEGG ID 
 
 
 .. py:function:: dictionary_reaction_id_to_kegg_id(reactions_pandas: pandas.DataFrame) -> Tuple[Dict[str, str], Dict[str, str]]
 
-   Given the `reactions.json` file this function builds two dictionaries for fast lookup of KEGG reaction IDs from BiGG or SEED IDs.
+   Function that given the `reactions.json` file builds two dictionaries for fast lookup of KEGG reaction IDs from BiGG or SEED IDs.
    These dictionaries will be used as input in the `reaction_id_to_kegg_id` function.
 
    Keyword arguments:
@@ -64,13 +64,13 @@ Module Contents
 
    Returns:
    Tuple[dict, dict]:
-       bigg_to_kegg (dict): maps each BiGG ID → KEGG ID
-       seed_to_kegg (dict): maps each SEED ID → KEGG ID
+       bigg_to_kegg (dict) -- maps each BiGG ID → KEGG ID
+       seed_to_kegg (dict) -- maps each SEED ID → KEGG ID
 
 
 .. py:function:: reaction_id_to_kegg_id(reaction_id: str, modeltype: str, bigg_to_kegg: Dict[str, str], seed_to_kegg: Dict[str, str]) -> str
 
-   Lookup function to get KEGG ID for a given BiGG or SEED reaction ID.
+   FUnction that performs lookup to get KEGG ID for a given BiGG or SEED reaction ID.
    This function is used inside the `fill_missing_kegg_ids_in_initial_dictionary` function
 
    Keyword arguments:
@@ -80,12 +80,12 @@ Module Contents
    seed_to_kegg (dict) -- Dictionary mapping SEED IDs to KEGG IDs
 
    Returns:
-   str: The corresponding KEGG ID (e.g., "R00010"), or "NA" if not found
+   str -- The corresponding KEGG ID (e.g., "R00010"), or "NA" if not found
 
 
 .. py:function:: fill_missing_kegg_ids_in_initial_dictionary(initial_model_to_kegg_dictionary: dict[str, str], bigg_to_kegg: Dict[str, str], seed_to_kegg: Dict[str, str], modeltype: str = 'BiGG') -> Dict
 
-   Fill in missing KEGG IDs (NAs) in the initial mapping dictionary using a function that maps
+   Function that fills in missing KEGG IDs (NAs) in the initial mapping dictionary using a function that maps
    BiGG/SEED IDs to KEGG IDs.
 
    Keyword arguments:
@@ -95,93 +95,98 @@ Module Contents
    modeltype (str) -- Either "BiGG" or "SEED" (determines which dictionary to use)
 
    Returns:
-   final_model_to_kegg_dictionary (dict): Updated dictionary with KEGG IDs filled where possible.
+   final_model_to_kegg_dictionary (dict) -- Updated dictionary with KEGG IDs filled where possible.
 
 
 .. py:function:: fetch_kegg_pathway(kegg_rxn: str) -> Tuple[str, List, List]
 
-   Extract associated KEGG pathways from a given KEGG id.
+   Function that extracts associated KEGG pathways from a given KEGG id.
 
    Keyword arguments:
        kegg_rxn (str) -- KEGG reaction ID (e.g., 'R00010').
 
    Returns:
-   kegg_rxn (str), pathway_ids (list), pathway_names (list)
+   Tuple[str, List, List]
+       kegg_rxn (str) -- The KEGG reaction ID
+       pathway_ids (list) -- The corresponding KEGG pathway IDs
+       pathway_names (list) -- The corresponding KEGG pathway names
 
 
 .. py:function:: get_kegg_pathways_from_reaction_ids(final_model_to_kegg_dictionary: Dict[str, str], max_workers: int = 8) -> pandas.DataFrame
 
-   Fetch KEGG pathway information for a set of model reactions using parallel requests.
+   Function that fetches KEGG pathway information for a set of model reactions using parallel requests.
 
    Keyword arguments:
    final_model_to_kegg_dictionary (dict) -- dictionary where keys are model reaction IDs and values are KEGG reaction IDs (e.g., 'R00010').
    max_workers (int) -- Number of threads for parallel downloading (default = 8).
 
    Returns:
-   pd.DataFrame: 
-       A DataFrame with columns:
-       ['model_reaction', 'kegg_reaction', 'pathway_ids', 'pathway_names']
+   kegg_info_df (pd.DataFrame) -- A DataFrame with columns: ['model_reaction', 'kegg_reaction', 'pathway_ids', 'pathway_names']
 
 
 .. py:function:: subset_model_reactions_from_pathway_info(kegg_info_df: pandas.DataFrame, pathway_query: str) -> List
 
-   Given a DataFrame with columns ['model_reaction', 'kegg_reaction', 'pathway_ids', 'pathway_names'],
-   return all reaction IDs affiliated with a given KEGG pathway name or ID.
+   Function that given a DataFrame with columns ['model_reaction', 'kegg_reaction', 'pathway_ids', 'pathway_names'],
+   created wuth the `get_kegg_pathways_from_reaction_ids` function returns all reaction IDs affiliated 
+   with a given KEGG pathway name or ID.
 
    Keyword arguments:
    kegg_info_df (pd.DataFrame) -- Output from `get_kegg_pathways_from_reaction_ids`, must contain 'pathway_ids' and 'pathway_names'.
    pathway_query (str) -- Exact KEGG pathway name or ID to match (e.g., 'Glycolysis / Gluconeogenesis' or 'rn00010').
 
    Returns:
-   List[str]: List of reaction IDs affiliated with the **exact** given pathway.
+   List[str] -- List of reaction IDs affiliated with the **exact** given pathway.
 
 
 .. py:function:: dictionary_reaction_id_to_pathway(**named_lists: List[str]) -> Dict[str, str]
 
-   Function that takes one or multiple lists containing reaction IDs (corresponding to pathways as shown above) 
-   and creates a dictionary that maps the IDs to pathway names.
+   Function that takes one or multiple lists containing reaction IDs (corresponding to KEGG pathways
+   and creates a dictionary that maps the IDs to pathway names. If a reaction appears in more than 1 pathway,
+   it is classified with the term "Multiple-Pathways"
 
    Keyword arguments:
    **named_lists: List[str] -- Named keyword arguments where each argument is a list of reaction IDs 
                                and the argument name represents the pathway name.
 
    Returns:
-   reaction_id_to_pathway_dict (dict): dictionary mapping reaction id to pathway name
+   reaction_id_to_pathway_dict (dict) -- dictionary mapping reaction id to pathway name
 
 
 .. py:function:: reaction_in_pathway_binary_matrix(reaction_id_to_pathway_dict: Dict) -> pandas.DataFrame
 
-   Given a mapping dictionary, this function builds a binary matrix where rows are keys,
-   columns are unique values, and the cell is 1 if the key maps to that value.
+   Function that given a mapping dictionary, builds a binary matrix where rows (reactions) are keys,
+   columns (pathways) are unique values, and the cell is 1 if the key maps to that value.
 
    Keyword arguments:
-   mapping_dict: Dict -- dictionary mapping reaction id to pathway name
+   mapping_dict (Dict) -- dictionary mapping reaction id to pathway name
 
    Returns:
-   binary_df: pd.DataFrame -- DataFrame with binary values (0 or 1) matching reactions to pathways
+   binary_df (pd.DataFrame) -- DataFrame with binary values (0 or 1) matching reactions to pathways
 
 
 .. py:function:: plot_reaction_in_pathway_heatmap(binary_df: pandas.DataFrame, font_size: int = 12, fig_width: int = 600, fig_height: int = 400, title: str = '')
 
-   Plot a binary mapping matrix using Plotly with discrete color values (0 = grey, 1 = blue).
-
-   Parameters:
-   - binary_df: DataFrame with binary values (0 or 1)
-   - font_size: Font size for axis labels and ticks
-   - fig_width: Width of the figure in pixels
-   - fig_height: Height of the figure in pixels
-
-
-.. py:function:: sort_reactions_by_model_order(full_list, *subsets)
-
-   Sorts and merges all subsets (reactions from pathway) into a single list based on the order of elements in the full list (reactions order in model).
+   Function that plots a binary mapping matrix created from the `reaction_in_pathway_binary_matrix` function.
 
    Keyword arguments:
-   full_list (list) -- The reference list that defines the desired order.
-   *subsets (lists) -- One or more subset lists to be merged and ordered.
+   binary_df (pd.DataFrame) -- DataFrame with binary values (0 or 1)
+   font_size (int) -- Font size for axis labels and ticks
+   fig_width (int) -- Width of the figure in pixels
+   fig_height (int) -- Height of the figure in pixels
+   title (str) -- Title of the plot
+
+
+.. py:function:: sort_reactions_by_model_order(full_list: List, *subsets: List) -> List
+
+   Function that flattens the lists provided in the `subsets` argument (corresponding to reactions from different pathways) 
+   in a single list and then orders the element of the new list based on the order of the reaction in the initial model
+
+   Keyword arguments:
+   full_list (List) -- The reference list that defines the desired order.
+   *subsets (List) -- One or more subset lists to be merged and ordered.
 
    Returns:
-   sorted_merged: a single merged list of all subsets sorted by the order in full_list.
+   sorted_merged -- a single merged list of all subsets sorted by the order in full_list.
 
    Example Usage:
    Glycolysis = ["PGI", "PFK", "FBA", "TPI", "GAPD", "PGK", "PGM", "ENO", "PYK"]
@@ -189,30 +194,32 @@ Module Contents
    reactions_ordered = sort_reactions_in_pathways_by_reactions_in_model_order(ec_cobra_reactions_str, Glycolysis, PPP)
 
 
-.. py:function:: subset_sampling_df_from_reaction_ids(samples: numpy.typing.NDArray[numpy.float64], model_reactions: List, subset_reactions: List = []) -> numpy.typing.NDArray[numpy.float64]
+.. py:function:: subset_sampling_array_from_reaction_ids(samples: numpy.typing.NDArray[numpy.float64], model_reactions: List, subset_reactions: List = []) -> numpy.typing.NDArray[numpy.float64]
 
-   This function takes a sampling dataframe with reactions as rows and samples as columns and subsets it
+   Function that takes a sampling array with reactions as rows and samples as columns and subsets it
    to include only reactions of interest
 
    Keyword arguments:
-   samples: (Numpy 2D array) -- A sampling 2D array with reactions as rows and samples as columns
+   samples (Numpy 2D array) -- A sampling 2D array with reactions as rows and samples as columns
    model_reactions (List) -- A list containing the model's reactions
    subset_reactions (List) -- A list containing reactions of interest to subset the sampling array
 
    Returns:
-   subset_samples: (NDArray[np.float64]) -- subset of the sampling dataframe containing only reactions of interest
+   subset_samples (NDArray[np.float64]) -- subset of the sampling dataframe containing only reactions of interest
 
 
 .. py:function:: dictionary_map_reverse_reaction_id_to_pathway(reaction_id_to_pathway_dict: Dict, for_rev_reactions: List) -> Dict[str, str]
 
-   This function is used in cases where split of directional reactions to separate forward and reverse reactions takes place.
+   Function that is used when we split bidirectional reactions to separate forward and reverse reactions.
+   It maps the reverse reaction to the corresponding pathway (the one that the forward reactions maps to)
+   It enriches the dictionary created from the `dictionary_reaction_id_to_pathway` function
 
    Keyword arguments:
    reaction_id_to_pathway_dict (Dict) -- Dict mapping reaction IDs to pathway names
    for_rev_reactions (List) -- List of the splitted reactions
 
    Returns:
-   reaction_id_forward_reverse_to_pathway_dict: (Dict) -- Dictionary containing reaction-pathway mapping information 
-                                                          for forward and reverse reactions separately
+   reaction_id_forward_reverse_to_pathway_dict (Dict) -- Dictionary containing reaction-pathway mapping information 
+                                                         for forward and reverse reactions separately
 
 

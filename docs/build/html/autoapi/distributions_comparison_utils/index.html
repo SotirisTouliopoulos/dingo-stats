@@ -135,7 +135,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.reaction_in_pathway_binary_matrix"><code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.plot_reaction_in_pathway_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.sort_reactions_by_model_order"><code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_df_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_array_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_array_from_reaction_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway()</span></code></a></li>
 </ul>
 </li>
@@ -207,6 +207,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#distributions_comparison_utils.significantly_altered_reactions"><code class="docutils literal notranslate"><span class="pre">significantly_altered_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#distributions_comparison_utils.plot_volcano"><code class="docutils literal notranslate"><span class="pre">plot_volcano()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#distributions_comparison_utils.dictionary_reaction_to_all_pathways"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_to_all_pathways()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#distributions_comparison_utils.hypergeometric_test_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">hypergeometric_test_pathway_enrichment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#distributions_comparison_utils.plot_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">plot_pathway_enrichment()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -246,8 +250,20 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#distributions_comparison_utils.significantly_altered_reactions" title="distributions_comparison_utils.significantly_altered_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">significantly_altered_reactions</span></code></a>([conditions, ...])</p></td>
-<td><p>Function that takes as input at least 2 conditions to compare (diffeent sampling dataset)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#distributions_comparison_utils.significantly_altered_reactions" title="distributions_comparison_utils.significantly_altered_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">significantly_altered_reactions</span></code></a>(], cobra_model, ...)</p></td>
+<td><p>Function that takes as input at least 2 flux sampling conditions to compare and identifies significantly altered reactions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#distributions_comparison_utils.plot_volcano" title="distributions_comparison_utils.plot_volcano"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_volcano</span></code></a>(pval_dict, fold_change_dict[, ...])</p></td>
+<td><p>Creates a volcano plot to show results from differential flux analysis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#distributions_comparison_utils.dictionary_reaction_to_all_pathways" title="distributions_comparison_utils.dictionary_reaction_to_all_pathways"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dictionary_reaction_to_all_pathways</span></code></a>(→ Dict)</p></td>
+<td><p>Function that builds a dictionary mapping each reaction to a list of all the pathway names it belongs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#distributions_comparison_utils.hypergeometric_test_pathway_enrichment" title="distributions_comparison_utils.hypergeometric_test_pathway_enrichment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hypergeometric_test_pathway_enrichment</span></code></a>(→ pandas.DataFrame)</p></td>
+<td><p>Function that perform a hypergeometric test to find significantly affected pathways between our sampling conditions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#distributions_comparison_utils.plot_pathway_enrichment" title="distributions_comparison_utils.plot_pathway_enrichment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_pathway_enrichment</span></code></a>(hypergeometric_enrichment_df)</p></td>
+<td><p>Function that takes as input the <cite>hypergeometric_pathway_enrichment_df</cite> dataframe created with the</p></td>
 </tr>
 </tbody>
 </table>
@@ -256,10 +272,82 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="distributions_comparison_utils.significantly_altered_reactions">
-<span class="sig-prename descclassname"><span class="pre">distributions_comparison_utils.</span></span><span class="sig-name descname"><span class="pre">significantly_altered_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_comparisons</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[(0,</span> <span class="pre">1)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_value_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fold_change_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions_comparison_utils.significantly_altered_reactions" title="Link to this definition"></a></dt>
-<dd><p>Function that takes as input at least 2 conditions to compare (diffeent sampling dataset)
-and performs the KS non-parametric test and based on a multiple-comparisons corrected p-value and fold change classifies
-reactions as significantly altered or not. This function can provide reactions that can further filter graphs</p>
+<span class="sig-prename descclassname"><span class="pre">distributions_comparison_utils.</span></span><span class="sig-name descname"><span class="pre">significantly_altered_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_comparisons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[(0,</span> <span class="pre">1)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_value_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fold_change_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#distributions_comparison_utils.significantly_altered_reactions" title="Link to this definition"></a></dt>
+<dd><p>Function that takes as input at least 2 flux sampling conditions to compare and identifies significantly altered reactions
+It performs a Kolmogorov-Smirnov (KS) non-parametric test and corrects p-value for multiple comparisons.
+It additionally calculates a fold change that together with the p-value classifies reactions as significantly altered or not.</p>
+<p>Keyword arguments:
+conditions (List) – List of different flux sampling arrays
+selected_comparisons (List) – List showing which conditions to compare (useful when comparing more than 2 sampling arrays)
+cobra_model (Model) – cobra model object
+p_value_cutoff (float) – cutoff for p value from KS test to consider 2 distributions significantly different
+fold_change_cutoff (float) – cutoff for fold-change to consider 2 distributions significantly different
+std_cutoff (float) – cutoff to ensure distributions that are compared are not fixed to a certain value</p>
+<p>Returns:
+Tuple[List, List]</p>
+<blockquote>
+<div><p>significant_diff_reactions (List) – List containing reactions significantly altered between the conditions
+not_significant_diff_reactions (List) – List containing reactions not significantly altered between the conditions
+pval_dict (Dict) – Dictionary mapping reaction ID to corrected p-value.
+fold_change_dict (Dict) – Dictionary mapping reaction ID to fold-change value.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="distributions_comparison_utils.plot_volcano">
+<span class="sig-prename descclassname"><span class="pre">distributions_comparison_utils.</span></span><span class="sig-name descname"><span class="pre">plot_volcano</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pval_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fold_change_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_value_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fold_change_cutoff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">800</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_cutoff_lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions_comparison_utils.plot_volcano" title="Link to this definition"></a></dt>
+<dd><p>Creates a volcano plot to show results from differential flux analysis.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><p>pval_dict (dict) – Dictionary mapping reaction ID to corrected p-value.
+fold_change_dict (dict) – Dictionary mapping reaction ID to fold-change value.
+p_value_cutoff (float) – Significance threshold for p-value.
+fold_change_cutoff (float) – Threshold for fold-change.
+annotate (list) – List of reaction IDs to annotate on the plot.
+width (int) – Width of the figure in pixels.
+height (int) – Height of the figure in pixels.
+title (str) – Title of the plot.
+show_cutoff_lines (bool) – Whether to draw p-value and fold-change cutoff lines.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="distributions_comparison_utils.dictionary_reaction_to_all_pathways">
+<span class="sig-prename descclassname"><span class="pre">distributions_comparison_utils.</span></span><span class="sig-name descname"><span class="pre">dictionary_reaction_to_all_pathways</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_kegg_pathways</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_col</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'model_reaction'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathway_col</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pathway_names'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#distributions_comparison_utils.dictionary_reaction_to_all_pathways" title="Link to this definition"></a></dt>
+<dd><p>Function that builds a dictionary mapping each reaction to a list of all the pathway names it belongs.</p>
+<p>Keyword arguments:
+df_kegg_pathways (pd.DataFrame): pandas DataFrame with reactions and pathway names.
+reaction_col: column name for reaction identifiers.
+pathway_col: column name for list of pathways.</p>
+<p>Returns:
+reaction_to_pathways (dict): Dictionary with reaction IDs as keys and pathway names as values: {reaction_id: [pathway1, pathway2, …]}</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="distributions_comparison_utils.hypergeometric_test_pathway_enrichment">
+<span class="sig-prename descclassname"><span class="pre">distributions_comparison_utils.</span></span><span class="sig-name descname"><span class="pre">hypergeometric_test_pathway_enrichment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">significant_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reaction_to_pathways</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#distributions_comparison_utils.hypergeometric_test_pathway_enrichment" title="Link to this definition"></a></dt>
+<dd><p>Function that perform a hypergeometric test to find significantly affected pathways between our sampling conditions.</p>
+<p>Keyword arguments:
+significant_reactions (List): List of reaction IDs with altered flux.
+model_reactions (List) – List of all reaction IDs considered in the analysis.
+reaction_to_pathways (Dict): Dictinary mapping reaction ID -&gt; list of pathway names.</p>
+<p>Returns:
+hypergeometric_enrichment_df (pd.DataFrame) – DataFrame with pathway, p-value, counts and adjusted FDR.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="distributions_comparison_utils.plot_pathway_enrichment">
+<span class="sig-prename descclassname"><span class="pre">distributions_comparison_utils.</span></span><span class="sig-name descname"><span class="pre">plot_pathway_enrichment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hypergeometric_enrichment_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pval_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_fdr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">900</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">600</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distributions_comparison_utils.plot_pathway_enrichment" title="Link to this definition"></a></dt>
+<dd><p>Function that takes as input the <cite>hypergeometric_pathway_enrichment_df</cite> dataframe created with the
+<cite>hypergeometric_test_pathway_enrichment</cite> function and plots the enrichment results in a bubble plot.
+Bubble size stands for pathway size (number of reactions) and reaction colour stands for -log10(p-value)</p>
+<p>Keyword arguments:
+hypergeometric_enrichment_df (pd.DataFrame): Enrichment DataFrame from the <cite>hypergeometric_test_pathway_enrichment</cite> function.
+pval_threshold (float): significance p value threshold for filtering.
+use_fdr (bool): boolean for whether to use ‘fdr’ or ‘pval’ for filtering.
+font_size (int): font size for plot labels and title.
+width (int): width of the figure in pixels.
+height (int): height of the figure in pixels.</p>
 </dd></dl>
 
 </section>

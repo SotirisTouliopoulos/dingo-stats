@@ -10,15 +10,91 @@ Functions
 .. autoapisummary::
 
    distributions_comparison_utils.significantly_altered_reactions
+   distributions_comparison_utils.plot_volcano
+   distributions_comparison_utils.dictionary_reaction_to_all_pathways
+   distributions_comparison_utils.hypergeometric_test_pathway_enrichment
+   distributions_comparison_utils.plot_pathway_enrichment
 
 
 Module Contents
 ---------------
 
-.. py:function:: significantly_altered_reactions(conditions=[], selected_comparisons=[(0, 1)], cobra_model=None, p_value_cutoff=0.05, fold_change_cutoff=1.2, std_cutoff=0.01)
+.. py:function:: significantly_altered_reactions(conditions: List[numpy.typing.NDArray[numpy.float64]] = [], selected_comparisons: Tuple = [(0, 1)], cobra_model: cobra.Model = None, p_value_cutoff: float = 0.05, fold_change_cutoff: float = 1.2, std_cutoff: float = 0.01) -> Tuple[List[str], List[str]]
 
-   Function that takes as input at least 2 conditions to compare (diffeent sampling dataset) 
-   and performs the KS non-parametric test and based on a multiple-comparisons corrected p-value and fold change classifies
-   reactions as significantly altered or not. This function can provide reactions that can further filter graphs
+   Function that takes as input at least 2 flux sampling conditions to compare and identifies significantly altered reactions
+   It performs a Kolmogorov-Smirnov (KS) non-parametric test and corrects p-value for multiple comparisons.
+   It additionally calculates a fold change that together with the p-value classifies reactions as significantly altered or not. 
+
+   Keyword arguments:
+   conditions (List) -- List of different flux sampling arrays
+   selected_comparisons (List) -- List showing which conditions to compare (useful when comparing more than 2 sampling arrays)
+   cobra_model (Model) -- cobra model object
+   p_value_cutoff (float) -- cutoff for p value from KS test to consider 2 distributions significantly different
+   fold_change_cutoff (float) -- cutoff for fold-change to consider 2 distributions significantly different
+   std_cutoff (float) -- cutoff to ensure distributions that are compared are not fixed to a certain value
+
+   Returns:
+   Tuple[List, List]
+       significant_diff_reactions (List) -- List containing reactions significantly altered between the conditions
+       not_significant_diff_reactions (List) -- List containing reactions not significantly altered between the conditions
+       pval_dict (Dict) -- Dictionary mapping reaction ID to corrected p-value.
+       fold_change_dict (Dict) -- Dictionary mapping reaction ID to fold-change value.
+
+
+.. py:function:: plot_volcano(pval_dict: dict, fold_change_dict: dict, p_value_cutoff: float = 0.05, fold_change_cutoff: float = 1.2, annotate: list = [], width: int = 800, height: int = 600, title: str = '', show_cutoff_lines: bool = True)
+
+   Creates a volcano plot to show results from differential flux analysis.
+
+   Keyword arguments:
+       pval_dict (dict) -- Dictionary mapping reaction ID to corrected p-value.
+       fold_change_dict (dict) -- Dictionary mapping reaction ID to fold-change value.
+       p_value_cutoff (float) -- Significance threshold for p-value.
+       fold_change_cutoff (float) -- Threshold for fold-change.
+       annotate (list) -- List of reaction IDs to annotate on the plot.
+       width (int) -- Width of the figure in pixels.
+       height (int) -- Height of the figure in pixels.
+       title (str) -- Title of the plot.
+       show_cutoff_lines (bool) -- Whether to draw p-value and fold-change cutoff lines.
+
+
+.. py:function:: dictionary_reaction_to_all_pathways(df_kegg_pathways: pandas.DataFrame, reaction_col: str = 'model_reaction', pathway_col: str = 'pathway_names') -> Dict
+
+   Function that builds a dictionary mapping each reaction to a list of all the pathway names it belongs.
+
+   Keyword arguments:
+   df_kegg_pathways (pd.DataFrame): pandas DataFrame with reactions and pathway names.
+   reaction_col: column name for reaction identifiers.
+   pathway_col: column name for list of pathways.
+
+   Returns:
+   reaction_to_pathways (dict): Dictionary with reaction IDs as keys and pathway names as values: {reaction_id: [pathway1, pathway2, ...]}
+
+
+.. py:function:: hypergeometric_test_pathway_enrichment(significant_reactions: List, model_reactions: List, reaction_to_pathways: Dict) -> pandas.DataFrame
+
+   Function that perform a hypergeometric test to find significantly affected pathways between our sampling conditions.
+
+   Keyword arguments:
+   significant_reactions (List): List of reaction IDs with altered flux.
+   model_reactions (List) -- List of all reaction IDs considered in the analysis.
+   reaction_to_pathways (Dict): Dictinary mapping reaction ID -> list of pathway names.
+
+   Returns:
+   hypergeometric_enrichment_df (pd.DataFrame) -- DataFrame with pathway, p-value, counts and adjusted FDR.
+
+
+.. py:function:: plot_pathway_enrichment(hypergeometric_enrichment_df: pandas.DataFrame, pval_threshold: float = 0.05, use_fdr: bool = True, font_size: int = 14, width: int = 900, height: int = 600)
+
+   Function that takes as input the `hypergeometric_pathway_enrichment_df` dataframe created with the 
+   `hypergeometric_test_pathway_enrichment` function and plots the enrichment results in a bubble plot. 
+   Bubble size stands for pathway size (number of reactions) and reaction colour stands for -log10(p-value)
+
+   Keyword arguments:
+   hypergeometric_enrichment_df (pd.DataFrame): Enrichment DataFrame from the `hypergeometric_test_pathway_enrichment` function.
+   pval_threshold (float): significance p value threshold for filtering.
+   use_fdr (bool): boolean for whether to use 'fdr' or 'pval' for filtering.
+   font_size (int): font size for plot labels and title.
+   width (int): width of the figure in pixels.
+   height (int): height of the figure in pixels.
 
 

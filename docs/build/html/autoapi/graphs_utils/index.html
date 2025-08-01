@@ -136,7 +136,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.reaction_in_pathway_binary_matrix"><code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.plot_reaction_in_pathway_heatmap"><code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.sort_reactions_by_model_order"><code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_df_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_df_from_reaction_ids()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.subset_sampling_array_from_reaction_ids"><code class="docutils literal notranslate"><span class="pre">subset_sampling_array_from_reaction_ids()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pathways_utils/index.html#pathways_utils.dictionary_map_reverse_reaction_id_to_pathway"><code class="docutils literal notranslate"><span class="pre">dictionary_map_reverse_reaction_id_to_pathway()</span></code></a></li>
 </ul>
 </li>
@@ -208,6 +208,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../distributions_comparison_utils/index.html#module-contents">Module Contents</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.significantly_altered_reactions"><code class="docutils literal notranslate"><span class="pre">significantly_altered_reactions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_volcano"><code class="docutils literal notranslate"><span class="pre">plot_volcano()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.dictionary_reaction_to_all_pathways"><code class="docutils literal notranslate"><span class="pre">dictionary_reaction_to_all_pathways()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.hypergeometric_test_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">hypergeometric_test_pathway_enrichment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../distributions_comparison_utils/index.html#distributions_comparison_utils.plot_pathway_enrichment"><code class="docutils literal notranslate"><span class="pre">plot_pathway_enrichment()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -247,29 +251,29 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#graphs_utils.construct_graph" title="graphs_utils.construct_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_graph</span></code></a>([linear_correlation_matrix, ...])</p></td>
-<td><p>Creates a graph from a linear correlation matrix or from both a linear and a non-linear correlation matrix.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#graphs_utils.construct_graph" title="graphs_utils.construct_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_graph</span></code></a>(→ Tuple[networkx.Graph, Dict[Any, ...)</p></td>
+<td><p>Function that creates a networkx graph from a linear correlation matrix or from both a linear correlation</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#graphs_utils.draw_positive_clique_shadows" title="graphs_utils.draw_positive_clique_shadows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_positive_clique_shadows</span></code></a>(G, pos, fig, positive_cliques)</p></td>
-<td><p>Add translucent shaded areas around positive cliques to a Plotly figure.</p></td>
+<td><p>Function that adds translucent shaded areas around positive cliques to a Plotly figure. This function highlights</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#graphs_utils.draw_negative_clique_shadows" title="graphs_utils.draw_negative_clique_shadows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_negative_clique_shadows</span></code></a>(G, pos, fig, positive_cliques)</p></td>
-<td><p>Add translucent red shaded areas between negatively connected positive cliques.</p></td>
+<td><p>Function that adds translucent shaded areas around regions where two positive cliques are connected by at least one</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#graphs_utils.plot_graph" title="graphs_utils.plot_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_graph</span></code></a>(G, pos, centralities[, ...])</p></td>
-<td><p>Plot a correlation graph with:</p></td>
+<td><p>Function that plots a correlation-based networkx graph with multiple visual features including node annotations,</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#graphs_utils.compute_nodes_centrality_metrics" title="graphs_utils.compute_nodes_centrality_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_nodes_centrality_metrics</span></code></a>(G)</p></td>
-<td><p>Compute centrality measures on a correlation-based graph</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#graphs_utils.compute_nodes_centrality_metrics" title="graphs_utils.compute_nodes_centrality_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_nodes_centrality_metrics</span></code></a>(→ Dict[str, Dict[Any, ...)</p></td>
+<td><p>Function that computes centrality measures on a correlation-based graph.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#graphs_utils.compare_essential_to_network_central_reactions" title="graphs_utils.compare_essential_to_network_central_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_essential_to_network_central_reactions</span></code></a>(...[, ...])</p></td>
-<td><p>Count how many central network reaction (reactions with high centrality metrics)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#graphs_utils.compare_essential_to_network_central_reactions" title="graphs_utils.compare_essential_to_network_central_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_essential_to_network_central_reactions</span></code></a>(...)</p></td>
+<td><p>Function that counts how many central network reactions (reactions with high centrality metrics)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#graphs_utils.compare_network_modularities" title="graphs_utils.compare_network_modularities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_network_modularities</span></code></a>(Graph_1, Graph_2)</p></td>
-<td><p>Function that compares the modularity between 2 different graphs</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#graphs_utils.compare_network_modularities" title="graphs_utils.compare_network_modularities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_network_modularities</span></code></a>(→ float)</p></td>
+<td><p>Function that compares the modularity scores of two graphs using the greedy modularity community detection method</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#graphs_utils.compare_node_centralities" title="graphs_utils.compare_node_centralities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_node_centralities</span></code></a>(centrality_dict_1, ...)</p></td>
-<td><p>Function that compares the node centralities across all nodes from 2 different input centrality dictionaries</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#graphs_utils.compare_node_centralities" title="graphs_utils.compare_node_centralities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_node_centralities</span></code></a>(→ List[Tuple[str, float]])</p></td>
+<td><p>Function that compares node centralities between two centrality dictionaries for shared nodes and returns</p></td>
 </tr>
 </tbody>
 </table>
@@ -278,16 +282,18 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="graphs_utils.construct_graph">
-<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">construct_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">linear_correlation_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_linear_correlation_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_unconnected_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.construct_graph" title="Link to this definition"></a></dt>
-<dd><p>Creates a graph from a linear correlation matrix or from both a linear and a non-linear correlation matrix.
-Adds node attributes for group information if group_map is provided.</p>
-<p>Parameters:
-- linear_correlation_matrix: numpy 2D array
-- non_linear_correlation_matrix: numpy 2D array (optional)
-- reactions: list of reaction names (ordered like matrix indices)
-- remove_unconnected_nodes: if True, removes isolated nodes
-- correction: if True, use absolute values of correlations
-- group_map: dictionary mapping reaction names to group names (optional)</p>
+<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">construct_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">linear_correlation_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_linear_correlation_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_unconnected_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">networkx.Graph</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#graphs_utils.construct_graph" title="Link to this definition"></a></dt>
+<dd><p>Function that creates a networkx graph from a linear correlation matrix or from both a linear correlation
+and a non-linear copula dependencies matrix. In this graph reactions are nodes and correlation values are edges.
+Users can also provide reaction-pathway mapping information in the <cite>group_map</cite> dictionary parameter
+and this will be saved in the graph for potential vizualization.</p>
+<p>Keyword arguments:
+linear_correlation_matrix (NDArray[np.float64]) – numpy 2D array corresponding to the linear correlation matrix
+non_linear_correlation_matrix (NDArray[np.float64]) numpy 2D array (optional) corresonding to the non-linear copula dependencies matrix
+reactions (List) – list of reaction names (ordered like matrix indices)
+remove_unconnected_nodes (bool) – if True, removes isolated nodes
+correction (bool) – if True, use absolute values of correlations
+group_map (Dict) – dictionary mapping reaction names to group names (pathways)</p>
 <blockquote>
 <div><dl class="simple">
 <dt>group_map = {</dt><dd><p>“PGI” : “Glycolysis”,
@@ -302,110 +308,135 @@ Adds node attributes for group information if group_map is provided.</p>
 </dl>
 </div></blockquote>
 <p>Returns:
-- NetworkX graph
-- Layout positions for plotting</p>
+Tuple[nx.Graph, Dict[Any, Tuple[float, float]]
+G/G_combined (nx.Graph) – The created NetworkX graph
+pos (Dict[Any, Tuple[float, float]]) – dictionary of node positions, usually from a layout function</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="graphs_utils.draw_positive_clique_shadows">
-<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">draw_positive_clique_shadows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive_cliques</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_clique_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.draw_positive_clique_shadows" title="Link to this definition"></a></dt>
-<dd><p>Add translucent shaded areas around positive cliques to a Plotly figure.</p>
-<p>Parameters:
-- G: NetworkX graph
-- pos: dict of node positions
-- fig: Plotly figure to add to
-- positive_cliques: list of positive cliques (list of node lists)
-- min_clique_size: minimum size of a clique to visualize</p>
+<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">draw_positive_clique_shadows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">plotly.graph_objects.Figure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive_cliques</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_clique_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.draw_positive_clique_shadows" title="Link to this definition"></a></dt>
+<dd><p>Function that adds translucent shaded areas around positive cliques to a Plotly figure. This function highlights
+regions in a network where nodes form strongly positively connected cliques by drawing convex hull
+polygons around them.</p>
+<p>Keyword arguments:
+G (nx.Graph) – NetworkX graph containing nodes and weighted edges
+pos (Dict) – dictionary of node positions, usually from a layout function
+fig (go.Figure) – Plotly figure object to which shaded regions will be added
+positive_cliques (List[List]) – list of positive cliques, where each clique is a list of node names
+min_clique_size (int) – minimum number of nodes in a clique for it to be visualized (default = 3)</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="graphs_utils.draw_negative_clique_shadows">
-<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">draw_negative_clique_shadows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive_cliques</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_clique_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.draw_negative_clique_shadows" title="Link to this definition"></a></dt>
-<dd><p>Add translucent red shaded areas between negatively connected positive cliques.</p>
-<p>Parameters:
-- G: NetworkX graph
-- pos: dict of node positions
-- fig: Plotly figure to add to
-- positive_cliques: list of positive cliques (list of node lists)
-- min_clique_size: minimum size of a clique to consider</p>
+<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">draw_negative_clique_shadows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">plotly.graph_objects.Figure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive_cliques</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_clique_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.draw_negative_clique_shadows" title="Link to this definition"></a></dt>
+<dd><p>Function that adds translucent shaded areas around regions where two positive cliques are connected by at least one
+negative edge. This function visually highlights antagonistic relationships between strongly connected
+positive subgraphs by drawing convex hulls around their union.</p>
+<p>Keyword arguments:
+G (nx.Graph) – NetworkX graph containing nodes and weighted edges
+pos (Dict[Any, Tuple[float, float]]) – dictionary of node positions, usually from a layout function
+fig (go.Figure) – Plotly figure object to which shaded regions will be added
+positive_cliques (List[List[Any]]) – list of positive cliques, where each clique is a list of node names
+min_clique_size (int) – minimum number of nodes in a clique for it to be considered (default = 3)</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="graphs_utils.plot_graph">
-<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">plot_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centralities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_clique_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_matrix2_in_cliques</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_clique_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shadow_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.plot_graph" title="Link to this definition"></a></dt>
-<dd><p>Plot a correlation graph with:</p>
-<ul class="simple">
-<li><p>Nodes colored by group</p></li>
-<li><p>Positive cliques (size ≥ 3) visualized with shadows</p></li>
-<li><p>Red shadows for strong negative edges between cliques</p></li>
-<li><p>Edge styles based on weight and source</p></li>
-<li><dl class="simple">
-<dt>Node annotations:</dt><dd><ul>
-<li><p>Positive neighbors</p></li>
-<li><p>Negative neighbors</p></li>
-<li><p>In clique (True/False)</p></li>
-<li><p>Degree centrality</p></li>
-<li><p>Betweenness centrality</p></li>
-<li><p>Clustering coefficient</p></li>
-</ul>
+<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">plot_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centralities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_clique_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_matrix2_in_cliques</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_clique_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shadow_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.plot_graph" title="Link to this definition"></a></dt>
+<dd><p>Function that plots a correlation-based networkx graph with multiple visual features including node annotations,
+edge styles, and clique-based shadowing.</p>
+<p>Keyword arguments:
+G (nx.Graph) – NetworkX graph with nodes and weighted edges; edges should have ‘weight’ and ‘source’ attributes
+pos (Dict[Any, Tuple[float, float]]) – dictionary of node positions, usually from a layout function
+centralities (Dict[str, Dict[Any, float]]) – dictionary containing precomputed centrality metrics</p>
+<blockquote>
+<div><dl>
+<dt>Example:</dt><dd><dl class="simple">
+<dt>{</dt><dd><p>“degree”: {node1: val1, …},
+“betweenness”: {node1: val2, …},
+“clustering”: {node1: val3, …}</p>
 </dd>
 </dl>
-</li>
-<li><p>Optional exclusion of matrix2 edges from clique detection</p></li>
+<p>}</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>remove_clique_edges (bool) – if True, remove edges within positive cliques and between cliques with negative connections
+include_matrix2_in_cliques (bool) – if False, only use matrix1 (linear edges) for positive clique detection
+min_clique_size (int) – minimum size for cliques to be considered (default = 5)
+shadow_edges (Optional[str]) – visualization mode for clique shadows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>None: no shadows</p></li>
+<li><p>“positive”: show shadows around positive cliques</p></li>
+<li><p>“negative”: show shadows between cliques with negative edges</p></li>
+<li><p>“mixed”: show both types of shadows</p></li>
 </ul>
-<p>Parameters:
-- G: NetworkX graph with edge weights and ‘source’ (‘matrix1’ or ‘matrix2’)
-- pos: Node position dictionary
-- remove_clique_edges: Whether to hide internal positive clique edges and negative edges between cliques
-- include_matrix2_in_cliques: If False, only matrix1 is used for clique detection</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="graphs_utils.compute_nodes_centrality_metrics">
-<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">compute_nodes_centrality_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.compute_nodes_centrality_metrics" title="Link to this definition"></a></dt>
-<dd><p>Compute centrality measures on a correlation-based graph</p>
-<p>Parameters:
-- G: networkx Graph with ‘weight’ attribute on edges (correlation values in [-1, 1])</p>
+<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">compute_nodes_centrality_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#graphs_utils.compute_nodes_centrality_metrics" title="Link to this definition"></a></dt>
+<dd><p>Function that computes centrality measures on a correlation-based graph.</p>
+<p>Keyword arguments:
+G (nx.Graph) – NetworkX graph with edge weights representing correlation values in the range [-1, 1]</p>
 <p>Returns:
-- A dictionary with:</p>
+Dict[str, Dict[Any, float]] – A dictionary containing centrality metrics for each node:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>‘degree’: Degree centrality</p></li>
-<li><p>‘weighted_degree’: Sum of absolute edge weights</p></li>
-<li><p>‘betweenness’: Betweenness centrality (weighted by 1-abs(weight))</p></li>
-<li><p>‘clustering’: Clustering coefficient (weighted by 1-abs(weight))</p></li>
+<li><p>‘degree’: Weighted degree centrality normalized by number of nodes</p></li>
+<li><p>‘betweenness’: Betweenness centrality using distance = 1 - abs(weight)</p></li>
+<li><p>‘clustering’: Clustering coefficient using abs(weight) as edge weight</p></li>
 </ul>
 </div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="graphs_utils.compare_essential_to_network_central_reactions">
-<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">compare_essential_to_network_central_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centrality_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.999</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.compare_essential_to_network_central_reactions" title="Link to this definition"></a></dt>
-<dd><p>Count how many central network reaction (reactions with high centrality metrics)
+<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">compare_essential_to_network_central_reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cobra_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">cobra.Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centrality_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.999</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#graphs_utils.compare_essential_to_network_central_reactions" title="Link to this definition"></a></dt>
+<dd><p>Function that counts how many central network reactions (reactions with high centrality metrics)
 belong to the group of essential reactions</p>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>cobra_model<span class="classifier">Model</span></dt><dd><p>Metabolic Model in cobra format</p>
-</dd>
-<dt>centrality_dict<span class="classifier">dict</span></dt><dd><p>Dictionary of {reaction_id: centrality_score}.</p>
-</dd>
-<dt>threshold<span class="classifier">float</span></dt><dd><p>threshold to change the optimal solution of the objective function</p>
-</dd>
-</dl>
-</section>
+<p>Keyword arguments:
+cobra_model (Model) – COBRA metabolic model object
+centrality_dict (Dict[str, float]) – dictionary mapping reaction IDs to centrality scores
+threshold (float) – threshold to determine essentiality; a reaction is essential if its removal</p>
+<blockquote>
+<div><p>causes the objective function to drop below <cite>threshold * optimal value</cite> (default = 0.999)</p>
+</div></blockquote>
+<p>Returns:
+Tuple[int, int, List[str]]</p>
+<blockquote>
+<div><p>Number of reactions that are both central and essential
+Total number of essential reactions
+Sorted list of reaction IDs that are both central and essential</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="graphs_utils.compare_network_modularities">
-<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">compare_network_modularities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Graph_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Graph_2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.compare_network_modularities" title="Link to this definition"></a></dt>
-<dd><p>Function that compares the modularity between 2 different graphs</p>
+<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">compare_network_modularities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Graph_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Graph_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">networkx.Graph</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#graphs_utils.compare_network_modularities" title="Link to this definition"></a></dt>
+<dd><p>Function that compares the modularity scores of two graphs using the greedy modularity community detection method
+and returns the difference substracting the modularity score of graph 2 (second argument) from graph 1 (first argument).</p>
+<p>Keyword arguments:
+Graph_1 (nx.Graph) – first NetworkX graph
+Graph_2 (nx.Graph) – second NetworkX graph</p>
+<p>Returns:
+float – difference in modularity (modularity of Graph_2 minus modularity of Graph_1)</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="graphs_utils.compare_node_centralities">
-<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">compare_node_centralities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">centrality_dict_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centrality_dict_2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#graphs_utils.compare_node_centralities" title="Link to this definition"></a></dt>
-<dd><p>Function that compares the node centralities across all nodes from 2 different input centrality dictionaries</p>
+<span class="sig-prename descclassname"><span class="pre">graphs_utils.</span></span><span class="sig-name descname"><span class="pre">compare_node_centralities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">centrality_dict_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centrality_dict_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#graphs_utils.compare_node_centralities" title="Link to this definition"></a></dt>
+<dd><p>Function that compares node centralities between two centrality dictionaries for shared nodes and returns
+the difference by substracting the corresponding metric score of graph 2 (second argument) from graph 1 (first argument).</p>
+<p>Keyword arguments:
+centrality_dict_1 (Dict[str, float]) – Dictionary mapping node IDs to centrality values (first graph)
+centrality_dict_2 (Dict[str, float]) – Dictionary mapping node IDs to centrality values (second graph)</p>
+<p>Returns:
+Tuple – A list of tuples (node, centrality_difference) sorted by difference descending,
+where centrality_difference = centrality_dict_2[node] - centrality_dict_1[node]</p>
 </dd></dl>
 
 </section>

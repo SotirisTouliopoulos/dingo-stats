@@ -22,18 +22,20 @@ Functions
 Module Contents
 ---------------
 
-.. py:function:: construct_graph(linear_correlation_matrix=None, non_linear_correlation_matrix=None, reactions=[], remove_unconnected_nodes=False, correction=True, group_map=None)
+.. py:function:: construct_graph(linear_correlation_matrix: numpy.typing.NDArray[numpy.float64] = None, non_linear_correlation_matrix: numpy.typing.NDArray[numpy.float64] = None, reactions: List = [], remove_unconnected_nodes: bool = False, correction: bool = True, group_map: Dict = None) -> Tuple[networkx.Graph, Dict[Any, Tuple[float, float]]]
 
-   Creates a graph from a linear correlation matrix or from both a linear and a non-linear correlation matrix.
-   Adds node attributes for group information if group_map is provided.
+   Function that creates a networkx graph from a linear correlation matrix or from both a linear correlation 
+   and a non-linear copula dependencies matrix. In this graph reactions are nodes and correlation values are edges.
+   Users can also provide reaction-pathway mapping information in the `group_map` dictionary parameter 
+   and this will be saved in the graph for potential vizualization.
 
-   Parameters:
-   - linear_correlation_matrix: numpy 2D array
-   - non_linear_correlation_matrix: numpy 2D array (optional)
-   - reactions: list of reaction names (ordered like matrix indices)
-   - remove_unconnected_nodes: if True, removes isolated nodes
-   - correction: if True, use absolute values of correlations
-   - group_map: dictionary mapping reaction names to group names (optional)
+   Keyword arguments:
+   linear_correlation_matrix (NDArray[np.float64]) -- numpy 2D array corresponding to the linear correlation matrix
+   non_linear_correlation_matrix (NDArray[np.float64]) numpy 2D array (optional) corresonding to the non-linear copula dependencies matrix
+   reactions (List) -- list of reaction names (ordered like matrix indices)
+   remove_unconnected_nodes (bool) -- if True, removes isolated nodes
+   correction (bool) -- if True, use absolute values of correlations
+   group_map (Dict) -- dictionary mapping reaction names to group names (pathways)
      
        group_map = {
                "PGI" : "Glycolysis",
@@ -46,95 +48,120 @@ Module Contents
                }
 
    Returns:
-   - NetworkX graph
-   - Layout positions for plotting
+   Tuple[nx.Graph, Dict[Any, Tuple[float, float]]
+   G/G_combined (nx.Graph) -- The created NetworkX graph
+   pos (Dict[Any, Tuple[float, float]]) -- dictionary of node positions, usually from a layout function
 
 
-.. py:function:: draw_positive_clique_shadows(G, pos, fig, positive_cliques, min_clique_size=3)
+.. py:function:: draw_positive_clique_shadows(G: networkx.Graph, pos: Dict[Any, Tuple[float, float]], fig: plotly.graph_objects.Figure, positive_cliques: List[List[Any]], min_clique_size: int = 3)
 
-   Add translucent shaded areas around positive cliques to a Plotly figure.
+   Function that adds translucent shaded areas around positive cliques to a Plotly figure. This function highlights 
+   regions in a network where nodes form strongly positively connected cliques by drawing convex hull 
+   polygons around them.
 
-   Parameters:
-   - G: NetworkX graph
-   - pos: dict of node positions
-   - fig: Plotly figure to add to
-   - positive_cliques: list of positive cliques (list of node lists)
-   - min_clique_size: minimum size of a clique to visualize
-
-
-.. py:function:: draw_negative_clique_shadows(G, pos, fig, positive_cliques, min_clique_size=3)
-
-   Add translucent red shaded areas between negatively connected positive cliques.
-
-   Parameters:
-   - G: NetworkX graph
-   - pos: dict of node positions
-   - fig: Plotly figure to add to
-   - positive_cliques: list of positive cliques (list of node lists)
-   - min_clique_size: minimum size of a clique to consider
+   Keyword arguments:
+   G (nx.Graph) -- NetworkX graph containing nodes and weighted edges
+   pos (Dict) -- dictionary of node positions, usually from a layout function
+   fig (go.Figure) -- Plotly figure object to which shaded regions will be added
+   positive_cliques (List[List]) -- list of positive cliques, where each clique is a list of node names
+   min_clique_size (int) -- minimum number of nodes in a clique for it to be visualized (default = 3)
 
 
-.. py:function:: plot_graph(G, pos, centralities, remove_clique_edges=False, include_matrix2_in_cliques=True, min_clique_size=5, shadow_edges=None)
+.. py:function:: draw_negative_clique_shadows(G: networkx.Graph, pos: Dict[Any, Tuple[float, float]], fig: plotly.graph_objects.Figure, positive_cliques: List[List[Any]], min_clique_size: int = 3)
 
-   Plot a correlation graph with:
+   Function that adds translucent shaded areas around regions where two positive cliques are connected by at least one 
+   negative edge. This function visually highlights antagonistic relationships between strongly connected 
+   positive subgraphs by drawing convex hulls around their union.
 
-   - Nodes colored by group
-   - Positive cliques (size ≥ 3) visualized with shadows
-   - Red shadows for strong negative edges between cliques
-   - Edge styles based on weight and source
-   - Node annotations:
-       - Positive neighbors
-       - Negative neighbors
-       - In clique (True/False)
-       - Degree centrality
-       - Betweenness centrality
-       - Clustering coefficient
-   - Optional exclusion of matrix2 edges from clique detection
-
-   Parameters:
-   - G: NetworkX graph with edge weights and 'source' ('matrix1' or 'matrix2')
-   - pos: Node position dictionary
-   - remove_clique_edges: Whether to hide internal positive clique edges and negative edges between cliques
-   - include_matrix2_in_cliques: If False, only matrix1 is used for clique detection
+   Keyword arguments:
+   G (nx.Graph) -- NetworkX graph containing nodes and weighted edges
+   pos (Dict[Any, Tuple[float, float]]) -- dictionary of node positions, usually from a layout function
+   fig (go.Figure) -- Plotly figure object to which shaded regions will be added
+   positive_cliques (List[List[Any]]) -- list of positive cliques, where each clique is a list of node names
+   min_clique_size (int) -- minimum number of nodes in a clique for it to be considered (default = 3)
 
 
-.. py:function:: compute_nodes_centrality_metrics(G)
+.. py:function:: plot_graph(G: networkx.Graph, pos: Dict[Any, Tuple[float, float]], centralities: Dict[str, Dict[Any, float]], remove_clique_edges: bool = False, include_matrix2_in_cliques: bool = True, min_clique_size: int = 5, shadow_edges: Optional[str] = None)
 
-   Compute centrality measures on a correlation-based graph
+   Function that plots a correlation-based networkx graph with multiple visual features including node annotations,
+   edge styles, and clique-based shadowing.
 
-   Parameters:
-   - G: networkx Graph with 'weight' attribute on edges (correlation values in [-1, 1])
+   Keyword arguments:
+   G (nx.Graph) -- NetworkX graph with nodes and weighted edges; edges should have 'weight' and 'source' attributes
+   pos (Dict[Any, Tuple[float, float]]) -- dictionary of node positions, usually from a layout function
+   centralities (Dict[str, Dict[Any, float]]) -- dictionary containing precomputed centrality metrics
+       Example:
+           {
+               "degree": {node1: val1, ...},
+               "betweenness": {node1: val2, ...},
+               "clustering": {node1: val3, ...}
+           }
+   remove_clique_edges (bool) -- if True, remove edges within positive cliques and between cliques with negative connections
+   include_matrix2_in_cliques (bool) -- if False, only use matrix1 (linear edges) for positive clique detection
+   min_clique_size (int) -- minimum size for cliques to be considered (default = 5)
+   shadow_edges (Optional[str]) -- visualization mode for clique shadows:
+       - None: no shadows
+       - "positive": show shadows around positive cliques
+       - "negative": show shadows between cliques with negative edges
+       - "mixed": show both types of shadows
+
+
+.. py:function:: compute_nodes_centrality_metrics(G: networkx.Graph) -> Dict[str, Dict[Any, float]]
+
+   Function that computes centrality measures on a correlation-based graph.
+
+   Keyword arguments:
+   G (nx.Graph) -- NetworkX graph with edge weights representing correlation values in the range [-1, 1]
 
    Returns:
-   - A dictionary with:
-       - 'degree': Degree centrality
-       - 'weighted_degree': Sum of absolute edge weights
-       - 'betweenness': Betweenness centrality (weighted by 1-abs(weight))
-       - 'clustering': Clustering coefficient (weighted by 1-abs(weight))
+   Dict[str, Dict[Any, float]] -- A dictionary containing centrality metrics for each node:
+       - 'degree': Weighted degree centrality normalized by number of nodes
+       - 'betweenness': Betweenness centrality using distance = 1 - abs(weight)
+       - 'clustering': Clustering coefficient using abs(weight) as edge weight
 
 
-.. py:function:: compare_essential_to_network_central_reactions(cobra_model, centrality_dict, threshold=0.999)
+.. py:function:: compare_essential_to_network_central_reactions(cobra_model: cobra.Model, centrality_dict: Dict[str, float], threshold: float = 0.999) -> Tuple[int, int, List[str]]
 
-   Count how many central network reaction (reactions with high centrality metrics)
+   Function that counts how many central network reactions (reactions with high centrality metrics)
    belong to the group of essential reactions 
 
-   Parameters
-   ----------
-   cobra_model : Model
-       Metabolic Model in cobra format
-   centrality_dict : dict
-       Dictionary of {reaction_id: centrality_score}.
-   threshold : float
-       threshold to change the optimal solution of the objective function
+   Keyword arguments:
+   cobra_model (Model) -- COBRA metabolic model object
+   centrality_dict (Dict[str, float]) -- dictionary mapping reaction IDs to centrality scores
+   threshold (float) -- threshold to determine essentiality; a reaction is essential if its removal
+                        causes the objective function to drop below `threshold * optimal value` (default = 0.999)
+
+   Returns:
+   Tuple[int, int, List[str]]
+       Number of reactions that are both central and essential
+       Total number of essential reactions
+       Sorted list of reaction IDs that are both central and essential
 
 
-.. py:function:: compare_network_modularities(Graph_1, Graph_2)
+.. py:function:: compare_network_modularities(Graph_1: networkx.Graph, Graph_2: networkx.Graph) -> float
 
-   Function that compares the modularity between 2 different graphs
+   Function that compares the modularity scores of two graphs using the greedy modularity community detection method
+   and returns the difference substracting the modularity score of graph 2 (second argument) from graph 1 (first argument).
+
+   Keyword arguments:
+   Graph_1 (nx.Graph) -- first NetworkX graph
+   Graph_2 (nx.Graph) -- second NetworkX graph
+
+   Returns:
+   float -- difference in modularity (modularity of Graph_2 minus modularity of Graph_1)
 
 
-.. py:function:: compare_node_centralities(centrality_dict_1, centrality_dict_2)
+.. py:function:: compare_node_centralities(centrality_dict_1: Dict[str, float], centrality_dict_2: Dict[str, float]) -> List[Tuple[str, float]]
 
-   Function that compares the node centralities across all nodes from 2 different input centrality dictionaries
+   Function that compares node centralities between two centrality dictionaries for shared nodes and returns 
+   the difference by substracting the corresponding metric score of graph 2 (second argument) from graph 1 (first argument).
+
+   Keyword arguments:
+   centrality_dict_1 (Dict[str, float]) -- Dictionary mapping node IDs to centrality values (first graph)
+   centrality_dict_2 (Dict[str, float]) -- Dictionary mapping node IDs to centrality values (second graph)
+
+   Returns:
+   Tuple -- A list of tuples (node, centrality_difference) sorted by difference descending,
+   where centrality_difference = centrality_dict_2[node] - centrality_dict_1[node]
 
 
