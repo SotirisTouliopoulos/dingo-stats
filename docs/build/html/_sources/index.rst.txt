@@ -30,7 +30,11 @@ Welcome to the **dingo-stats** documentation! This library provides a suite of t
 
    getting_started
    pathways
+   loopless
+   distributions_comparison
    correlations
+   clustering
+   graphs
 
 
 .. toctree::

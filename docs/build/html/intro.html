@@ -52,27 +52,38 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#instllation-of-dingo">Instllation of dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-of-dingo">Installation of dingo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#installation-of-dingo-stats">Installation of dingo-stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#how-to-build-the-readthedocs-of-dingo-stats-locally">How to build the ReadTheDocs of <code class="docutils literal notranslate"><span class="pre">dingo-stats</span></code> locally</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#load-modify-and-sample-models">Load, Modify and Sample models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#load-and-modify-models">Load and Modify models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#perform-sampling">Perform Sampling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html#inspect-sampling-distributions">Inspect Sampling distributions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pathways.html">Extract pathway information</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pathways.html#map-bigg-seed-ids-to-kegg-pathways">Map BIGG/SEED ids to KEGG pathways</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pathways.html">KEGG pathways information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pathways.html#map-model-reactions-ids-to-kegg-terms">Map model reactions IDs to KEGG terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathways.html#subset-reactions-from-pathways">Subset reactions from pathways</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="correlations.html">Compute pairwise reaction correlations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="correlations.html#linear-correlations-with-pearson-spearman">Linear correlations with pearson/spearman</a></li>
-<li class="toctree-l2"><a class="reference internal" href="correlations.html#non-linear-dependencies-with-copulas">Non-Linear dependencies with copulas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loopless.html">Reduce thermodynamic infeasible samples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="loopless.html#identify-and-remove-loopy-reactions">Identify and remove loopy reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loopless.html#quantify-the-effect-of-loopy-reactions-in-sampling">Quantify the effect of loopy reactions in sampling</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="distributions_comparison.html">Differential Flux Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations from reactions samples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="correlations.html#prerequisites-for-calculating-pairwise-correlations">Prerequisites for calculating pairwise correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correlations.html#calculation-of-pairwise-linear-correlations-and-non-linear-copula-dependencies">Calculation of pairwise linear correlations and non-linear copula dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Clustering from correlation matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Graphs from correlation matrix</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -248,11 +259,11 @@
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
 <section id="introduction-to-dingo">
 <h2>Introduction to dingo<a class="headerlink" href="#introduction-to-dingo" title="Link to this heading"></a></h2>
-<p>Dingo is a python package …</p>
+<p><a class="reference external" href="https://github.com/GeomScale/dingo">dingo</a> is a Python package that analyzes metabolic networks. It relies on high dimensional sampling with Markov Chain Monte Carlo (MCMC) methods and fast optimization methods to analyze the possible states of a metabolic network. To perform MCMC sampling, dingo relies on the C++ library volesti, which provides several algorithms for sampling convex polytopes. dingo also performs two standard methods to analyze the flux space of a metabolic network, namely Flux Balance Analysis and Flux Variability Analysis.</p>
 </section>
 <section id="introduction-to-dingo-stats">
 <h2>Introduction to dingo-stats<a class="headerlink" href="#introduction-to-dingo-stats" title="Link to this heading"></a></h2>
-<p>dingo-stats is a python package …</p>
+<p><a class="reference external" href="https://github.com/SotirisTouliopoulos/dingo-stats">dingo-stats</a> is a Python package for the statistical analysis of flux sampling results. It works given any flux sampling dataset (in a desired format) and thus is not restricted only to dingo samples. Functions from <code class="docutils literal notranslate"><span class="pre">dingo-stats</span></code> are used for identifying and removing loopy reactions (as a quality control step) and estimating their effect on thermodynamic feasibility of the samples. Additionally users can extract pathway information from the KEGG database and compare different sampling datasets with differential flux and pathways enrichment analyses. Moreover, users can calcate pairwise linear correlations and non-linear dependencies using copulas between reaction fluxes, perform and evaluate clustering results for metabolic pathways/operons prediction and proceed to graph analysis to reveal patterns from node (reaction) centrality metrics with flux distribution stats or reaction essentialities.</p>
 </section>
 </section>
 

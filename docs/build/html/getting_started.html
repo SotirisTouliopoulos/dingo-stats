@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Extract pathway information" href="pathways.html" />
+    <link rel="next" title="KEGG pathways information" href="pathways.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -52,27 +52,38 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#instllation-of-dingo">Instllation of dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-of-dingo">Installation of dingo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#installation-of-dingo-stats">Installation of dingo-stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#how-to-build-the-readthedocs-of-dingo-stats-locally">How to build the ReadTheDocs of <code class="docutils literal notranslate"><span class="pre">dingo-stats</span></code> locally</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#load-modify-and-sample-models">Load, Modify and Sample models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#load-and-modify-models">Load and Modify models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#perform-sampling">Perform Sampling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#inspect-sampling-distributions">Inspect Sampling distributions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pathways.html">Extract pathway information</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pathways.html#map-bigg-seed-ids-to-kegg-pathways">Map BIGG/SEED ids to KEGG pathways</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pathways.html">KEGG pathways information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pathways.html#map-model-reactions-ids-to-kegg-terms">Map model reactions IDs to KEGG terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathways.html#subset-reactions-from-pathways">Subset reactions from pathways</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="correlations.html">Compute pairwise reaction correlations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="correlations.html#linear-correlations-with-pearson-spearman">Linear correlations with pearson/spearman</a></li>
-<li class="toctree-l2"><a class="reference internal" href="correlations.html#non-linear-dependencies-with-copulas">Non-Linear dependencies with copulas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loopless.html">Reduce thermodynamic infeasible samples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="loopless.html#identify-and-remove-loopy-reactions">Identify and remove loopy reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loopless.html#quantify-the-effect-of-loopy-reactions-in-sampling">Quantify the effect of loopy reactions in sampling</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="distributions_comparison.html">Differential Flux Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations from reactions samples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="correlations.html#prerequisites-for-calculating-pairwise-correlations">Prerequisites for calculating pairwise correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correlations.html#calculation-of-pairwise-linear-correlations-and-non-linear-copula-dependencies">Calculation of pairwise linear correlations and non-linear copula dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Clustering from correlation matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Graphs from correlation matrix</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -246,25 +257,185 @@
              
   <section class="tex2jax_ignore mathjax_ignore" id="getting-started">
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h1>
-<section id="load-modify-and-sample-models">
-<h2>Load, Modify and Sample models<a class="headerlink" href="#load-modify-and-sample-models" title="Link to this heading"></a></h2>
-<p>The function <code class="docutils literal notranslate"><span class="pre">load_model</span></code> is used to load a metabolic model from a sbml format file and store it as a <code class="docutils literal notranslate"><span class="pre">cobra</span></code> model object
-returned as first argument. Additionally the model’s reactions objects and their corresponding string ids are returned
-as second and third arguments.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ec_cobra_model</span><span class="p">,</span> <span class="n">ec_cobra_reactions</span><span class="p">,</span> <span class="n">ec_cobra_reaction_ids</span><span class="p">,</span>  <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s2">&quot;../ext_data/models/e_coli_core.xml&quot;</span><span class="p">)</span>
+<section id="load-and-modify-models">
+<h2>Load and Modify models<a class="headerlink" href="#load-and-modify-models" title="Link to this heading"></a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">load_model</span></code> is used to load a metabolic model (<code class="docutils literal notranslate"><span class="pre">cobra.Model</span></code> object) from a sbml format file and return it to the user (1st arg.) alongside the model’s reactions (2nd arg.) and their corresponding string ids (3rd arg.).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">filepath</span></code> is the path to the cobra model in sbml format</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ec_cobra_model</span><span class="p">,</span> <span class="n">ec_cobra_reactions</span><span class="p">,</span> <span class="n">ec_cobra_reaction_ids</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="s2">&quot;../ext_data/models/e_coli_core.xml&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The function <code class="docutils literal notranslate"><span class="pre">get_objective_functions</span></code> is used to get the assigned objective function(s) form the given cobra model</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">objective_functions</span> <span class="o">=</span> <span class="n">get_objective_functions</span><span class="p">(</span><span class="n">ec_cobra_model</span><span class="p">)</span>
+<p>The function <code class="docutils literal notranslate"><span class="pre">get_objective_functions</span></code> is used to get the assigned objective function(s) from the given cobra model</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cobra_model</span></code> is the corresponding model in cobra format</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">objective_functions</span> <span class="o">=</span> <span class="n">get_objective_functions</span><span class="p">(</span>
+    <span class="n">cobra_model</span> <span class="o">=</span> <span class="n">ec_cobra_model</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">objective_functions</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The function <code class="docutils literal notranslate"><span class="pre">get_reaction_bounds</span></code> is used to get and save in a python dictionary the reaction ids as keys and the corresponding reaction bounds (lower/upper) as values.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">default_reaction_bounds</span> <span class="o">=</span> <span class="n">get_reaction_bounds</span><span class="p">(</span><span class="n">ec_cobra_model</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;BIOMASS_Ecoli_core_w_GAM&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">get_reaction_bounds</span></code> is used to create a python dictionary with reaction IDs as keys and the corresponding reaction bounds (lower/upper) as values.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cobra_model</span></code> is the corresponding model in cobra format</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">default_reaction_bounds</span> <span class="o">=</span> <span class="n">get_reaction_bounds</span><span class="p">(</span>
+    <span class="n">cobra_model</span> <span class="o">=</span> <span class="n">ec_cobra_model</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">default_reaction_bounds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BIOMASS_Ecoli_core_w_GAM&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">modify_model</span></code> function modifies a given cobra model. Users can change objective function, optimal percentage (lower bound of the objective will be fixed based on the optimal percentage), define custom reaction bounds and change objective direction.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cobra_model</span></code> is a cobra model object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">objective_function</span></code> is a string with the requested objective function ID to be assigned to the model</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optimal_percentage</span></code> is the percentage of the FBA solution to be set as lower bound to the objectie function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reaction_bounds</span></code> is a dictionary of custom reaction bounds to be assigned to the model’s reactions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">objective_direction</span></code> defines the direction to optimize the model: <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">min</span></code> are available options.</p></li>
+</ul>
+<p>This function enables the user to create metabolic models simulating different conditions. Here, 2 new models are created based on updating the initial model:</p>
+<ul class="simple">
+<li><p>One that maximizes for biomass production (asking at least almost 100% of the biomass maximum FBA value)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ec_cobra_model_condition_100</span> <span class="o">=</span> <span class="n">modify_model</span><span class="p">(</span>
+    <span class="n">cobra_model</span>         <span class="o">=</span> <span class="n">ec_cobra_model</span><span class="p">,</span>
+    <span class="n">objective_function</span>  <span class="o">=</span> <span class="s2">&quot;BIOMASS_Ecoli_core_w_GAM&quot;</span><span class="p">,</span>
+    <span class="n">optimal_percentage</span>  <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">objective_direction</span> <span class="o">=</span> <span class="s2">&quot;max&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>One that maximize for biomass production (asking at least 0% of the biomass maximum FBA value)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ec_cobra_model_condition_0</span> <span class="o">=</span> <span class="n">modify_model</span><span class="p">(</span>
+    <span class="n">cobra_model</span>         <span class="o">=</span> <span class="n">ec_cobra_model</span><span class="p">,</span>
+    <span class="n">objective_function</span>  <span class="o">=</span> <span class="s2">&quot;BIOMASS_Ecoli_core_w_GAM&quot;</span><span class="p">,</span>
+    <span class="n">optimal_percentage</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">objective_direction</span> <span class="o">=</span> <span class="s2">&quot;max&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="perform-sampling">
+<h2>Perform Sampling<a class="headerlink" href="#perform-sampling" title="Link to this heading"></a></h2>
+<p>For sampling, dingo-stats has various functions that integrate known samplers and make their outtput on a desired format for further analysis. However the user can use whichever sampler he wants, as long as final samples are concerted in a numpy 2D array.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">sample_optgp</span></code> function performs sampling using the <a class="reference external" href="https://doi.org/10.1371/journal.pone.0086587">OptGp</a> sampler. Users can change the <code class="docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="docutils literal notranslate"><span class="pre">thinning</span></code>, parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cobra_model</span></code> is the corresponding model in cobra format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_samples</span></code> – defines the number of samples returned to the user.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thinning</span></code> – defines the <code class="docutils literal notranslate"><span class="pre">thinning</span></code> parameter. Default to 100 means samples are returned every 100th step.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reaction_in_rows</span></code>  – boolean variable that if <code class="docutils literal notranslate"><span class="pre">True</span></code> reactions are rows in the final sampling dataframe.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">samples_optgp_condition_100</span> <span class="o">=</span> <span class="n">sample_optgp</span><span class="p">(</span>
+    <span class="n">cobra_model</span> <span class="o">=</span> <span class="n">ec_cobra_model_condition_100</span><span class="p">,</span> 
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">3000</span><span class="p">,</span> 
+    <span class="n">thinning</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> 
+    <span class="n">reaction_in_rows</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">samples_optgp_condition_0</span> <span class="o">=</span> <span class="n">sample_optgp</span><span class="p">(</span>
+    <span class="n">cobra_model</span> <span class="o">=</span> <span class="n">ec_cobra_model_condition_0</span><span class="p">,</span> 
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">3000</span><span class="p">,</span> 
+    <span class="n">thinning</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> 
+    <span class="n">reaction_in_rows</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">sample_dingo</span></code> performs sampling with <a class="reference external" href="https://doi.org/10.1093/bioadv/vbae037">dingo</a>. Users can define the <code class="docutils literal notranslate"><span class="pre">ess</span></code> and <code class="docutils literal notranslate"><span class="pre">psrf</span></code> parameters.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dingo_model</span></code> is the corresponding model in dingo format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ess</span></code> stands for the effective sample size (ESS) (default value is 1000).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">psrf</span></code> is a flag to request an upper bound equal to 1.1 for the value of the potential scale reduction factor of each marginal flux (default option is False).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">solver</span></code> – defines the linear programming solver</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">final_n_samples</span></code> – integer that defines the final number of samples returned to the user (post sampling step)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reaction_in_rows</span></code> – boolean variable that if <code class="docutils literal notranslate"><span class="pre">True</span></code> reactions are rows in the sampling dataframe.</p></li>
+</ul>
+<p>First convert the modified cobra models to <code class="docutils literal notranslate"><span class="pre">dingo</span></code> models:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dingo</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetabolicNetwork</span>
+
+<span class="n">ec_dingo_model_condition_100</span> <span class="o">=</span> <span class="n">MetabolicNetwork</span><span class="o">.</span><span class="n">from_cobra_model</span><span class="p">(</span>
+    <span class="n">ec_cobra_model_condition_100</span><span class="p">)</span>
+
+<span class="n">ec_dingo_model_condition_0</span> <span class="o">=</span> <span class="n">MetabolicNetwork</span><span class="o">.</span><span class="n">from_cobra_model</span><span class="p">(</span>
+    <span class="n">ec_cobra_model_condition_0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And then perform sampling on the dingo models:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">samples_dingo_condition_100</span> <span class="o">=</span> <span class="n">sample_dingo</span><span class="p">(</span>
+    <span class="n">dingo_model</span> <span class="o">=</span> <span class="n">ec_dingo_model_condition_100</span><span class="p">,</span> 
+    <span class="n">reaction_in_rows</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="n">ess</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> 
+    <span class="n">psrf</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+    <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;gurobi&quot;</span><span class="p">,</span> 
+    <span class="n">final_n_samples</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="n">samples_dingo_condition_0</span> <span class="o">=</span>   <span class="n">sample_dingo</span><span class="p">(</span>
+    <span class="n">dingo_model</span> <span class="o">=</span> <span class="n">ec_dingo_model_condition_0</span><span class="p">,</span> 
+    <span class="n">reaction_in_rows</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="n">ess</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> 
+    <span class="n">psrf</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+    <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;gurobi&quot;</span><span class="p">,</span> 
+    <span class="n">final_n_samples</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="inspect-sampling-distributions">
 <h2>Inspect Sampling distributions<a class="headerlink" href="#inspect-sampling-distributions" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">plot_grid_reactions_flux</span></code> function plots a grid of selected flux distributions and enables inspections of sampling results to get early insights. Distributions here are chosen based on a list of IDs derived from KEGG pathway information. The corresponding KEGG pathways tutorial is presented in the next section. From the grid we can detect: Left/Right Shifted, Normal, Fixed (transparent based on the <code class="docutils literal notranslate"><span class="pre">tolerance</span></code> parameter) or other uncommon distributions.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">samples</span></code> is a numpy 2D array of the samples</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_reactions</span></code> is a list containing strings of reaction IDs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tolerance</span></code> is a tolerance level to make distribution plot transparent based on flux range</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nrows</span></code> is the number of rows for the plot</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ncols</span></code> is the number of columns for the plot</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> is the title of the plot</p></li>
+</ul>
+<p>In the following chunk the grid from Glycolysis and Pentose-Phosphate Pathway (PPP) pathways is shown:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_grid_reactions_flux</span><span class="p">(</span>
+    <span class="n">samples</span><span class="o">=</span><span class="n">samples_dingo_condition_100</span><span class="p">,</span>
+    <span class="n">model_reactions</span><span class="o">=</span><span class="n">ec_cobra_reaction_ids</span><span class="p">,</span> 
+    <span class="n">nrows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> 
+    <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sampling Distributions&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="grid_flux_distributions" src="_images/grid_flux_distributions.png" /></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">sampling_statistics</span></code> function calculate statistics on flux distributions for a reaction of interest. This information can be used to identify significantly altered flux distributions between different conditions</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">samples</span></code> is a numpy 2D array of the samples</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_reactions</span></code> is a list containing strings of reaction IDs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reaction_id</span></code> is a reaction ID of the selected reaction to calculate statistics on</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">skewness</span><span class="p">,</span> <span class="n">kurtosis</span> <span class="o">=</span> <span class="n">sampling_statistics</span><span class="p">(</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">samples_optgp_condition_100</span><span class="p">,</span> 
+    <span class="n">model_reactions</span><span class="o">=</span><span class="n">ec_cobra_reaction_ids</span><span class="p">,</span>
+    <span class="n">reaction_id</span><span class="o">=</span><span class="s2">&quot;FRD7&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">skewness</span><span class="p">,</span> <span class="n">kurtosis</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">479.1369619828837</span> <span class="mf">0.14995320273677437</span> <span class="mf">993.9157983127856</span> <span class="mf">289.3315287517938</span> <span class="mf">0.09951034266820558</span> <span class="o">-</span><span class="mf">1.2064534542990524</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">skewness</span><span class="p">,</span> <span class="n">kurtosis</span> <span class="o">=</span> <span class="n">sampling_statistics</span><span class="p">(</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">samples_optgp_condition_0</span><span class="p">,</span>
+    <span class="n">model_reactions</span><span class="o">=</span><span class="n">ec_cobra_reaction_ids</span><span class="p">,</span>
+    <span class="n">reaction_id</span><span class="o">=</span><span class="s2">&quot;FRD7&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">skewness</span><span class="p">,</span> <span class="n">kurtosis</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">474.7669865820229</span> <span class="mf">0.10135434309104707</span> <span class="mf">997.5267773446074</span> <span class="mf">278.80950212031655</span> <span class="mf">0.07570051318545512</span> <span class="o">-</span><span class="mf">1.1733598969449195</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -273,7 +444,7 @@ as second and third arguments.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pathways.html" class="btn btn-neutral float-right" title="Extract pathway information" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pathways.html" class="btn btn-neutral float-right" title="KEGG pathways information" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

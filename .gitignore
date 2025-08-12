@@ -7,3 +7,5 @@ ext_data/models/model.lp
 __pycache__/
 
 analysis/roseburia_fast_slow_growth
+
+docs/build/

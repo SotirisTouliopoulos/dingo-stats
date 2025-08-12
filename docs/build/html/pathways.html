@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Extract pathway information &mdash; dingo-stats  documentation</title>
+  <title>KEGG pathways information &mdash; dingo-stats  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Compute pairwise reaction correlations" href="correlations.html" />
+    <link rel="next" title="Reduce thermodynamic infeasible samples" href="loopless.html" />
     <link rel="prev" title="Getting started" href="getting_started.html" /> 
 </head>
 
@@ -52,27 +52,38 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#instllation-of-dingo">Instllation of dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-of-dingo">Installation of dingo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#installation-of-dingo-stats">Installation of dingo-stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#how-to-build-the-readthedocs-of-dingo-stats-locally">How to build the ReadTheDocs of <code class="docutils literal notranslate"><span class="pre">dingo-stats</span></code> locally</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#load-modify-and-sample-models">Load, Modify and Sample models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#load-and-modify-models">Load and Modify models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#perform-sampling">Perform Sampling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html#inspect-sampling-distributions">Inspect Sampling distributions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Extract pathway information</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#map-bigg-seed-ids-to-kegg-pathways">Map BIGG/SEED ids to KEGG pathways</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">KEGG pathways information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#map-model-reactions-ids-to-kegg-terms">Map model reactions IDs to KEGG terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subset-reactions-from-pathways">Subset reactions from pathways</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="correlations.html">Compute pairwise reaction correlations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="correlations.html#linear-correlations-with-pearson-spearman">Linear correlations with pearson/spearman</a></li>
-<li class="toctree-l2"><a class="reference internal" href="correlations.html#non-linear-dependencies-with-copulas">Non-Linear dependencies with copulas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loopless.html">Reduce thermodynamic infeasible samples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="loopless.html#identify-and-remove-loopy-reactions">Identify and remove loopy reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loopless.html#quantify-the-effect-of-loopy-reactions-in-sampling">Quantify the effect of loopy reactions in sampling</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="distributions_comparison.html">Differential Flux Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations from reactions samples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="correlations.html#prerequisites-for-calculating-pairwise-correlations">Prerequisites for calculating pairwise correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="correlations.html#calculation-of-pairwise-linear-correlations-and-non-linear-copula-dependencies">Calculation of pairwise linear correlations and non-linear copula dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Clustering from correlation matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Graphs from correlation matrix</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -234,7 +245,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Extract pathway information</li>
+      <li class="breadcrumb-item active">KEGG pathways information</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/pathways.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -244,10 +255,225 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section class="tex2jax_ignore mathjax_ignore" id="extract-pathway-information">
-<h1>Extract pathway information<a class="headerlink" href="#extract-pathway-information" title="Link to this heading"></a></h1>
-<section id="map-bigg-seed-ids-to-kegg-pathways">
-<h2>Map BIGG/SEED ids to KEGG pathways<a class="headerlink" href="#map-bigg-seed-ids-to-kegg-pathways" title="Link to this heading"></a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="kegg-pathways-information">
+<h1>KEGG pathways information<a class="headerlink" href="#kegg-pathways-information" title="Link to this heading"></a></h1>
+<section id="map-model-reactions-ids-to-kegg-terms">
+<h2>Map model reactions IDs to KEGG terms<a class="headerlink" href="#map-model-reactions-ids-to-kegg-terms" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">map_model_to_kegg_reactions_dictionary</span></code> function will create a dictionary that will assign KEGG terms (values) to BiGG/SEED ids (keys) only from given model’s information (without searching on online databases)</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cobra_model</span></code> is a cobra model object</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">initial_bigg_to_kegg_dictionary</span> <span class="o">=</span> <span class="n">map_model_to_kegg_reactions_dictionary</span><span class="p">(</span>
+    <span class="n">cobra_model</span> <span class="o">=</span> <span class="n">ec_cobra_model</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">initial_bigg_to_kegg_dictionary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PFL&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;R00212&#39;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">read_json_file</span></code> function reads the JSON file where the KEGG information is stored and saves it in a JSON format and a pandas dataframe objects. This JSON file is available <a class="reference external" href="https://raw.githubusercontent.com/MGXlab/DNNGIOR/refs/heads/main/docs/biochemistry/reactions.json">here</a> and has information that helps with mapping BiGG IDs, SEED IDs, KEGG terms and KEGG pathway names.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">filepath</span></code> is the path where the <code class="docutils literal notranslate"><span class="pre">reactions.json</span></code> file is located</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reactions_json</span><span class="p">,</span> <span class="n">reactions_pandas</span> <span class="o">=</span> <span class="n">read_json_file</span><span class="p">(</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="s2">&quot;../ext_data/reactions/reactions.json&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">reactions_pandas</span><span class="p">[</span><span class="s1">&#39;aliases&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reactions_pandas</span><span class="p">[</span><span class="s1">&#39;linked_reaction&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;AraCyc: INORGPYROPHOSPHAT-RXN&#39;</span><span class="p">,</span> <span class="s1">&#39;BiGG: IPP1; PPA; PPA_1; PPAm&#39;</span><span class="p">,</span> <span class="s1">&#39;BrachyCyc: INORGPYROPHOSPHAT-RXN&#39;</span><span class="p">,</span> <span class="s1">&#39;KEGG: R00004&#39;</span><span class="p">,</span> <span class="s1">&#39;MetaCyc: INORGPYROPHOSPHAT-RXN&#39;</span><span class="p">,</span> <span class="s1">&#39;Name: Diphosphate phosphohydrolase; Inorganic diphosphatase; Inorganic pyrophosphatase; Pyrophosphate phosphohydrolase; diphosphate phosphohydrolase; inorganic diphosphatase; inorganic diphosphatase (one proton translocation); inorganicdiphosphatase; pyrophosphate phosphohydrolase&#39;</span><span class="p">]</span>
+
+<span class="n">rxn27946</span><span class="p">;</span><span class="n">rxn27947</span><span class="p">;</span><span class="n">rxn27948</span><span class="p">;</span><span class="n">rxn32487</span><span class="p">;</span><span class="n">rxn38157</span><span class="p">;</span><span class="n">rxn38158</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_kegg_id</span></code> function given the pandas dataframe created from the <code class="docutils literal notranslate"><span class="pre">reactions.json</span></code> file, builds two dictionaries for fast lookup of KEGG reaction IDs from BiGG or SEED IDs. These dictionaries will be used as input in the <code class="docutils literal notranslate"><span class="pre">reaction_id_to_kegg_id</span></code> function.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reactions_pandas</span></code> is a pandas dataframe created form the <code class="docutils literal notranslate"><span class="pre">read_json_file</span></code> function and the <code class="docutils literal notranslate"><span class="pre">reactions.json</span></code> file</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bigg_to_kegg</span><span class="p">,</span> <span class="n">seed_to_kegg</span> <span class="o">=</span> <span class="n">dictionary_reaction_id_to_kegg_id</span><span class="p">(</span>
+    <span class="n">reactions_pandas</span> <span class="o">=</span> <span class="n">reactions_pandas</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">bigg_to_kegg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;IPP1&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">seed_to_kegg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rxn27946&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">R00004</span>
+<span class="n">R00004</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">reaction_id_to_kegg_id</span></code> function takes as arguments: a BiGG or a SEED id, the modeltype and the mapping dictionaries created above. It returns the corresponding KEGG id.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reaction_id</span></code> is the BiGG or SEED reaction ID (e.g., “SUCDi” or “rxn12345”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modeltype</span></code> is the model type (either “BiGG” or “SEED” and determines which dictionary to use)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bigg_to_kegg</span></code> is a dictionary mapping BiGG IDs to KEGG IDs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seed_to_kegg</span></code> is a dictionary mapping SEED IDs to KEGG IDs</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">kegg_id_from_bigg</span> <span class="o">=</span> <span class="n">reaction_id_to_kegg_id</span><span class="p">(</span>
+    <span class="n">reaction_id</span> <span class="o">=</span> <span class="s2">&quot;IPP1&quot;</span><span class="p">,</span> 
+    <span class="n">modeltype</span> <span class="o">=</span> <span class="s2">&quot;BiGG&quot;</span><span class="p">,</span> 
+    <span class="n">bigg_to_kegg</span> <span class="o">=</span> <span class="n">bigg_to_kegg</span><span class="p">,</span> 
+    <span class="n">seed_to_kegg</span> <span class="o">=</span> <span class="n">seed_to_kegg</span><span class="p">)</span>
+
+<span class="n">kegg_id_from_seed</span> <span class="o">=</span> <span class="n">reaction_id_to_kegg_id</span><span class="p">(</span>
+    <span class="n">reaction_id</span> <span class="o">=</span> <span class="s2">&quot;rxn19264&quot;</span><span class="p">,</span> 
+    <span class="n">modeltype</span> <span class="o">=</span> <span class="s2">&quot;SEED&quot;</span><span class="p">,</span> 
+    <span class="n">bigg_to_kegg</span> <span class="o">=</span> <span class="n">bigg_to_kegg</span><span class="p">,</span> 
+    <span class="n">seed_to_kegg</span> <span class="o">=</span> <span class="n">seed_to_kegg</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">kegg_id_from_bigg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">kegg_id_from_seed</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">R00004</span>
+<span class="n">R00009</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">fill_missing_kegg_ids_in_initial_dictionary</span></code> function is used to further map KEGG to BiGG/SEED ids, in cases where the initial model lacks some information. It fills in missing KEGG IDs (NAs) in the initial mapping dictionary</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">initial_bigg_to_kegg_dictionary</span></code> is a dictionary with reaction IDs as keys and KEGG IDs (or None) as values created from the <code class="docutils literal notranslate"><span class="pre">map_model_to_kegg_reactions_dictionary</span></code> function and includes only the default mapping information from the model</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modeltype</span></code> is the model type (either “BiGG” or “SEED”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bigg_to_kegg</span></code> is a dictionary mapping BiGG IDs to KEGG IDs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seed_to_kegg</span></code> is a dictionary mapping SEED IDs to KEGG IDs</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">final_bigg_to_kegg_dictionary</span> <span class="o">=</span> <span class="n">fill_missing_kegg_ids_in_initial_dictionary</span><span class="p">(</span>
+    <span class="n">initial_model_to_kegg_dictionary</span> <span class="o">=</span> <span class="n">initial_bigg_to_kegg_dictionary</span><span class="p">,</span> 
+    <span class="n">modeltype</span><span class="o">=</span><span class="s2">&quot;BiGG&quot;</span><span class="p">,</span>
+    <span class="n">bigg_to_kegg</span> <span class="o">=</span> <span class="n">bigg_to_kegg</span><span class="p">,</span>
+    <span class="n">seed_to_kegg</span> <span class="o">=</span> <span class="n">seed_to_kegg</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">initial_bigg_to_kegg_dictionary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PFK&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">final_bigg_to_kegg_dictionary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PFK&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kc">None</span>
+<span class="n">R00756</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">get_kegg_pathways_from_reaction_ids</span></code> function fetches KEGG pathway information for a set of model reactions
+and creates a pandas dataframe with the following columns: with columns: ‘model_reaction’, ‘kegg_reaction’, ‘pathway_ids’, ‘pathway_names’.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">final_bigg_to_kegg_dictionary</span></code> is a dictionary with reaction IDs as keys and KEGG IDs (or None) as values created from the <code class="docutils literal notranslate"><span class="pre">fill_missing_kegg_ids_in_initial_dictionary</span></code> function and includes updated mapping information from the KEGG database.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_workers</span></code> corresponds to the number of threads for parallel downloading</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_kegg_pathways</span> <span class="o">=</span> <span class="n">get_kegg_pathways_from_reaction_ids</span><span class="p">(</span>
+    <span class="n">final_model_to_kegg_dictionary</span> <span class="o">=</span> <span class="n">final_bigg_to_kegg_dictionary</span><span class="p">,</span>
+    <span class="n">max_workers</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df_kegg_pathways</span><span class="p">[</span><span class="s2">&quot;model_reaction&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_kegg_pathways</span><span class="p">[</span><span class="s2">&quot;kegg_reaction&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_kegg_pathways</span><span class="p">[</span><span class="s2">&quot;pathway_ids&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_kegg_pathways</span><span class="p">[</span><span class="s2">&quot;pathway_names&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">PFL</span>
+<span class="n">R00212</span>
+<span class="p">[</span><span class="n">rn00620</span><span class="p">,</span> <span class="n">rn00650</span><span class="p">,</span> <span class="n">rn01100</span><span class="p">,</span> <span class="n">rn01120</span><span class="p">]</span>
+<span class="p">[</span><span class="n">Pyruvate</span> <span class="n">metabolism</span><span class="p">,</span> <span class="n">Butanoate</span> <span class="n">metabolism</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="subset-reactions-from-pathways">
+<h2>Subset reactions from pathways<a class="headerlink" href="#subset-reactions-from-pathways" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">subset_model_reactions_from_pathway_info</span></code> function given a dataFrame created wuth the <code class="docutils literal notranslate"><span class="pre">get_kegg_pathways_from_reaction_ids</span></code> function, returns all reaction IDs affiliated with a given KEGG pathway name or ID.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">PPP_from_name</span> <span class="o">=</span> <span class="n">subset_model_reactions_from_pathway_info</span><span class="p">(</span>
+    <span class="n">kegg_info_df</span> <span class="o">=</span> <span class="n">df_kegg_pathways</span><span class="p">,</span> 
+    <span class="n">pathway_query</span> <span class="o">=</span> <span class="s2">&quot;Pentose phosphate pathway&quot;</span><span class="p">)</span>
+
+<span class="n">Glycolysis_from_name</span> <span class="o">=</span> <span class="n">subset_model_reactions_from_pathway_info</span><span class="p">(</span>
+    <span class="n">kegg_info_df</span> <span class="o">=</span> <span class="n">df_kegg_pathways</span><span class="p">,</span> 
+    <span class="n">pathway_query</span> <span class="o">=</span> <span class="s2">&quot;Glycolysis / Gluconeogenesis&quot;</span><span class="p">)</span>
+
+<span class="n">Glycolysis_from_id</span> <span class="o">=</span> <span class="n">subset_model_reactions_from_pathway_info</span><span class="p">(</span>
+    <span class="n">kegg_info_df</span> <span class="o">=</span> <span class="n">df_kegg_pathways</span><span class="p">,</span> 
+    <span class="n">pathway_query</span> <span class="o">=</span> <span class="s2">&quot;rn00010&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">PPP_from_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Glycolysis_from_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Glycolysis_from_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;FBA&#39;</span><span class="p">,</span> <span class="s1">&#39;FBP&#39;</span><span class="p">,</span> <span class="s1">&#39;GND&#39;</span><span class="p">,</span> <span class="s1">&#39;PFK&#39;</span><span class="p">,</span> <span class="s1">&#39;PGL&#39;</span><span class="p">,</span> <span class="s1">&#39;RPE&#39;</span><span class="p">,</span> <span class="s1">&#39;RPI&#39;</span><span class="p">,</span> <span class="s1">&#39;TKT1&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;ALCD2x&#39;</span><span class="p">,</span> <span class="s1">&#39;ENO&#39;</span><span class="p">,</span> <span class="s1">&#39;FBA&#39;</span><span class="p">,</span> <span class="s1">&#39;FBP&#39;</span><span class="p">,</span> <span class="s1">&#39;GAPD&#39;</span><span class="p">,</span> <span class="s1">&#39;PFK&#39;</span><span class="p">,</span> <span class="s1">&#39;PGK&#39;</span><span class="p">,</span> <span class="s1">&#39;PGM&#39;</span><span class="p">,</span> <span class="s1">&#39;PPCK&#39;</span><span class="p">,</span> <span class="s1">&#39;PPS&#39;</span><span class="p">,</span> <span class="s1">&#39;PYK&#39;</span><span class="p">,</span> <span class="s1">&#39;TPI&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;ALCD2x&#39;</span><span class="p">,</span> <span class="s1">&#39;ENO&#39;</span><span class="p">,</span> <span class="s1">&#39;FBA&#39;</span><span class="p">,</span> <span class="s1">&#39;FBP&#39;</span><span class="p">,</span> <span class="s1">&#39;GAPD&#39;</span><span class="p">,</span> <span class="s1">&#39;PFK&#39;</span><span class="p">,</span> <span class="s1">&#39;PGK&#39;</span><span class="p">,</span> <span class="s1">&#39;PGM&#39;</span><span class="p">,</span> <span class="s1">&#39;PPCK&#39;</span><span class="p">,</span> <span class="s1">&#39;PPS&#39;</span><span class="p">,</span> <span class="s1">&#39;PYK&#39;</span><span class="p">,</span> <span class="s1">&#39;TPI&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order</span></code> function flattens the lists provided in the <code class="docutils literal notranslate"><span class="pre">subsets</span></code> argument (corresponding to reactions from different pathways) in a single list and then orders the element of the new list based on the order of the reaction in the initial model. If any duplicates exist they are not removed by this function, so an additional step is required if user wants to exclude duplicate reaction IDs.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">full_list</span></code> is the reference list that defines the desired order. Usually corresponds to the model reactions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*subsets</span></code> is/are one or more subset lists to be merged and ordered. Usually corresponds to reactions from pathways of interest.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reactions_in_pathways_ordered_duplicates</span> <span class="o">=</span> <span class="n">sort_reactions_by_model_order</span><span class="p">(</span>
+    <span class="n">full_list</span> <span class="o">=</span> <span class="n">ec_cobra_reaction_ids</span><span class="p">,</span> 
+    <span class="n">Glycolysis</span><span class="p">,</span>
+    <span class="n">PPP</span><span class="p">)</span>
+
+<span class="c1"># Additional step to remove duplicates</span>
+<span class="n">reactions_in_pathways_ordered</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">[</span><span class="n">reactions_in_pathways_ordered</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">reactions_in_pathways_ordered_duplicates</span> <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reactions_in_pathways_ordered</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_pathway</span></code> function takes one or multiple lists containing reaction IDs (corresponding to KEGG pathways and creates a dictionary that maps the IDs to pathway names. If a reaction appears in more than 1 pathway, it is classified with the term <code class="docutils literal notranslate"><span class="pre">Multiple-Pathways</span></code>. This is useful for plotting to work with subsets of reactions and to replace names from the <code class="docutils literal notranslate"><span class="pre">df_kegg_pathways</span></code> dataframe like <code class="docutils literal notranslate"><span class="pre">Glycolysis</span> <span class="pre">/</span> <span class="pre">Gluconeogenesis</span></code> to <code class="docutils literal notranslate"><span class="pre">Glycolysis</span></code> and <code class="docutils literal notranslate"><span class="pre">Pentose</span> <span class="pre">phosphate</span> <span class="pre">pathway</span></code> to <code class="docutils literal notranslate"><span class="pre">PPP</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">**named_lists</span></code> are named lists where each argument is a list of reaction IDs and the argument name represents the pathway name.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bigg_to_pathway_dict</span> <span class="o">=</span> <span class="n">dictionary_reaction_id_to_pathway</span><span class="p">(</span>
+    <span class="n">Glycolysis</span> <span class="o">=</span> <span class="n">Glycolysis</span><span class="p">,</span> 
+    <span class="n">PPP</span> <span class="o">=</span> <span class="n">PPP</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">bigg_to_pathway_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GND&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bigg_to_pathway_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ENO&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bigg_to_pathway_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;FBA&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Pentose phosphate pathway&quot;</span>
+<span class="s2">&quot;Glycolysis / Gluconeogenesis&quot;</span>
+<span class="s2">&quot;Multiple-Pathways&quot;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix</span></code> function is used to create a new pandas dataframe with reactions as rows and different pathways as columns. The corresponding cell of the dataframe will show if a reaction belongs to a certain pathway (1) or not (0). If a reaction belongs to more than one pathways, then the column: <code class="docutils literal notranslate"><span class="pre">Multiple-Pathways</span></code> is created and the reaction matching this will only get True (1) there and not in the individual pathway columns (e.g. 1 in <code class="docutils literal notranslate"><span class="pre">Multiple-Pathways</span></code>, 0 in <code class="docutils literal notranslate"><span class="pre">Glycolysis</span></code> and 0 in <code class="docutils literal notranslate"><span class="pre">PPP</span></code>).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reaction_id_to_pathway_dict</span></code> is dictionary mapping reaction IDs to pathway names created with the <code class="docutils literal notranslate"><span class="pre">dictionary_reaction_id_to_pathway</span></code> function</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">binary_df</span> <span class="o">=</span> <span class="n">reaction_in_pathway_binary_matrix</span><span class="p">(</span>
+    <span class="n">reaction_id_to_pathway_dict</span> <span class="o">=</span> <span class="n">bigg_to_pathway_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">plot_reaction_in_pathway_heatmap</span></code> function is used to plot a heatmap of the <code class="docutils literal notranslate"><span class="pre">binary_df</span></code> created from the <code class="docutils literal notranslate"><span class="pre">reaction_in_pathway_binary_matrix</span></code> function to better illustrate the connection between reactions and pathways.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">binary_df</span></code> is a pandas dataFrame with binary values (0 or 1)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">font_size</span></code> is the font size for axis labels and ticks</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fig_width</span></code> is the width of the figure in pixels</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fig_height</span></code> is the height of the figure in pixels</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">title</span></code> is the title of the plot</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_reaction_in_pathway_heatmap</span><span class="p">(</span>
+    <span class="n">binary_df</span> <span class="o">=</span> <span class="n">binary_df</span><span class="p">,</span> 
+    <span class="n">font_size</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> 
+    <span class="n">fig_width</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span> 
+    <span class="n">fig_height</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span> 
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="heatmap_pathways_binary" src="_images/heatmap_pathways_binary.png" /></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">subset_sampling_array_from_reaction_ids</span></code> function subsets a sampling 2D array (with reactions as rows and samples as columns) to include only reactions of interest.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">samples</span></code> is a sampling 2D array with reactions as rows and samples as columns</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_reactions</span></code> is a list containing the model’s reactions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">subset_reactions</span></code> is a list containing reactions of interest to subset the sampling array</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">subset_pathways_optgp_condition_100</span> <span class="o">=</span> <span class="n">subset_sampling_array_from_reaction_ids</span><span class="p">(</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">samples_optgp_condition_100</span><span class="p">,</span> 
+    <span class="n">model_reactions</span> <span class="o">=</span> <span class="n">ec_cobra_reaction_ids</span><span class="p">,</span> 
+    <span class="n">subset_reactions</span> <span class="o">=</span> <span class="n">reactions_in_pathways_ordered</span><span class="p">)</span>
+
+<span class="n">subset_pathways_optgp_condition_0</span> <span class="o">=</span> <span class="n">subset_sampling_array_from_reaction_ids</span><span class="p">(</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">samples_optgp_condition_0</span><span class="p">,</span> 
+    <span class="n">model_reactions</span> <span class="o">=</span> <span class="n">ec_cobra_reaction_ids</span><span class="p">,</span>
+    <span class="n">subset_reactions</span> <span class="o">=</span> <span class="n">reactions_in_pathways_ordered</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -256,7 +482,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="correlations.html" class="btn btn-neutral float-right" title="Compute pairwise reaction correlations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="loopless.html" class="btn btn-neutral float-right" title="Reduce thermodynamic infeasible samples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

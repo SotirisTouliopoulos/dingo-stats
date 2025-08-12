@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compute pairwise reaction correlations &mdash; dingo-stats  documentation</title>
+  <title>Correlations from reactions samples &mdash; dingo-stats  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -20,8 +20,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="autoapi/index.html" />
-    <link rel="prev" title="Extract pathway information" href="pathways.html" /> 
+    <link rel="next" title="Clustering from correlation matrix" href="clustering.html" />
+    <link rel="prev" title="Differential Flux Analysis" href="distributions_comparison.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,27 +52,38 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#instllation-of-dingo">Instllation of dingo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-of-dingo">Installation of dingo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#installation-of-dingo-stats">Installation of dingo-stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#how-to-build-the-readthedocs-of-dingo-stats-locally">How to build the ReadTheDocs of <code class="docutils literal notranslate"><span class="pre">dingo-stats</span></code> locally</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#load-modify-and-sample-models">Load, Modify and Sample models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#load-and-modify-models">Load and Modify models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#perform-sampling">Perform Sampling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html#inspect-sampling-distributions">Inspect Sampling distributions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pathways.html">Extract pathway information</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pathways.html#map-bigg-seed-ids-to-kegg-pathways">Map BIGG/SEED ids to KEGG pathways</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pathways.html">KEGG pathways information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pathways.html#map-model-reactions-ids-to-kegg-terms">Map model reactions IDs to KEGG terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathways.html#subset-reactions-from-pathways">Subset reactions from pathways</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Compute pairwise reaction correlations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#linear-correlations-with-pearson-spearman">Linear correlations with pearson/spearman</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#non-linear-dependencies-with-copulas">Non-Linear dependencies with copulas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loopless.html">Reduce thermodynamic infeasible samples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="loopless.html#identify-and-remove-loopy-reactions">Identify and remove loopy reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loopless.html#quantify-the-effect-of-loopy-reactions-in-sampling">Quantify the effect of loopy reactions in sampling</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="distributions_comparison.html">Differential Flux Analysis</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Correlations from reactions samples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites-for-calculating-pairwise-correlations">Prerequisites for calculating pairwise correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculation-of-pairwise-linear-correlations-and-non-linear-copula-dependencies">Calculation of pairwise linear correlations and non-linear copula dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clustering.html">Clustering from correlation matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphs.html">Graphs from correlation matrix</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
@@ -234,7 +245,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Compute pairwise reaction correlations</li>
+      <li class="breadcrumb-item active">Correlations from reactions samples</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/correlations.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -244,13 +255,188 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section class="tex2jax_ignore mathjax_ignore" id="compute-pairwise-reaction-correlations">
-<h1>Compute pairwise reaction correlations<a class="headerlink" href="#compute-pairwise-reaction-correlations" title="Link to this heading"></a></h1>
-<section id="linear-correlations-with-pearson-spearman">
-<h2>Linear correlations with pearson/spearman<a class="headerlink" href="#linear-correlations-with-pearson-spearman" title="Link to this heading"></a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="correlations-from-reactions-samples">
+<h1>Correlations from reactions samples<a class="headerlink" href="#correlations-from-reactions-samples" title="Link to this heading"></a></h1>
+<section id="prerequisites-for-calculating-pairwise-correlations">
+<h2>Prerequisites for calculating pairwise correlations<a class="headerlink" href="#prerequisites-for-calculating-pairwise-correlations" title="Link to this heading"></a></h2>
+<p>In some cases, the forward direction of reactions (as defined in the model) does not align with the observed network topology. As a result, pairs of reactions may show identical correlation magnitudes but with opposite signs than the expected result.</p>
+<p>To deal with this, we split all reversible reactions with both positive and negative flux to separate reactions. Thus, one of the 2 (forward or reverse) has the expected correlations with reactions from the rest network.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">split_forward_reverse</span></code> function splits all bidirectional reactions having at least 1 positive and 1 negative flux value in a sampling array into separate forward and reverse reactions. This step is useful to avoid losing information, when computing correlations from a reactions set that includes reversible reactions.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">steady_states</span></code> is the default flux Sampling array with only forward reactions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reactions</span></code> is a list with reactions of interest to be split and result in separate forward and reverse reactions. This list includes reactions from a pathway of interest and thus not all reactions from the list will be split (only those that have both positive and negative flux)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">subset_extended_steady_states_100</span><span class="p">,</span>
+ <span class="n">subset_extended_reactions_100</span><span class="p">)</span> <span class="o">=</span> <span class="n">split_forward_reverse</span><span class="p">(</span>
+    <span class="n">steady_states</span> <span class="o">=</span> <span class="n">subset_pathways_optgp_condition_100</span><span class="p">,</span> 
+    <span class="n">reactions</span> <span class="o">=</span> <span class="n">reactions_in_pathways_ordered</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">subset_extended_steady_states_0</span><span class="p">,</span>
+ <span class="n">subset_extended_reactions_0</span><span class="p">)</span> <span class="o">=</span> <span class="n">split_forward_reverse</span><span class="p">(</span>
+    <span class="n">steady_states</span> <span class="o">=</span> <span class="n">subset_pathways_optgp_condition_0</span><span class="p">,</span> 
+    <span class="n">reactions</span> <span class="o">=</span> <span class="n">reactions_in_pathways_ordered</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">find_reactants_products</span></code> function identifies and saves in separate lists the reactants, products and directionality status of each reaction in a given metabolic model. Cofactors do not count as reactants/products.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cobra_model</span></code> is a metabolic model in cobra format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reactions_ids</span></code> is a list of the reactions of interest</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">reversibility_list_all_reactions_100</span><span class="p">,</span> 
+ <span class="n">reactants_list_all_reactions_100</span><span class="p">,</span>
+ <span class="n">products_list_all_reactions_100</span><span class="p">)</span> <span class="o">=</span> <span class="n">find_reactants_products</span><span class="p">(</span>
+    <span class="n">cobra_model</span> <span class="o">=</span> <span class="n">ec_cobra_model</span><span class="p">,</span>
+    <span class="n">reactions_ids</span> <span class="o">=</span> <span class="n">subset_extended_reactions_100</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">reversibility_list_all_reactions_0</span><span class="p">,</span> 
+ <span class="n">reactants_list_all_reactions_0</span><span class="p">,</span>
+ <span class="n">products_list_all_reactions_0</span><span class="p">)</span> <span class="o">=</span> <span class="n">find_reactants_products</span><span class="p">(</span>
+    <span class="n">cobra_model</span> <span class="o">=</span> <span class="n">ec_cobra_model</span><span class="p">,</span>
+    <span class="n">reactions_ids</span> <span class="o">=</span> <span class="n">subset_extended_reactions_0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">sharing_metabolites_square_matrix</span></code> function works given the lists with reactants, products and reversibility information, creates a square boolean matrix with <code class="docutils literal notranslate"><span class="pre">True</span></code> values representing reactions sharing a common metabolite, as implemented in <code class="docutils literal notranslate"><span class="pre">sharing_metabolites</span></code> helper function.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reactions_ids</span></code> is a list containing IDs from a set of reactions of interest</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reversibility_list_all_reactions</span></code> is a list containing the reversibility status from a set of reactions (reactions must be the same and in accordance with their order in <code class="docutils literal notranslate"><span class="pre">reactions_ids</span></code> list. This is ensured with the <code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order</span></code> function)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reactants_list_all_reactions</span></code> is a list containing the reactants from a set of reactions (reactions must be the same and in accordance with their order in <code class="docutils literal notranslate"><span class="pre">reactions_ids</span></code> list. This is ensured with the <code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order</span></code> function)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">products_list_all_reactions</span></code> is a list containing the products from a set of reactions (reactions must be the same and in accordance with their order in <code class="docutils literal notranslate"><span class="pre">reactions_ids</span></code> list. This is ensured with the <code class="docutils literal notranslate"><span class="pre">sort_reactions_by_model_order</span></code> function)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">subset_boolean_sharing_metabolites_matrix_100</span> <span class="o">=</span> <span class="n">sharing_metabolites_square_matrix</span><span class="p">(</span>
+    <span class="n">reactions_ids</span> <span class="o">=</span> <span class="n">subset_extended_reactions_100</span><span class="p">,</span> 
+    <span class="n">reversibility_list_all_reactions</span> <span class="o">=</span> <span class="n">reversibility_list_all_reactions_100</span><span class="p">,</span>
+    <span class="n">reactants_list_all_reactions</span> <span class="o">=</span> <span class="n">reactants_list_all_reactions_100</span><span class="p">,</span>
+    <span class="n">products_list_all_reactions</span> <span class="o">=</span> <span class="n">products_list_all_reactions_100</span><span class="p">)</span>
+
+<span class="n">subset_boolean_sharing_metabolites_matrix_0</span> <span class="o">=</span> <span class="n">sharing_metabolites_square_matrix</span><span class="p">(</span>
+    <span class="n">reactions_ids</span> <span class="o">=</span> <span class="n">subset_extended_reactions_0</span><span class="p">,</span> 
+    <span class="n">reversibility_list_all_reactions</span> <span class="o">=</span> <span class="n">reversibility_list_all_reactions_0</span><span class="p">,</span>
+    <span class="n">reactants_list_all_reactions</span> <span class="o">=</span> <span class="n">reactants_list_all_reactions_0</span><span class="p">,</span>
+    <span class="n">products_list_all_reactions</span> <span class="o">=</span> <span class="n">products_list_all_reactions_0</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
-<section id="non-linear-dependencies-with-copulas">
-<h2>Non-Linear dependencies with copulas<a class="headerlink" href="#non-linear-dependencies-with-copulas" title="Link to this heading"></a></h2>
+<section id="calculation-of-pairwise-linear-correlations-and-non-linear-copula-dependencies">
+<h2>Calculation of pairwise linear correlations and non-linear copula dependencies<a class="headerlink" href="#calculation-of-pairwise-linear-correlations-and-non-linear-copula-dependencies" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">correlated_reactions</span></code> function calculates pairwise linear correlations and non-linear copula dependencies given a flux sampling array. Users can choose the preffered coefficient to calculate pairwise correlations (pearson or spearman). Moreover, users can filter correlations not meeting a cutoff value and choose whether to proceed with calculation of non-linear dependencies using copulas. Correlations and dependencies from reactions not sharing metabolites can also be removed.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">steady_states</span></code> is a numpy array of the generated steady states fluxes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">boolean_sharing_metabolites_matrix</span></code> is a boolean symmetric numpy 2D array with <code class="docutils literal notranslate"><span class="pre">True</span></code> / <code class="docutils literal notranslate"><span class="pre">False</span></code> based on the presense of shared metabolites between reactions. This matrix, which is optionally provided, is calculated with the <code class="docutils literal notranslate"><span class="pre">sharing_metabolites_square_matrix</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reactions</span></code> is a list with the reactions IDs (must be in accordance with the rows of the steady states)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">linear_coeff</span></code> is a string declaring the linear coefficient to be selected. Available options: “pearson”, “spearman”</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">linear_corr_cutoff</span></code> is a cutoff to filter (remove) linear correlations (not greater than the cutoff) based on the pearson or spearmanr coefficient</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">indicator_cutoff</span></code> is a cutoff to classify non-linear correlations as positive, negative or non-significant</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">jensenshannon_cutoff</span></code> is a cutoff to filter (remove) non-linear correlations (not greater than the cutoff) based on the Jensen-Shannon metric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std_cutoff</span></code> is a cutoff to avoid computing the copula between 2 fluxes with almost fixed values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include_non_linear</span></code> is a boolean variable that if <code class="docutils literal notranslate"><span class="pre">True</span></code>, takes into account and calculates non-linear copula dependencies</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cells</span></code> is the number of cells to compute the copula</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cop_coeff</span></code> is a value that narrows or widens the width of the copula’s diagonal (use lower values to capture extreme tail dependences)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lower_triangle</span></code> is a boolean variable that if <code class="docutils literal notranslate"><span class="pre">True</span></code> returns only the lower triangular matrix (useful for heatmap visualization)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code> is a boolean variable that if <code class="docutils literal notranslate"><span class="pre">True</span></code> additional information is printed as an output to the user.</p></li>
+</ul>
+<p>If user requests calculation of non-linear copula dependencies, 3 numpy arrays and 1 dictionary are returned, as shown below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">subset_linear_correlation_matrix_100</span><span class="p">,</span>
+<span class="n">subset_non_linear_correlation_matrix_100</span><span class="p">,</span>
+<span class="n">subset_mixed_correlation_matrix_100</span><span class="p">,</span>
+<span class="n">subset_correlations_dictionary_100</span><span class="p">)</span> <span class="o">=</span> <span class="n">correlated_reactions</span><span class="p">(</span>
+        <span class="n">steady_states</span> <span class="o">=</span> <span class="n">subset_extended_steady_states_100</span><span class="p">,</span>
+        <span class="n">boolean_sharing_metabolites_matrix</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reactions</span> <span class="o">=</span> <span class="n">subset_extended_reactions_100</span><span class="p">,</span>
+        <span class="n">linear_coeff</span> <span class="o">=</span> <span class="s2">&quot;pearson&quot;</span><span class="p">,</span>
+        <span class="n">linear_corr_cutoff</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> 
+        <span class="n">indicator_cutoff</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span>
+        <span class="n">jensenshannon_cutoff</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">std_cutoff</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span>
+        <span class="n">include_non_linear</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+        <span class="n">cells</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> 
+        <span class="n">cop_coeff</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> 
+        <span class="n">lower_triangle</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+        <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="p">(</span><span class="n">subset_linear_correlation_matrix_0</span><span class="p">,</span> 
+<span class="n">subset_non_linear_correlation_matrix_0</span><span class="p">,</span> 
+<span class="n">subset_mixed_correlation_matrix_0</span><span class="p">,</span> 
+<span class="n">subset_correlations_dictionary_0</span><span class="p">)</span> <span class="o">=</span> <span class="n">correlated_reactions</span><span class="p">(</span>
+        <span class="n">steady_states</span> <span class="o">=</span> <span class="n">subset_extended_steady_states_0</span><span class="p">,</span>
+        <span class="n">boolean_sharing_metabolites_matrix</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reactions</span> <span class="o">=</span> <span class="n">subset_extended_reactions_0</span><span class="p">,</span>
+        <span class="n">linear_coeff</span> <span class="o">=</span> <span class="s2">&quot;pearson&quot;</span><span class="p">,</span>
+        <span class="n">linear_corr_cutoff</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> 
+        <span class="n">indicator_cutoff</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span>
+        <span class="n">jensenshannon_cutoff</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">std_cutoff</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span>
+        <span class="n">include_non_linear</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+        <span class="n">cells</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> 
+        <span class="n">cop_coeff</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> 
+        <span class="n">lower_triangle</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+        <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>If user does not request calculation of non-linear copula dependencies, 1 numpy array and 1 dictionary are returned, as shown below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">subset_linear_correlation_matrix_100</span><span class="p">,</span>
+<span class="n">subset_correlations_dictionary_100</span><span class="p">)</span> <span class="o">=</span> <span class="n">correlated_reactions</span><span class="p">(</span>
+        <span class="n">steady_states</span> <span class="o">=</span> <span class="n">subset_extended_steady_states_100</span><span class="p">,</span>
+        <span class="n">boolean_sharing_metabolites_matrix</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reactions</span> <span class="o">=</span> <span class="n">subset_extended_reactions_100</span><span class="p">,</span>
+        <span class="n">linear_coeff</span> <span class="o">=</span> <span class="s2">&quot;pearson&quot;</span><span class="p">,</span>
+        <span class="n">linear_corr_cutoff</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> 
+        <span class="n">indicator_cutoff</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span>
+        <span class="n">jensenshannon_cutoff</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">std_cutoff</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span>
+        <span class="n">include_non_linear</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+        <span class="n">cells</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> 
+        <span class="n">cop_coeff</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> 
+        <span class="n">lower_triangle</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+        <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="p">(</span><span class="n">subset_linear_correlation_matrix_0</span><span class="p">,</span> 
+<span class="n">subset_correlations_dictionary_0</span><span class="p">)</span> <span class="o">=</span> <span class="n">correlated_reactions</span><span class="p">(</span>
+        <span class="n">steady_states</span> <span class="o">=</span> <span class="n">subset_extended_steady_states_0</span><span class="p">,</span>
+        <span class="n">boolean_sharing_metabolites_matrix</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reactions</span> <span class="o">=</span> <span class="n">subset_extended_reactions_0</span><span class="p">,</span>
+        <span class="n">linear_coeff</span> <span class="o">=</span> <span class="s2">&quot;pearson&quot;</span><span class="p">,</span>
+        <span class="n">linear_corr_cutoff</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> 
+        <span class="n">indicator_cutoff</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span>
+        <span class="n">jensenshannon_cutoff</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">std_cutoff</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span>
+        <span class="n">include_non_linear</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+        <span class="n">cells</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> 
+        <span class="n">cop_coeff</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> 
+        <span class="n">lower_triangle</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+        <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The dictionary returned from this function is independent and not filtered from the <code class="docutils literal notranslate"><span class="pre">boolean_sharing_metabolites_matrix</span></code>. It contains information on pairwise reactions linear coefficient values, the copula’s jensen shannon distance value, the copula’s indicator value and a copula classification value.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">subset_correlations_dictionary_100</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PYK~PGK&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">subset_correlations_dictionary_0</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PYK~PGK&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;pearson&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;jensenshannon&#39;</span><span class="p">:</span> <span class="mf">0.11517866713970133</span><span class="p">,</span> <span class="s1">&#39;indicator&#39;</span><span class="p">:</span> <span class="mf">1.6059379192742054</span><span class="p">,</span> <span class="s1">&#39;classification&#39;</span><span class="p">:</span> <span class="s1">&#39;positive_upper_lower_tail&#39;</span><span class="p">}</span>
+
+<span class="p">{</span><span class="s1">&#39;pearson&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;jensenshannon&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.10089110481651221</span><span class="p">,</span> <span class="s1">&#39;indicator&#39;</span><span class="p">:</span> <span class="mf">0.7628205134721049</span><span class="p">,</span> <span class="s1">&#39;classification&#39;</span><span class="p">:</span> <span class="s1">&#39;negative_upper_lower_tail&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">plot_correlation_matrix</span></code> function plots a correlation matrix created with the <code class="docutils literal notranslate"><span class="pre">correlated_reactions</span></code> function.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">correlation_matrix</span></code> is the correlation matrix to plot.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reactions</span></code> is an optional list of reaction labels to be plot as axes in the plot.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label_font_size</span></code> is the font size for the axes labels</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">width</span></code> is the width of the plot</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">height</span></code> is the height of the plot</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_correlation_matrix</span><span class="p">(</span>
+    <span class="n">correlation_matrix</span> <span class="o">=</span> <span class="n">subset_mixed_correlation_matrix_100</span><span class="p">,</span> 
+    <span class="n">reactions</span> <span class="o">=</span> <span class="n">subset_extended_reactions_100</span><span class="p">,</span> 
+    <span class="n">label_font_size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="mi">900</span><span class="p">,</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="mi">900</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><img alt="heatmap_correlation_matrix" src="_images/heatmap_correlation_matrix.png" /></p>
 </section>
 </section>
 
@@ -258,8 +444,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pathways.html" class="btn btn-neutral float-left" title="Extract pathway information" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="autoapi/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="distributions_comparison.html" class="btn btn-neutral float-left" title="Differential Flux Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="clustering.html" class="btn btn-neutral float-right" title="Clustering from correlation matrix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
