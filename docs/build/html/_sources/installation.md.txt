@@ -15,6 +15,12 @@ pip install dingo-walk
 
 ## Installation of dingo-stats
 
+To clone the dingo-stats GitHub repository and change local directory type:
+```
+git clone https://github.com/SotirisTouliopoulos/dingo-stats
+cd dingo-stats
+```
+
 To run the package locally we recommend to create a virtual conda environment.
 
 Make sure you have `conda` installed. To create the environment type:

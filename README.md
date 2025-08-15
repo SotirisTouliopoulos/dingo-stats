@@ -21,6 +21,13 @@ conda activate dingo-stats
 ```
 
 
+To clone the dingo-stats GitHub repository and change local directory type:
+```
+git clone https://github.com/SotirisTouliopoulos/dingo-stats
+cd dingo-stats
+```
+
+
 `dingo-stats` relies on some functions implemented in the `dingo` package.
 
 To install `dingo` type the following inside the activated environment:
